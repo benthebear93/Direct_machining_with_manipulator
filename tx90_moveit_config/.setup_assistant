@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: staubli_tx90_gazebo
+    relative_path: urdf/tx90.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/staubli_tx90_gazebo.srdf
+  CONFIG:
+    author_name: Hae-gu Lee
+    author_email: hglee93@gmail.com
+    generated_timestamp: 1611062635
