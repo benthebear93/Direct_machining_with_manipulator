@@ -2,10 +2,10 @@ moveit_setup_assistant_config:
   URDF:
     package: staubli_tx90_gazebo
     relative_path: urdf/tx90.xacro
-    xacro_args: ""
+    xacro_args: use_nominal_extrinsics:=true add_plug:=false
   SRDF:
     relative_path: config/staubli_tx90_gazebo.srdf
   CONFIG:
     author_name: Hae-gu Lee
     author_email: hglee93@gmail.com
-    generated_timestamp: 1617982642
+    generated_timestamp: 1618065146
