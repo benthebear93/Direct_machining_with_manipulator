@@ -56,7 +56,7 @@ class StaubliScanning(object):
 
 		# create 'display Trajectory',  publisher which is used later to publish
 		# trajectories visualized
-		display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path', moveit_msgs.msg.DisplayTrajectory, queue_size=20)
+		self.display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path', moveit_msgs.msg.DisplayTrajectory, queue_size=20)
 		planning_frame = self.move_group.get_planning_frame()
 		print "============ Reference frame: %s" % planning_frame
 
@@ -75,7 +75,7 @@ class StaubliScanning(object):
 		print ""
 		## END_SUB_TUTORIAL
 
-	def go_to_joint_state(self):
+	def go_to_joint_state(self, j_val):
 		# Copy class variables to local variables to make the web tutorials more clear.
 		# In practice, you should use the class variables directly unless you have a good
 		# reason not to.
@@ -88,12 +88,12 @@ class StaubliScanning(object):
 		## thing we want to do is move it to a slightly better configuration.
 		# We can get the joint values from the group and adjust some of the values:
 		joint_goal = self.move_group.get_current_joint_values()
-		joint_goal[0] = 0
-		joint_goal[1] = -pi/4
-		joint_goal[2] = 0
-		joint_goal[3] = -pi/2
-		joint_goal[4] = 0
-		joint_goal[5] = pi/3
+		joint_goal[0] = j_val[0]
+		joint_goal[1] = j_val[1]
+		joint_goal[2] = j_val[2]
+		joint_goal[3] = j_val[3]
+		joint_goal[4] = j_val[4]
+		joint_goal[5] = j_val[5]
 		# The go command can be called with joint values, poses, or without any
 		# parameters if you have already set the pose or joint target for the group
 		self.move_group.go(joint_goal, wait=True)
@@ -110,36 +110,36 @@ class StaubliScanning(object):
 		return all_close(joint_goal, current_joints, 0.01)
 
 	def go_to_pose_goal(self):
-		
-		group = self.group
-		pose_goal = geometry_msgs.msg.Pose()
-		pose_goal.orientation.w = 1.0
-		pose_goal.position.x = 0.4
-		pose_goal.position.y = 0.1
-		pose_goal.position.z = 0.4
-		group.set_pose_target(pose_goal)
 
-		plan = group.go(wait=True)
-		group.stop()
-		group.clear_pos_targets()
+		curret_pose = self.move_group.get_curret_pose().pose
+		# pose_goal = geometry_msgs.msg.Pose()
+		# pose_goal.orientation.w = 1.0
+		# pose_goal.position.x = 0.1
+		# pose_goal.position.y = 0.1
+		# pose_goal.position.z = 0.4
+		# self.move_group.set_pose_target(pose_goal)
 
-		curret_pose = self.group.get_curret_pose().pose
+		# plan = self.move_group.go(wait=True)
+		# self.move_group.stop()
+		# self.move_group.clear_pos_targets()
+
+		#curret_pose = self.move_group.get_curret_pose().pose
 		return all_close(pose_goal, curret_pose, 0.01)
 
 	def plan_cartesian_path(self, scale=1):
-		group = self.group
+		group = self.move_group
 		waypoints = []
 
 		wpose = group.get_current_pose().pose
-		wpose.position.z -= scale * 0.1  # First move up (z)
-		wpose.position.y += scale * 0.2  # and sideways (y)
+		# wpose.position.z -= scale * 0.1  # First move up (z)
+		wpose.position.y += scale * 1.5  # and sideways (y)
 		waypoints.append(copy.deepcopy(wpose))
 
-		wpose.position.x += scale * 0.1  # Second move forward/backwards in (x)
-		waypoints.append(copy.deepcopy(wpose))
+		# wpose.position.x += scale * 0.1  # Second move forward/backwards in (x)
+		# waypoints.append(copy.deepcopy(wpose))
 
-		wpose.position.y -= scale * 0.1  # Third move sideways (y)
-		waypoints.append(copy.deepcopy(wpose))
+		# wpose.position.y -= scale * 0.1  # Third move sideways (y)
+		# waypoints.append(copy.deepcopy(wpose))
 
 		# We want the Cartesian path to be interpolated at a resolution of 1 cm
 		# which is why we will specify 0.01 as the eef_step in Cartesian
@@ -160,12 +160,20 @@ class StaubliScanning(object):
 		display_trajectory_publisher.publish(display_trajectory)
 
 	def execute_plan(self, plan):
-		self.group.execute(plan, wait=True)
+		self.move_group.execute(plan, wait=True)
 
 def main():
 	staubli_client = StaubliScanning()
-	staubli_client.go_to_joint_state()
-
-
+	ori = [0, 0, 0, 0, 0, 0]
+	second = [0, 0, pi/2 ,0 ,0, 0]
+	staubli_client.go_to_joint_state(ori)
+	staubli_client.go_to_joint_state(second)
+	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
+	# staubli_client.display_trajectory(cartesian_plan)
+	# staubli_client.execute_plan(cartesian_plan)
+	# print "=========cartesian done========="
+	# rospy.sleep(2) 
+	staubli_client.go_to_pose_goal()
+	print"=========go to pose goal========="
 if __name__ == '__main__':
 	main()
