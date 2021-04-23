@@ -1,21 +1,39 @@
 <?xml version="1.0" ?>
-<robot name="mobile_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
-		<link name="base_footprint"/>
-		<link name="base_link">
+<robot name="CFRP">
+    <link name="babbbbse_link">
         <visual>
-            <origin xyz="0 0 0.03" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <box size="0.1 0.1 0.1"/>
+                <box size="0.1 0.1 0.01"/>
             </geometry>
             <material name="black">
-                <color rgba="0 0 0 1"/>
+                <color rgba="0.6 0.1 0 1"/>
             </material>
         </visual>
         <collision>
-            <origin xyz="0 0 0.03" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <box size="0.1 0.1 0.1"/>
+                <box size="0.1 0.1 0.01"/>
             </geometry>
         </collision>
-		</link>
+        <inertial>
+          <mass value="0.5" />
+          <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        </inertial>
+	</link>
+
+<!--     <link name="top_part">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+    </link> -->
+    <link name="top_part"/>
+    <joint name="$cfrp_joint" type="fixed">
+        <parent link="babbbbse_link"/>
+        <child link="top_part"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
 </robot>
