@@ -5,6 +5,8 @@ import rospy
 import moveit_commander
 import moveit_msgs.msg
 import geometry_msgs.msg
+import tf
+import geometry_msgs
 from math import pi
 from std_msgs.msg import String
 from moveit_commander.conversions import pose_to_list
@@ -31,6 +33,13 @@ def all_close(goal, actual, tolerance):
 		return all_close(pose_to_list(goal), pose_to_list(actual), tolerance)
 
 	return True
+
+def euler2quaternion(quaternion):
+	euler = tf.transformations.euler_from_quaternion(quaternion)
+	roll = euler[0]
+	pitch = euler[1]
+	yaw = euler[2]
+	print("roll :", roll,"pitch :", pitch,"yaw :", yaw)
 
 class StaubliScanning(object):
 	def __init__(self):
@@ -79,8 +88,15 @@ class StaubliScanning(object):
 	def find_curr_pose(self):
 		current_pose = self.move_group.get_current_pose().pose
 		print("curret pose : ", current_pose.orientation)
-		# current_rpy = self.move_group.get_current_rpy().pose
-		# print("curret rpy : ", current_rpy)
+		print("current pose ori x :", current_pose.orientation.x)
+		print("current pose ori y :", current_pose.orientation.y)
+		print("current pose ori z :", current_pose.orientation.z)
+		print("current pose ori w :", current_pose.orientation.w)
+		quaternion = (current_pose.orientation.x,
+			current_pose.orientation.y,
+			current_pose.orientation.z,
+			current_pose.orientation.w)
+		euler2quaternion(quaternion)
 
 	def go_to_joint_state(self):
 		move_group = self.move_group
@@ -95,10 +111,10 @@ class StaubliScanning(object):
 		# We get the joint values from the group and change some of the values:
 		joint_goal = move_group.get_current_joint_values()
 		joint_goal[0] = 0
-		joint_goal[1] = np.deg2rad(45)
+		joint_goal[1] = np.deg2rad(0)
 		joint_goal[2] = np.deg2rad(90)
 		joint_goal[3] = 0
-		joint_goal[4] = np.deg2rad(-30)
+		joint_goal[4] = np.deg2rad(0)
 		joint_goal[5] = np.deg2rad(0)  # 1/6 of a turn
 
 		# The go command can be called with joint values, poses, or without any
