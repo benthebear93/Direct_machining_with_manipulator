@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<robot name="staubli_tx90_gazebo" xmlns:xacro="http://wiki.ros.org/xacro">
+  <!-- TX90 -->
+  <xacro:include filename="$(find staubli_tx90_gazebo)/urdf/tx90_macro.xacro"/>	
+<!--   <xacro:include filename="$(find staubli_tx90_gazebo)/urdf/cfrp_macro.xacro"/>  -->
+  
+  <xacro:staubli_tx90_robot prefix=""/>
+
+  <!-- Fix robot to Gazebo world -->
+  <link name="world"/>
+  <joint name="world-bed_base-fixed" type="fixed">
+    <parent link="world"/>
+    <child link="bed_base"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+  <joint name="bed_base-base_link-fixed" type="fixed">
+    <parent link="bed_base"/>
+    <child link="base_link"/>
+    <origin xyz="-0.278 -0.033 0.75" rpy="0.0 0.0 0.0" />
+  </joint>
+  <joint name="bed_base-cfrp_base-fixed" type="fixed">
+    <parent link="bed_base"/>
+    <child link="cfrp_base"/>
+    <origin xyz="0.45 0.0 0.75" rpy="0.0 0.0 0.0" />
+  </joint>
+</robot>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+<xacro:include filename="$(find staubli_tx90_support)/urdf/cfrp_macro.xacro"/>
+<xacro:macro name="cfrp_plat" params="prefix">
+
+  <xacro:cfrp prefix="${prefix}" />
+
+  <gazebo reference="${prefix}cfrp_base">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+</xacro:macro>
+</robot>

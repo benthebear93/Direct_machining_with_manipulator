@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<robot name="CFRP" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <link name="cfrp_base">
+        <visual>
+            <geometry>
+                <box size="0.1 0.1 0.0025"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="orange"/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size="0.1 0.1 0.0025"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+
+        <inertial>
+            <mass value="1"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+    </link>
+
+    
+  <gazebo reference="cfrp_base">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+    <!-- <link name="top_part">
+        <visual>
+            <geometry>
+                <box size="0.1 0.1 0.0025"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="yellow">
+                <color rgba="1 1 0 1"/>
+            </material>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size="0.1 0.1 0.0025"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </collision>
+        
+        <inertial>
+            <mass value="1"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+    </link>
+
+    <joint name="base_top_joint" type="revolute">
+        <parent link="cfrp_base"/>
+        <child link="top_part"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <axis xyz="0 0 1"/>
+        <limit lower="-1.57" upper="1.57" effort="1.0" velocity="1" />
+    </joint> -->
+</robot>

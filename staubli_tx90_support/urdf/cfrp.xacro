@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+
+<robot name="cfrp" xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:include filename="$(find staubli_tx90_support)/urdf/cfrp_macro.xacro"/>
+  <xacro:cfrp prefix=""/>
+</robot>

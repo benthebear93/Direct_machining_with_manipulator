@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<robot name="cfrp_gazebo" xmlns:xacro="http://wiki.ros.org/xacro">
+  <!-- TX90 -->
+  <xacro:include filename="$(find staubli_tx90_gazebo)/urdf/cfrp_macro.xacro"/>	
+  
+  <xacro:cfrp prefix=""/>
+
+  <!-- Fix robot to Gazebo world -->
+  <link name="world"/>
+  <joint name="world-cfrp_base-fixed" type="fixed">
+    <parent link="world"/>
+    <child link="cfrp_base"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+</robot>

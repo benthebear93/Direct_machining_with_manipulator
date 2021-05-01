@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="cfrp" params="prefix">
+    <!-- links: main serial chain -->
+    <link name="${prefix}cfrp_base">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="orange"/>
+        <geometry>
+            <box size="0.1 0.1 0.0025"/>
+        </geometry>
+      </visual>
+
+      <collision>
+          <geometry>
+              <box size="0.1 0.1 0.0025"/>
+          </geometry>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+
+      <inertial>
+          <mass value="1"/>
+          <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      </inertial>
+    </link>
+
+
+
+
+
+
+
+    
+    <gazebo reference="${prefix}cfrp_base">
+      <material>Gazebo/Orange</material>
+    </gazebo>
+  </xacro:macro>
+</robot>
