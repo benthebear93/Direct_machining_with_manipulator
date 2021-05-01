@@ -18,9 +18,9 @@
     <child link="base_link"/>
     <origin xyz="-0.278 -0.033 0.75" rpy="0.0 0.0 0.0" />
   </joint>
-  <joint name="bed_base-cfrp_base-fixed" type="fixed">
+  <joint name="bed_base-PVS_1000_chuck-fixed" type="fixed">
     <parent link="bed_base"/>
-    <child link="cfrp_base"/>
+    <child link="PVS_1000_chuck"/>
     <origin xyz="0.45 0.0 0.75" rpy="0.0 0.0 0.0" />
   </joint>
 </robot>

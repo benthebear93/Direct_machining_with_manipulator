@@ -9,9 +9,9 @@
         args="-urdf
               -param robot_description
               -model tx90
-              -x -0.278
-              -y -0.033
-              -z 0.75
+              -x 0.0
+              -y 0.0
+              -z 0.0
               -R 0.0
               -P 0.0
               -Y 0.0" />

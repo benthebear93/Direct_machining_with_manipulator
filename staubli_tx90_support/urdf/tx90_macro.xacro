@@ -187,25 +187,25 @@
       </inertial>
   </link>
   
-  <link name="${prefix}cfrp_base">
+  <link name="${prefix}PVS_1000_chuck">
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.0 0.0 0.0"/>
       <material name="orange"/>
       <geometry>
-          <box size="0.1 0.1 0.0025"/>
+        <mesh filename="package://test_bed/meshes/PVS_1000_chuck.STL" />
       </geometry>
     </visual>
 
     <collision>
         <geometry>
-            <box size="0.1 0.1 0.0025"/>
+            <mesh filename="package://test_bed/meshes/PVS_1000_chuck.STL" />
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </collision>
 
     <inertial>
-        <mass value="1"/>
-        <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        <mass value="3.4926" />/>
+        <inertia ixx="0.039719" ixy="0.0" ixz="0.0" iyy="0.006139" iyz="-0.00014653" izz="0.038919"/>
     </inertial>
   </link>
 
