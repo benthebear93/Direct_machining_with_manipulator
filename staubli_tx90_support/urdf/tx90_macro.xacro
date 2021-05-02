@@ -190,10 +190,12 @@
   <link name="${prefix}PVS_1000_chuck">
     <visual>
       <origin xyz="0.0 0.07 0.0"/>
-      <material name="orange"/>
       <geometry>
-        <mesh filename="package://test_bed/meshes/PVS_1000_chuck.STL" />
+        <mesh filename="package://test_bed/meshes/PVS_1000_chuck.dae" />
       </geometry>
+      <material name="light_grey">
+        <color rgba="10.0 0.0 0.0 0.5" />
+      </material>
     </visual>
 
     <collision>

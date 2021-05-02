@@ -6,7 +6,9 @@
     <link name="${prefix}cfrp_base">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <material name="orange"/>
+        <material name="light black">
+          <color rgba = "5.0 0 0 0.7"/>
+        </material>
         <geometry>
           <mesh
             filename="package://test_bed/meshes/surface_cfrp.STL" />
@@ -35,7 +37,7 @@
 
     
     <gazebo reference="${prefix}cfrp_base">
-      <material>Gazebo/Orange</material>
+      <material>Gazebo/Grey</material>
     </gazebo>
   </xacro:macro>
 </robot>

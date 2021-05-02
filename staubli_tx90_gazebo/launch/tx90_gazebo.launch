@@ -30,4 +30,5 @@
        and spawn robot in Gazebo, along with necessary ROS nodes -->
   <include file="$(find staubli_tx90_gazebo)/launch/spawn_tx90.launch"/>
   <include file="$(find staubli_tx90_gazebo)/launch/spawn_cfrp.launch"/>
+  <include file="$(find tx90_moveit_config)/launch/move_group.launch"/>
 </launch>
