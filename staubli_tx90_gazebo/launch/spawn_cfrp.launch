@@ -9,9 +9,9 @@
         args="-urdf
               -param cfrp_description
               -model CFRP
-              -x 0.75
-              -y 0.0
-              -z 0.45
+              -x 0.50
+              -y 0.018
+              -z 0.867
               -R 0.0
               -P 0.0
               -Y 0.0" />

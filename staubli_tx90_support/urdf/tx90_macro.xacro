@@ -189,7 +189,7 @@
   
   <link name="${prefix}PVS_1000_chuck">
     <visual>
-      <origin xyz="0.0 0.0 0.0"/>
+      <origin xyz="0.0 0.07 0.0"/>
       <material name="orange"/>
       <geometry>
         <mesh filename="package://test_bed/meshes/PVS_1000_chuck.STL" />
@@ -208,6 +208,30 @@
         <inertia ixx="0.039719" ixy="0.0" ixz="0.0" iyy="0.006139" iyz="-0.00014653" izz="0.038919"/>
     </inertial>
   </link>
+
+  <!-- <link name="${prefix}surface_cfrp">
+    <visual>
+      <origin xyz="0.0 0.0 0.0"/>
+      <material name="orange">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+      <geometry>
+        <mesh filename="package://test_bed/meshes/surface_cfrp.STL" />
+      </geometry>
+    </visual>
+
+    <collision>
+        <geometry>
+            <mesh filename="package://test_bed/meshes/surface_cfrp.STL" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+
+    <inertial>
+        <mass value="3.4926" />/>
+        <inertia ixx="0.039719" ixy="0.0" ixz="0.0" iyy="0.006139" iyz="-0.00014653" izz="0.038919"/>
+    </inertial>
+  </link> -->
 
   <link name="${prefix}bed_base">
     <inertial>

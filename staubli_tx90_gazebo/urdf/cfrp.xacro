@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="cfrp_gazebo" xmlns:xacro="http://wiki.ros.org/xacro">
   <!-- TX90 -->
-  <xacro:include filename="$(find staubli_tx90_gazebo)/urdf/cfrp_macro.xacro"/>	
+  <xacro:include filename="$(find staubli_tx90_gazebo)/urdf/cfrp_macro.xacro"/> 
   
   <xacro:cfrp prefix=""/>
 

@@ -8,20 +8,22 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <material name="orange"/>
         <geometry>
-            <box size="0.1 0.1 0.0025"/>
+          <mesh
+            filename="package://test_bed/meshes/surface_cfrp.STL" />
         </geometry>
       </visual>
 
       <collision>
           <geometry>
-              <box size="0.1 0.1 0.0025"/>
+            <mesh
+              filename="package://test_bed/meshes/surface_cfrp.STL" />
           </geometry>
           <origin xyz="0 0 0" rpy="0 0 0"/>
       </collision>
 
       <inertial>
-          <mass value="1"/>
-          <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+          <mass value="0.18618"/>
+          <inertia ixx="0.00061682" ixy="0.0" ixz="0.0" iyy="0.00045111" iyz="0.0" izz="0.00087324"/>
       </inertial>
     </link>
 

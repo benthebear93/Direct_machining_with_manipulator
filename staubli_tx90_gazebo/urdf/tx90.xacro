@@ -21,6 +21,11 @@
   <joint name="bed_base-PVS_1000_chuck-fixed" type="fixed">
     <parent link="bed_base"/>
     <child link="PVS_1000_chuck"/>
-    <origin xyz="0.45 0.0 0.75" rpy="0.0 0.0 0.0" />
+    <origin xyz="0.45 -0.2 0.75" rpy="0.0 0.0 0.0" />
   </joint>
+<!--   <joint name="PVS_1000_chuck_surface_cfrp-fixed" type="fixed">
+    <parent link="PVS_1000_chuck"/>
+    <child link="surface_cfrp"/>
+    <origin xyz="0.0 0.0 0.1" rpy="0.0 0.0 0.0" />
+  </joint> -->
 </robot>
