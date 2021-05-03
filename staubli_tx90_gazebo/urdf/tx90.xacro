@@ -11,17 +11,17 @@
   <joint name="world-bed_base-fixed" type="fixed">
     <parent link="world"/>
     <child link="bed_base"/>
-    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    <origin xyz="0.278 0.033 0.0" rpy="0.0 0.0 0.0" />
   </joint>
   <joint name="bed_base-base_link-fixed" type="fixed">
     <parent link="bed_base"/>
     <child link="base_link"/>
-    <origin xyz="-0.278 -0.033 0.75" rpy="0.0 0.0 0.0" />
+    <origin xyz="-0.278 -0.033 0.73" rpy="0.0 0.0 0.0" />
   </joint>
   <joint name="bed_base-PVS_1000_chuck-fixed" type="fixed">
     <parent link="bed_base"/>
     <child link="PVS_1000_chuck"/>
-    <origin xyz="0.45 -0.2 0.75" rpy="0.0 0.0 0.0" />
+    <origin xyz="0.45 -0.2 0.73" rpy="0.0 0.0 0.0" />
   </joint>
 <!--   <joint name="PVS_1000_chuck_surface_cfrp-fixed" type="fixed">
     <parent link="PVS_1000_chuck"/>

@@ -10,6 +10,7 @@ project(tx90_moveit_client)
 find_package(catkin REQUIRED COMPONENTS
   moveit_commander
   rospy
+  roscpp
 )
 
 ## System dependencies are found with CMake's conventions

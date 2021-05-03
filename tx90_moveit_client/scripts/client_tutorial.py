@@ -11,6 +11,7 @@ from math import pi
 from std_msgs.msg import String
 from moveit_commander.conversions import pose_to_list
 import numpy as np
+from moveit_msgs.srv import GetPositionFK
 
 def all_close(goal, actual, tolerance):
 	"""
@@ -39,7 +40,7 @@ def euler2quaternion(quaternion):
 	roll = euler[0]
 	pitch = euler[1]
 	yaw = euler[2]
-	print("roll :", roll,"pitch :", pitch,"yaw :", yaw)
+	print("roll :", np.rad2deg(roll),"pitch :", np.rad2deg(pitch),"yaw :", np.rad2deg(yaw))
 
 class StaubliScanning(object):
 	def __init__(self):
@@ -50,17 +51,12 @@ class StaubliScanning(object):
 		rospy.init_node('mvoe_gour_python_interface', anonymous=True)
 
 		#init RobotCommander object
-
 		self.robot = moveit_commander.RobotCommander()
 
 		#init planning scene obejct
 		self.scene = moveit_commander.PlanningSceneInterface()
 		rospy.sleep(2)
-		## Instantiate a `MoveGroupCommander`_ object.  This object is an interface
-		## to one group of joints.  In this case the group is the joints in the Panda
-		## arm so we set ``group_name = panda_arm``. If you are using a different robot,
-		## you should change this value to the name of your robot arm planning group.
-		## This interface can be used to plan and execute motions on the Panda:
+
 		group_name = "tx_90"
 		self.move_group =  moveit_commander.MoveGroupCommander(group_name)
 
@@ -87,11 +83,8 @@ class StaubliScanning(object):
 
 	def find_curr_pose(self):
 		current_pose = self.move_group.get_current_pose().pose
-		print("curret pose : ", current_pose.orientation)
-		print("current pose ori x :", current_pose.orientation.x)
-		print("current pose ori y :", current_pose.orientation.y)
-		print("current pose ori z :", current_pose.orientation.z)
-		print("current pose ori w :", current_pose.orientation.w)
+		print("pose :", current_pose.position)
+		print("ori :", current_pose.orientation)
 		quaternion = (current_pose.orientation.x,
 			current_pose.orientation.y,
 			current_pose.orientation.z,
@@ -101,20 +94,12 @@ class StaubliScanning(object):
 	def go_to_joint_state(self):
 		move_group = self.move_group
 
-		## BEGIN_SUB_TUTORIAL plan_to_joint_state
-		##
-		## Planning to a Joint Goal
-		## ^^^^^^^^^^^^^^^^^^^^^^^^
-		## The Panda's zero configuration is at a `singularity <https://www.quora.com/Robotics-What-is-meant-by-kinematic-singularity>`_, so the first
-		## thing we want to do is move it to a slightly better configuration. 
-		## We use the constant `tau = 2*pi <https://en.wikipedia.org/wiki/Turn_(angle)#Tau_proposals>`_ for convenience:
-		# We get the joint values from the group and change some of the values:
 		joint_goal = move_group.get_current_joint_values()
 		joint_goal[0] = 0
-		joint_goal[1] = np.deg2rad(0)
-		joint_goal[2] = np.deg2rad(90)
+		joint_goal[1] = np.deg2rad(30)
+		joint_goal[2] = np.deg2rad(110)
 		joint_goal[3] = 0
-		joint_goal[4] = np.deg2rad(0)
+		joint_goal[4] = np.deg2rad(-50)
 		joint_goal[5] = np.deg2rad(0)  # 1/6 of a turn
 
 		# The go command can be called with joint values, poses, or without any
@@ -179,19 +164,23 @@ class StaubliScanning(object):
 		# return all_close(pose_goal, curret_pose, 0.01)
 
 	def plan_cartesian_path(self, scale=1):
+		print ("plan cartersian")
 		group = self.move_group
 		waypoints = []
 
 		wpose = group.get_current_pose().pose
 		# wpose.position.z -= scale * 0.1  # First move up (z)
-		wpose.position.y += scale * 1.5  # and sideways (y)
-		waypoints.append(copy.deepcopy(wpose))
+		# wpose.position.y += scale * 1.5  # and sideways (y)
+		# waypoints.append(copy.deepcopy(wpose))1`1
 
 		# wpose.position.x += scale * 0.1  # Second move forward/backwards in (x)
 		# waypoints.append(copy.deepcopy(wpose))
-
-		# wpose.position.y -= scale * 0.1  # Third move sideways (y)
-		# waypoints.append(copy.deepcopy(wpose))
+		for i in range(2):
+			#wpose.position.x += scale * 0.1 
+			#wpose.position.z += scale * 0.1 
+			wpose.position.z += scale * 0.05
+			waypoints.append(copy.deepcopy(wpose))
+			print("waypoints ", waypoints[i])
 
 		# We want the Cartesian path to be interpolated at a resolution of 1 cm
 		# which is why we will specify 0.01 as the eef_step in Cartesian
@@ -216,15 +205,15 @@ class StaubliScanning(object):
 
 def main():
 	staubli_client = StaubliScanning()
-	ori = [0, 0, 0, 0, 0, 0]
-	second = [0, 0, pi/2 ,0 ,0, 0]
-	staubli_client.go_to_joint_state()
+	#staubli_client.go_to_joint_state()
 	#staubli_client.go_to_joint_state(second)
-	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	# staubli_client.display_trajectory(cartesian_plan)
-	# staubli_client.execute_plan(cartesian_plan)
+	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
+	staubli_client.display_trajectory(cartesian_plan)
+	staubli_client.execute_plan(cartesian_plan)
 	# print "=========cartesian done========="
 	# rospy.sleep(2) 
+	#plan , faction = staubli_client.plan_cartesian_path()
+	#staubli_client.execute_plan(plan)
 	staubli_client.find_curr_pose()
 	#print"=========go to pose goal========="
 if __name__ == '__main__':
