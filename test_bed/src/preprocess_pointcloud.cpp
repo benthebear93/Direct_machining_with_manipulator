@@ -1,24 +1,21 @@
-#include <ros/ros.h>
-#include <sensor_msgs/PointCloud2.h>
-#include <pcl/conversions.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
-#include <pcl_conversions/pcl_conversions.h>
-#include <pcl/io/pcd_io.h>
-#include <iostream>
-#include <pcl/filters/passthrough.h>
-#include <pcl/point_types.h>
-#include <pcl/point_cloud.h>
-#include <typeinfo> 
+#include "preprocess_pointcloud.h"
+using namespace std;
 //ros::Publisher pub;
-bool flag_save =0;
 typedef pcl::PointCloud<pcl::PointXYZRGB> point_cloud_t;
 // typedef pcl::PointCloud<pcl::PointXYZRGB> Cloud;
 
-void cloud_cd(const sensor_msgs::PointCloud2 msg){
+PCprocess::PCprocess()
+{
+  flag_save = 0;
+  std::cout << "point cloud process start" << std::endl;
+  sub_ = n_.subscribe("/camera/depth_registered/points", 1 , &PCprocess::cloud_cd, this);
+}
+PCprocess::~PCprocess(){
+
+}
+void PCprocess::cloud_cd(const sensor_msgs::PointCloud2 msg){
     pcl::PCLPointCloud2 pcl_pc; //pcl point cloud
     pcl_conversions::toPCL(msg, pcl_pc); // sensor msg to pcl
-
 
     // sensor_msgs::PointCloud2 ros_output;
     // pcl::toPCLPointCloud2(*output_ptr, pcl_pc);
@@ -29,19 +26,31 @@ void cloud_cd(const sensor_msgs::PointCloud2 msg){
       flag_save = 1;
       std::cout << "saved" << std::endl;
     }
-    //pub.publish(ros_output);
+}
+
+void PCprocess::do_passthrough(const pcl::PointCloud<pcl::PointXYZRGB>& src, pcl::PointCloud<pcl::PointXYZRGB>& dst){
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr ptr_filtered (new pcl::PointCloud<pcl::PointXYZRGB>);
+  pcl::PassThrough<pcl::PointXYZRGB> ptfilter;
+
+  *ptr_filtered = src;
+
+  ptfilter.setInputCloud(ptr_filtered);
+  ptfilter.setFilterFieldName("z"); 
+  ptfilter.setFilterLimits(0.001, 0.1); //min. max
+  ptfilter.setFilterLimitsNegative(false); //option 
+  ptfilter.filter(*ptr_filtered);
+  dst = *ptr_filtered;
+  // pass.setInputCloud (cloud);
+  // pass.setFilterFieldName ("z");
+  // pass.setFilterLimits (0.03, 0.04);
+  // pass.filter (*cloud_filtered);
+
 }
 
 int main(int argc, char **argv){
   std::cout << "start!"<< std::endl;
-// Initialize ROS
-  ros::init (argc, argv, "my_pcl_tutorial");
-  ros::NodeHandle nh;
-
-  // Create a ROS subscriber for the input point cloud
-  ros::Subscriber sub = nh.subscribe ("/camera/depth_registered/points", 1, cloud_cd);
-  //std::cout << "saved!"<< std::endl;
-  //pub = nh.advertise<sensor_msgs::PointCloud2>("/filter_pc", 1);
-  // Spin
+  ros::init (argc, argv, "pc_process");
+  PCprocess wp_object;
   ros::spin ();
+  return 0;
 }

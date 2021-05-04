@@ -10,6 +10,7 @@ find_package(roslaunch)
 
 catkin_package()
 include_directories(include ${catkin_INCLUDE_DIRS})
+
 add_executable(preprocess_pointcloud src/preprocess_pointcloud.cpp)
 target_link_libraries(preprocess_pointcloud ${catkin_LIBRARIES})
 add_dependencies(preprocess_pointcloud preprocess_pointcloud)
