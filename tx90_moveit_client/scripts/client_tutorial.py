@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 
 import sys
 import copy
@@ -49,7 +49,7 @@ class StaubliScanning(object):
 
 		#init moveit_commander 
 		moveit_commander.roscpp_initialize(sys.argv)
-		rospy.init_node('mvoe_gour_python_interface', anonymous=True)
+		rospy.init_node('move_group_python_interface', anonymous=True)
 
 		#init RobotCommander object
 		self.robot = moveit_commander.RobotCommander()
@@ -81,6 +81,9 @@ class StaubliScanning(object):
 		#print self.robot.get_current_state()
 		#print ""
 		## END_SUB_TUTORIAL
+
+	# def depthcam_pose(self):
+
 
 	def find_curr_pose(self):
 		current_pose = self.move_group.get_current_pose().pose
@@ -127,9 +130,9 @@ class StaubliScanning(object):
 		## end-effector:
 		pose_goal = geometry_msgs.msg.Pose()
 		pose_goal.orientation.w = 1.0
-		pose_goal.position.x = 0.4
-		pose_goal.position.y = 0.0
-		pose_goal.position.z = 0.75
+		pose_goal.position.x = -0.071
+		pose_goal.position.y = 0.173
+		pose_goal.position.z = 0.515
 
 		move_group.set_pose_target(pose_goal)
 
@@ -176,7 +179,7 @@ class StaubliScanning(object):
 
 		# wpose.position.x += scale * 0.1  # Second move forward/backwards in (x)
 		# waypoints.append(copy.deepcopy(wpose))
-		for i in range(2):
+		for i in range(5):
 			#wpose.position.x += scale * 0.1 
 			#wpose.position.z += scale * 0.1 
 			wpose.position.z += scale * 0.05
@@ -206,11 +209,12 @@ class StaubliScanning(object):
 
 def main():
 	staubli_client = StaubliScanning()
-	#staubli_client.go_to_joint_state()
+	# staubli_client.go_to_pose_goal()
+	# staubli_client.go_to_joint_state()
 	#staubli_client.go_to_joint_state(second)
-	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	staubli_client.display_trajectory(cartesian_plan)
-	staubli_client.execute_plan(cartesian_plan)
+	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
+	# staubli_client.display_trajectory(cartesian_plan)
+	# staubli_client.execute_plan(cartesian_plan)
 	# print "=========cartesian done========="
 	# rospy.sleep(2) 
 	#plan , faction = staubli_client.plan_cartesian_path()
@@ -218,4 +222,11 @@ def main():
 	staubli_client.find_curr_pose()
 	#print"=========go to pose goal========="
 if __name__ == '__main__':
-	main()
+	staubli_client = StaubliScanning()
+	staubli_client.go_to_joint_state()
+	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
+	staubli_client.display_trajectory(cartesian_plan)
+	staubli_client.execute_plan(cartesian_plan)
+	# staubli_client.go_to_pose_goal()
+	staubli_client.find_curr_pose()
+	#main()

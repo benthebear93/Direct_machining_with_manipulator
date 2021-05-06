@@ -22,7 +22,7 @@ public:
 	PCprocess();
 	~PCprocess();
 	void cloud_cd(const sensor_msgs::PointCloud2 msg);
-	void do_passthrough(const pcl::PointCloud<pcl::PointXYZRGB>& src, pcl::PointCloud<pcl::PointXYZRGB>& dst);
+	// void do_passthrough(const pcl::PointCloud<pcl::PointXYZRGB>& src, pcl::PointCloud<pcl::PointXYZRGB>& dst);
 	void read_pcd();
 private:
 	int argc;

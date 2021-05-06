@@ -26,6 +26,8 @@
       <arg name="paused" value="$(arg paused)"/>
     </include>
   </group>
+
+
   <!-- send robot URDF to ROS param server,
        and spawn robot in Gazebo, along with necessary ROS nodes -->
   <include file="$(find staubli_tx90_gazebo)/launch/spawn_tx90.launch"/>
