@@ -6,16 +6,15 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_commander
   rospy
   roscpp
+  tf
 )
 
-catkin_package(INCLUDE_DIRS CATKIN_DEPENDS roscpp pcl_conversions pcl_ros)
+catkin_package(INCLUDE_DIRS CATKIN_DEPENDS roscpp tf)
 
 find_package(roslaunch)
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-
-add_executable(${PROJECT_NAME}_node src/tx90_moveit_client_node.cpp)
-target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} )
-add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
+add_executable(tool_tf_listener src/tool_tf_listener.cpp)
+target_link_libraries(tool_tf_listener ${catkin_LIBRARIES})
+add_dependencies(tool_tf_listener tool_tf_listener)
