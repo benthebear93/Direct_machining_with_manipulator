@@ -21,7 +21,7 @@ void PCprocess::read_pcd(){
   if (pcl::io::loadPCDFile<pcl::PointXYZRGB> ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/test_file.pcd", *cloud) == -1) //* load the file
   {
     PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
-  }
+
   std::cout << "Loaded "
             << cloud->width * cloud->height
             << " data points from test_file.pcd with the following fields: "
@@ -30,6 +30,7 @@ void PCprocess::read_pcd(){
   //   std::cout << "    " << point.x
   //             << " "    << point.y
   //             << " "    << point.z << std::endl;
+  }
 }
 
 void PCprocess::cloud_cd(const sensor_msgs::PointCloud2 msg){

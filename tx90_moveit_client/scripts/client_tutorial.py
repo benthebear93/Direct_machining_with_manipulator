@@ -130,9 +130,9 @@ class StaubliScanning(object):
 		## end-effector:
 		pose_goal = geometry_msgs.msg.Pose()
 		pose_goal.orientation.w = 1.0
-		pose_goal.position.x = -0.071
-		pose_goal.position.y = 0.173
-		pose_goal.position.z = 0.515
+		pose_goal.position.x = 0.231156
+		pose_goal.position.y = -0.049475
+		pose_goal.position.z = 1.33092
 
 		move_group.set_pose_target(pose_goal)
 
@@ -228,5 +228,5 @@ if __name__ == '__main__':
 	staubli_client.display_trajectory(cartesian_plan)
 	staubli_client.execute_plan(cartesian_plan)
 	# staubli_client.go_to_pose_goal()
-	staubli_client.find_curr_pose()
+	# staubli_client.find_curr_pose()
 	#main()

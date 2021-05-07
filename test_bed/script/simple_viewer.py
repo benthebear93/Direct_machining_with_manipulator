@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 import pptk
 import numpy as np
 from plyfile import PlyData, PlyElement
