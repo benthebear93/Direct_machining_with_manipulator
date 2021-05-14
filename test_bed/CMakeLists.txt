@@ -2,9 +2,19 @@ cmake_minimum_required(VERSION 2.8.3)
 
 project(test_bed)
 
-find_package(catkin REQUIRED COMPONENTS roslaunch roscpp pcl_conversions pcl_ros std_msgs sensor_msgs)
+find_package(catkin REQUIRED COMPONENTS 
+	roslaunch 
+	message_generation 
+	roscpp pcl_conversions 
+	pcl_ros std_msgs 
+	sensor_msgs
+)
 
-catkin_package(INCLUDE_DIRS CATKIN_DEPENDS roscpp pcl_conversions pcl_ros)
+catkin_package(INCLUDE_DIRS CATKIN_DEPENDS 
+	roscpp 
+	pcl_conversions 
+	pcl_ros
+)
 
 find_package(roslaunch)
 
