@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_commander
   rospy
   roscpp
+  geometry_msgs
   tf
 )
 

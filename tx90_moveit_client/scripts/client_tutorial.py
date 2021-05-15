@@ -185,7 +185,7 @@ class StaubliScanning(object):
 		for i in range(5):
 			#wpose.position.x += scale * 0.1 
 			#wpose.position.z += scale * 0.1 
-			wpose.position.x += scale * 0.02
+			wpose.position.z += scale * 0.04
 			waypoints.append(copy.deepcopy(wpose))
 			print("waypoints ", waypoints[i])
 
@@ -227,9 +227,9 @@ def main():
 if __name__ == '__main__':
 	staubli_client = StaubliScanning()
 	staubli_client.go_to_joint_state()
-	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	# staubli_client.display_trajectory(cartesian_plan)
-	# staubli_client.execute_plan(cartesian_plan)
-	# # staubli_client.go_to_pose_goal()
+	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
+	staubli_client.display_trajectory(cartesian_plan)
+	staubli_client.execute_plan(cartesian_plan)
+	# staubli_client.go_to_pose_goal()
 	# staubli_client.find_curr_pose()
 	#main()

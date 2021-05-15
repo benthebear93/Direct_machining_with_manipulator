@@ -60,8 +60,8 @@ class Pc2Img():
                 self._send_z = ((distance-140)/1500.0 + self._min_z)
                 cv2.circle(img, (x, y), 10, (255, 0, 0), -1)
             pose_goal = Pose()
-            pose_goal.position.x = self._send_x
-            pose_goal.position.y = self._send_y
+            pose_goal.position.x = self._send_y
+            pose_goal.position.y = self._send_x
             pose_goal.position.z = self._send_z
             self.drill_point_pub.publish(pose_goal)
             cv2.imshow("Pc2Img", img)
