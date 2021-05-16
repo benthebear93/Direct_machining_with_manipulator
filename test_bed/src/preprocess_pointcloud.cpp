@@ -43,7 +43,7 @@ void PCprocess::cloud_cd(const sensor_msgs::PointCloud2 msg){
     // pcl_conversions::fromPCL(pcl_pc, ros_output);
     if(flag_save ==0){
       std::cout << "saveing.."<< std::endl;
-      pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/origianl_pc.pcd", *temp_cloud);
+      pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/ori_pc.pcd", *temp_cloud);
       flag_save = 1;
       std::cout << "saved" << std::endl;
     }
@@ -56,34 +56,15 @@ void PCprocess::cloud_cd(const sensor_msgs::PointCloud2 msg){
 
     ptfilter.setInputCloud(ptr_filtered);
     ptfilter.setFilterFieldName("z"); 
-    ptfilter.setFilterLimits(0.51, 0.64); //min. max
-    ptfilter.setFilterLimitsNegative(true); //option 
+    ptfilter.setFilterLimits(0.497, 0.564); //min. max
+    ptfilter.setFilterLimitsNegative(false); //option 
     ptfilter.filter(*ptr_filtered);
     pc_filtered = *ptr_filtered;
     std::cout << "filtered saving..." << std::endl;
-    pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/passfilter_pc.pcd", pc_filtered);
+    pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pc.pcd", pc_filtered);
     std::cout << "filtered saved" << std::endl;
 
 }
-
-// void PCprocess::do_passthrough(const pcl::PointCloud<pcl::PointXYZ>& src, pcl::PointCloud<pcl::PointXYZ>& dst){
-//   pcl::PointCloud<pcl::PointXYZ>::Ptr ptr_filtered (new pcl::PointCloud<pcl::PointXYZ>);
-//   pcl::PassThrough<pcl::PointXYZ> ptfilter;
-
-//   *ptr_filtered = src;
-
-//   ptfilter.setInputCloud(ptr_filtered);
-//   ptfilter.setFilterFieldName("z"); 
-//   ptfilter.setFilterLimits(0.001, 0.1); //min. max
-//   ptfilter.setFilterLimitsNegative(false); //option 
-//   ptfilter.filter(*ptr_filtered);
-//   dst = *ptr_filtered;
-//   // pass.setInputCloud (cloud);
-//   // pass.setFilterFieldName ("z");
-//   // pass.setFilterLimits (0.03, 0.04);
-//   // pass.filter (*cloud_filtered);
-
-// }
 
 int main(int argc, char **argv){
   std::cout << "start!"<< std::endl;

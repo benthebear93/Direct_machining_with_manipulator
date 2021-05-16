@@ -25,6 +25,10 @@ add_executable(preprocess_pointcloud src/preprocess_pointcloud.cpp)
 target_link_libraries(preprocess_pointcloud ${catkin_LIBRARIES})
 add_dependencies(preprocess_pointcloud preprocess_pointcloud)
 
+add_executable(find_normal src/find_normal.cpp)
+target_link_libraries(find_normal ${catkin_LIBRARIES})
+add_dependencies(find_normal find_normal)
+
 foreach(dir config launch meshes urdf)
 	install(DIRECTORY ${dir}/
 		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})

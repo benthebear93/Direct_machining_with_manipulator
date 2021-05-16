@@ -13,7 +13,7 @@ import sys
 import rospy
 from geometry_msgs.msg import Pose
 import tf
-file_path = '/home/benlee/Desktop/git/point_cloud_practice/pcd_files/data'
+file_path = '/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data'
 
 class Pc2Img():
     def __init__(self):
@@ -60,15 +60,15 @@ class Pc2Img():
                 self._send_z = ((distance-140)/1500.0 + self._min_z)
                 cv2.circle(img, (x, y), 10, (255, 0, 0), -1)
             pose_goal = Pose()
-            pose_goal.position.x = self._send_y
-            pose_goal.position.y = self._send_x
+            pose_goal.position.x = self._send_x
+            pose_goal.position.y = self._send_y
             pose_goal.position.z = self._send_z
             self.drill_point_pub.publish(pose_goal)
             cv2.imshow("Pc2Img", img)
             
     def read_pcd(self):
         # print("read pcd")
-        profile_pcd = pcl.load(file_path + '/passfilter_pc.pcd')
+        profile_pcd = pcl.load(file_path + '/pass_pc.pcd')
         self._pc_data = profile_pcd
         self._pc_size = profile_pcd.size
 
@@ -177,6 +177,7 @@ class Pc2Img():
         cv2.namedWindow('Pc2Img')
         cv2.setMouseCallback('Pc2Img', self.mouse_event_handle, param = [img])
         while True:
+            cv2.circle(img, (10, 50), 10, (255, 0, 0), -1)
             cv2.imshow('Pc2Img', img)
             if cv2.waitKey(20) & 0xFF == 27:
                 break   
