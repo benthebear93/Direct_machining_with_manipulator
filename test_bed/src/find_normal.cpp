@@ -11,12 +11,11 @@
 #include <ctime>
 #include <math.h>
 
-int main (int argc, char** argv)
+void find_normal()
 {
-
   // *.PCD 파일 읽기 (https://raw.githubusercontent.com/adioshun/gitBook_Tutorial_PCL/master/Intermediate/sample/cloud_cluster_0.pcd)
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);    
-  pcl::io::loadPCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pc.pcd", *cloud);
+  pcl::io::loadPCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pc_rgb.pcd", *cloud);
 
   // 시각적 확인을 위해 색상 통일 (255,255,255)
   for (size_t i = 0; i < cloud->points.size(); ++i){
@@ -29,12 +28,10 @@ int main (int argc, char** argv)
   pcl::KdTreeFLANN<pcl::PointXYZRGB> kdtree;
   kdtree.setInputCloud (cloud);    //입력 
 
-     //기준점(searchPoint) 설정 방법 #1(x,y,z 좌표 지정)
      pcl::PointXYZRGB searchPoint;
-     searchPoint.x = 0.026256f;
-     searchPoint.y = -1.464739f;
-     searchPoint.z = 0.929567f;
-  //기준점(searchPoint) 설정 방법 #2(3000번째 포인트)
+     searchPoint.x = 0.059;
+     searchPoint.y = 0.094;
+     searchPoint.z = 0.512;
   // pcl::PointXYZRGB searchPoint = cloud->points[3000]; 
 
   //기준점 좌표 출력 
@@ -82,7 +79,14 @@ int main (int argc, char** argv)
   std::cout << "Radius 0.02 nearest neighbors: " << pointIdxRadiusSearch.size() << std::endl;
 
   // 생성된 포인트클라우드 저장 
-  pcl::io::savePCDFile<pcl::PointXYZRGB>("Kdtree_AllinOne.pcd", *cloud);
+  pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/Kdtree_AllinOne.pcd", *cloud);
+}
 
+int main (int argc, char** argv)
+{
+  find_normal();
+  std::cout <<" running " << std::endl;
+  ros::init(argc, argv, "find_normal");
+  ros::spin();
   return 0;
 }

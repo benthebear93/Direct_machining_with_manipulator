@@ -36,7 +36,7 @@ void PCprocess::read_pcd(){
 void PCprocess::cloud_cd(const sensor_msgs::PointCloud2 msg){
     pcl::PCLPointCloud2 pcl_pc; //pcl point cloud
     pcl_conversions::toPCL(msg, pcl_pc); // sensor msg to pcl
-    pcl::PointCloud<pcl::PointXYZ>::Ptr temp_cloud(new pcl::PointCloud<pcl::PointXYZ>);//pointcloud2
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr temp_cloud(new pcl::PointCloud<pcl::PointXYZRGB>);//pointcloud2
     pcl::fromPCLPointCloud2(pcl_pc,*temp_cloud); //pcl to pointcloud2
     // sensor_msgs::PointCloud2 ros_output;
     // pcl::toPCLPointCloud2(*output_ptr, pcl_pc);
@@ -48,9 +48,9 @@ void PCprocess::cloud_cd(const sensor_msgs::PointCloud2 msg){
       std::cout << "saved" << std::endl;
     }
     //do_passthrough(*temp_cloud, ptfilter);
-    pcl::PointCloud<pcl::PointXYZ> pc_filtered;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr ptr_filtered (new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::PassThrough<pcl::PointXYZ> ptfilter;
+    pcl::PointCloud<pcl::PointXYZRGB> pc_filtered;
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr ptr_filtered (new pcl::PointCloud<pcl::PointXYZRGB>);
+    pcl::PassThrough<pcl::PointXYZRGB> ptfilter;
 
     *ptr_filtered = *temp_cloud;
 
@@ -61,7 +61,7 @@ void PCprocess::cloud_cd(const sensor_msgs::PointCloud2 msg){
     ptfilter.filter(*ptr_filtered);
     pc_filtered = *ptr_filtered;
     std::cout << "filtered saving..." << std::endl;
-    pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pc.pcd", pc_filtered);
+    pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pc_rgb.pcd", pc_filtered);
     std::cout << "filtered saved" << std::endl;
 
 }
