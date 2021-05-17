@@ -91,6 +91,8 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
 		ros::Duration(1.0).sleep();
     }
 	visualization_msgs::Marker marker;
+	visualization_msgs::Marker normal_v;
+
 	marker.header.frame_id = "/world";
 	marker.header.stamp = ros::Time::now();
     marker.ns = "basic_shapes";
@@ -117,8 +119,36 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
     marker.color.g = 1.0f;
     marker.color.b = 0.0f;
     marker.color.a = 1.0;
+
+    normal_v.header.frame_id = "/world";
+	normal_v.header.stamp = ros::Time::now();
+    normal_v.ns = "basic_shapes";
+    normal_v.id = 1;
+    normal_v.type = visualization_msgs::Marker::SPHERE;
+    normal_v.action = visualization_msgs::Marker::ADD;
+    normal_v.pose.position.x = w2c_x + 0.094 - 0.00004/50; //y = 0.094
+    normal_v.pose.position.y = w2c_y + 0.059 + 0.608582/50; //x = 0.059
+    normal_v.pose.position.z = w2c_z - 0.512 + 0.793491/50; //z = 0.512
+    std::cout<<"x : " << normal_v.pose.position.x << " y : " <<normal_v.pose.position.y << 
+    " z : " << normal_v.pose.position.z <<std::endl;
+    normal_v.pose.orientation.x = 0.0;
+    normal_v.pose.orientation.y = 0.0;
+    normal_v.pose.orientation.z = 0.0;
+    normal_v.pose.orientation.w = 1.0;
+
+    // Set the scale of the marker -- 1x1x1 here means 1m on a side
+    normal_v.scale.x = 0.01;
+    normal_v.scale.y = 0.01;
+    normal_v.scale.z = 0.01;
+
+    // Set the color -- be sure to set alpha to something non-zero!
+    normal_v.color.r = 0.0f;
+    normal_v.color.g = 1.0f;
+    normal_v.color.b = 0.0f;
+    normal_v.color.a = 1.0;
     // std::cout <<"setting marker" <<std::endl;
-    marker.lifetime = ros::Duration();
+    normal_v.lifetime = ros::Duration();
+    marker_pub_.publish(normal_v);
     marker_pub_.publish(marker);
 }
 
