@@ -1,6 +1,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/io/pcd_io.h>
+#include <pcl/features/normal_3d.h>
 
 #include <ros/ros.h>
 #include <tf/transform_listener.h>
@@ -16,7 +17,8 @@ void find_normal()
   // *.PCD 파일 읽기 (https://raw.githubusercontent.com/adioshun/gitBook_Tutorial_PCL/master/Intermediate/sample/cloud_cluster_0.pcd)
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);    
   pcl::io::loadPCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pc_rgb.pcd", *cloud);
-
+  std::cout << "input cloud size: " << cloud->points.size() << std::endl;
+  
   // 시각적 확인을 위해 색상 통일 (255,255,255)
   for (size_t i = 0; i < cloud->points.size(); ++i){
   cloud->points[i].r = 255;
@@ -39,23 +41,23 @@ void find_normal()
 
 
   //기준점에서 가까운 순서중 K번째까지의 포인트 탐색 (K nearest neighbor search)
-  int K = 10;   // 탐색할 포인트 수 설정 
-  std::vector<int> pointIdxNKNSearch(K);
-  std::vector<float> pointNKNSquaredDistance(K);
+  // int K = 10;   // 탐색할 포인트 수 설정 
+  // std::vector<int> pointIdxNKNSearch(K);
+  // std::vector<float> pointNKNSquaredDistance(K);
 
-  if ( kdtree.nearestKSearch (searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0 )
-  {
-    //시각적 확인을 위하여 색상 변경 (0,255,0)
-    for (size_t i = 0; i < pointIdxNKNSearch.size (); ++i)
-    {
-      cloud->points[pointIdxNKNSearch[i]].r = 0;
-      cloud->points[pointIdxNKNSearch[i]].g = 255;
-      cloud->points[pointIdxNKNSearch[i]].b = 0;
-    }
-  }
+  // if ( kdtree.nearestKSearch (searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0 )
+  // {
+  //   //시각적 확인을 위하여 색상 변경 (0,255,0)
+  //   for (size_t i = 0; i < pointIdxNKNSearch.size (); ++i)
+  //   {
+  //     cloud->points[pointIdxNKNSearch[i]].r = 0;
+  //     cloud->points[pointIdxNKNSearch[i]].g = 255;
+  //     cloud->points[pointIdxNKNSearch[i]].b = 0;
+  //   }
+  // }
 
-  // 탐색된 점의 수 출력 
-  std::cout << "K = 10 ：" << pointIdxNKNSearch.size() << std::endl;
+  // // 탐색된 점의 수 출력 
+  // std::cout << "K = 10 ：" << pointIdxNKNSearch.size() << std::endl;
 
 
   // 기준점에서 지정된 반경내 포인트 탐색 (Neighbor search within radius)
@@ -77,7 +79,15 @@ void find_normal()
 
   // 탐색된 점의 수 출력 
   std::cout << "Radius 0.02 nearest neighbors: " << pointIdxRadiusSearch.size() << std::endl;
-
+  float curvature;
+  Eigen::Vector4f plane_parameters; 
+  computePointNormal(*cloud,pointIdxRadiusSearch,plane_parameters,curvature); 
+  std::cout << "plane param : \n"<< plane_parameters << std::endl;
+  std::cout << "curvature : "<< curvature << std::endl;
+  pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>());
+  pcl::PointCloud<pcl::Normal> sourceNormals;
+  sourceNormals.push_back(pcl::Normal(plane_parameters[0], plane_parameters[1], plane_parameters[2]));
+  // 생성된 포인트클라우드 저장 
   // 생성된 포인트클라우드 저장 
   pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/Kdtree_AllinOne.pcd", *cloud);
 }

@@ -29,6 +29,10 @@ add_executable(find_normal src/find_normal.cpp)
 target_link_libraries(find_normal ${catkin_LIBRARIES})
 add_dependencies(find_normal find_normal)
 
+add_executable(normal_visualize src/normal_visualize.cpp)
+target_link_libraries(normal_visualize ${catkin_LIBRARIES})
+add_dependencies(normal_visualize normal_visualize)
+
 foreach(dir config launch meshes urdf)
 	install(DIRECTORY ${dir}/
 		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
