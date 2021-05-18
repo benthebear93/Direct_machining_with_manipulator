@@ -5,6 +5,7 @@
 #include "geometry_msgs/Pose.h"
 #include <iostream>
 
+
 class TFlisten
 {
 public:
@@ -22,6 +23,7 @@ private:
 	float dp_y = 0;
 	float dp_z = 0;
 	float w2c_x,w2c_y,w2c_z;
+	const float norm_const = 25;
 };
 
 TFlisten::TFlisten()
@@ -99,9 +101,9 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
     marker.id = 0;
     marker.type = visualization_msgs::Marker::SPHERE;
     marker.action = visualization_msgs::Marker::ADD;
-    marker.pose.position.x = w2c_x + 0.094; //y = 0.094
-    marker.pose.position.y = w2c_y + 0.059; //x = 0.059
-    marker.pose.position.z = w2c_z - 0.512; //z = 0.512
+    marker.pose.position.x = w2c_x + 0.098; //y = 0.094
+    marker.pose.position.y = w2c_y - 0.006; //x = 0.059
+    marker.pose.position.z = w2c_z - 0.503; //z = 0.512
     std::cout<<"x : " << marker.pose.position.x << " y : " <<marker.pose.position.y << 
     " z : " << marker.pose.position.z <<std::endl;
     marker.pose.orientation.x = 0.0;
@@ -126,9 +128,9 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
     normal_v.id = 1;
     normal_v.type = visualization_msgs::Marker::SPHERE;
     normal_v.action = visualization_msgs::Marker::ADD;
-    normal_v.pose.position.x = w2c_x + 0.094 - 0.00004/50; //y = 0.094
-    normal_v.pose.position.y = w2c_y + 0.059 + 0.608582/50; //x = 0.059
-    normal_v.pose.position.z = w2c_z - 0.512 + 0.793491/50; //z = 0.512
+    normal_v.pose.position.x = w2c_x + 0.098  + 0.00052/norm_const; //y = 0.094
+    normal_v.pose.position.y = w2c_y - 0.006  - 0.37885/norm_const; //x = 0.059
+    normal_v.pose.position.z = w2c_z - 0.503  + 0.92545/norm_const; //z = 0.512
     std::cout<<"x : " << normal_v.pose.position.x << " y : " <<normal_v.pose.position.y << 
     " z : " << normal_v.pose.position.z <<std::endl;
     normal_v.pose.orientation.x = 0.0;

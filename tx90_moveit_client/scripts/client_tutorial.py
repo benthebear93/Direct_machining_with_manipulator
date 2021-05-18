@@ -129,9 +129,9 @@ class StaubliScanning(object):
 		## We can plan a motion for this group to a desired pose for the
 		## end-effector:
 		pose_goal = geometry_msgs.msg.Pose()
-		pose_goal.position.x = 0.68017
-		pose_goal.position.y = 0.03252
-		pose_goal.position.z = 1.35986-0.451
+		pose_goal.position.x = 0.77422
+		pose_goal.position.y = 0.10369
+		pose_goal.position.z = 0.91385
 		pose_goal.orientation.x = 0
 		pose_goal.orientation.y = 0.70714
 		pose_goal.orientation.z = 0
@@ -213,11 +213,10 @@ class StaubliScanning(object):
 def main():
 	staubli_client = StaubliScanning()
 	# staubli_client.go_to_pose_goal()
-	# staubli_client.go_to_joint_state()
-	#staubli_client.go_to_joint_state(second)
-	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	# staubli_client.display_trajectory(cartesian_plan)
-	# staubli_client.execute_plan(cartesian_plan)
+	staubli_client.go_to_joint_state()
+	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
+	staubli_client.display_trajectory(cartesian_plan)
+	staubli_client.execute_plan(cartesian_plan)
 	# print "=========cartesian done========="
 	# rospy.sleep(2) 
 	#plan , faction = staubli_client.plan_cartesian_path()
@@ -230,6 +229,9 @@ if __name__ == '__main__':
 	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
 	staubli_client.display_trajectory(cartesian_plan)
 	staubli_client.execute_plan(cartesian_plan)
+	
+	#######
+
 	# staubli_client.go_to_pose_goal()
 	# staubli_client.find_curr_pose()
 	#main()
