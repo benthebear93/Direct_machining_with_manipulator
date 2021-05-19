@@ -10,13 +10,27 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
-#include <math.h>
+#include <cmath>
+#define PI 3.14159265
+double rad2deg(double radian);
+double deg2rad(double degree);
+double rad2deg(double radian)
+{
+    return radian*180/PI;
+}
+double deg2rad(double degree)
+{
+    return degree*PI/180;
+}
 
 void find_normal()
 {
   // *.PCD 파일 읽기 (https://raw.githubusercontent.com/adioshun/gitBook_Tutorial_PCL/master/Intermediate/sample/cloud_cluster_0.pcd)
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);    
   pcl::io::loadPCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pc_rgb.pcd", *cloud);
+  std::cout << "                 " << std::endl;
+  std::cout << "finding normal......" << std::endl;
+  std::cout << "                 " << std::endl;
   std::cout << "input cloud size: " << cloud->points.size() << std::endl;
   
   // 시각적 확인을 위해 색상 통일 (255,255,255)
@@ -57,7 +71,7 @@ void find_normal()
   }
 
   // // 탐색된 점의 수 출력 
-  std::cout << "K = 100 ：" << pointIdxNKNSearch.size() << std::endl;
+  std::cout << "K = 1000 ：" << pointIdxNKNSearch.size() << std::endl;
 
 
   // // 기준점에서 지정된 반경내 포인트 탐색 (Neighbor search within radius)
@@ -87,15 +101,28 @@ void find_normal()
   pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>());
   pcl::PointCloud<pcl::Normal> sourceNormals;
   sourceNormals.push_back(pcl::Normal(plane_parameters[0], plane_parameters[1], plane_parameters[2]));
-  // 생성된 포인트클라우드 저장 
-  // 생성된 포인트클라우드 저장 
   pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/Kdtree_test_KNN.pcd", *cloud);
+
+  double pitch_deg = atan2(-0.00052, 0.92545);
+  double roll_deg  = atan2(0.37885, 0.92545);
+  double yaw_deg   = atan2(-0.00052, 0.37885);
+  std::cout <<"pitch_deg : "<< rad2deg(pitch_deg) << std::endl;
+  std::cout <<"roll_deg  : "<< rad2deg(roll_deg)   << std::endl;
+  std::cout <<"yaw_deg   : "<< rad2deg(yaw_deg)   << std::endl;
+  tf::Quaternion normal_q;
+  normal_q.setRPY(pitch_deg, roll_deg, yaw_deg);
+  normal_q = normal_q.normalize();
+  std::cout << normal_q.x() << std::endl;
+  std::cout << normal_q.y() << std::endl;
+  std::cout << normal_q.z() << std::endl;
+  std::cout << normal_q.w() << std::endl;
+
+
 }
 
 int main (int argc, char** argv)
 {
   find_normal();
-  std::cout <<" running " << std::endl;
   ros::init(argc, argv, "find_normal");
   ros::spin();
   return 0;
