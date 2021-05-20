@@ -44,16 +44,19 @@ class Pc2Img():
             
             distance =img[y,x,0]
             if(distance==0):
+                print("                                          ")
                 print("select point is empty search nearest point")
                 for i in range(-2, 3):
                     for j in range(-2, 3):
                         #print 'y+j', y+j,'x-j', x+i
                         distance = img[y+j,x-j,0]
             if(distance==0):
+                print("                                          ")
                 print("need to choose different point")
             else:
-                print distance
-                print (self._min_z)
+                print("                                          ")
+                #print distance
+               #print (self._min_z)
                 print 'x :', x*self._dis_two_point + self._min_x, 'y :', y*self._dis_two_point + self._min_y, 'z :', ((distance-140)/1500.0 + self._min_z)
                 self._send_x = x*self._dis_two_point + self._min_x
                 self._send_y = y*self._dis_two_point + self._min_y

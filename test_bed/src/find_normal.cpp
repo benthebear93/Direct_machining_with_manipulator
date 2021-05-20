@@ -71,51 +71,31 @@ void find_normal()
   }
 
   // // 탐색된 점의 수 출력 
-  std::cout << "K = 1000 ：" << pointIdxNKNSearch.size() << std::endl;
+  std::cout << "searched points ：" << pointIdxNKNSearch.size() << std::endl;
 
-
-  // // 기준점에서 지정된 반경내 포인트 탐색 (Neighbor search within radius)
-  // float radius = 0.02; //탐색할 반경 설정(Set the search radius)
-  // std::vector<int> pointIdxRadiusSearch;
-  // std::vector<float> pointRadiusSquaredDistance;
-
-  // if ( kdtree.radiusSearch (searchPoint, radius, pointIdxRadiusSearch, pointRadiusSquaredDistance) > 0 )
-  // {
-  //   //시각적 확인을 위하여 색상 변경 (0,0,255)
-  //   for (size_t i = 0; i < pointIdxRadiusSearch.size (); ++i)
-  //     for (size_t i = 0; i < pointIdxRadiusSearch.size(); ++i)
-  //       {
-  //       cloud->points[pointIdxRadiusSearch[i]].r = 0;
-  //       cloud->points[pointIdxRadiusSearch[i]].g = 0;
-  //       cloud->points[pointIdxRadiusSearch[i]].b = 255;
-  //       }
-  // }
-
-  // 탐색된 점의 수 출력 
-  // std::cout << "Radius 0.02 nearest neighbors: " << pointIdxRadiusSearch.size() << std::endl;
   float curvature;
   Eigen::Vector4f plane_parameters; 
   computePointNormal(*cloud,pointIdxNKNSearch,plane_parameters,curvature); 
   std::cout << "plane param : \n"<< plane_parameters << std::endl;
   std::cout << "curvature : "<< curvature << std::endl;
+  std::cout <<" "<<std::endl;
   pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>());
   pcl::PointCloud<pcl::Normal> sourceNormals;
   sourceNormals.push_back(pcl::Normal(plane_parameters[0], plane_parameters[1], plane_parameters[2]));
   pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/Kdtree_test_KNN.pcd", *cloud);
 
-  double pitch_deg = atan2(-0.00052, 0.92545);
-  double roll_deg  = atan2(0.37885, 0.92545);
-  double yaw_deg   = atan2(-0.00052, 0.37885);
-  std::cout <<"pitch_deg : "<< rad2deg(pitch_deg) << std::endl;
-  std::cout <<"roll_deg  : "<< rad2deg(roll_deg)   << std::endl;
-  std::cout <<"yaw_deg   : "<< rad2deg(yaw_deg)   << std::endl;
+  double roll_deg  = deg2rad(31.61866); // X --> Z가 되야함 
+  double pitch_deg = deg2rad(89.960435);// Y --> Y는 맞음
+  double yaw_deg   = deg2rad(0);        // Z --> X가 되야함
+  std::cout <<" "<<std::endl;
   tf::Quaternion normal_q;
-  normal_q.setRPY(pitch_deg, roll_deg, yaw_deg);
+
+  normal_q.setEuler(pitch_deg, yaw_deg, roll_deg); //Y X Z
   normal_q = normal_q.normalize();
-  std::cout << normal_q.x() << std::endl;
-  std::cout << normal_q.y() << std::endl;
-  std::cout << normal_q.z() << std::endl;
-  std::cout << normal_q.w() << std::endl;
+  std::cout << "x :" << normal_q.x() << std::endl;
+  std::cout << "y :" << normal_q.y() << std::endl;
+  std::cout << "z :" << normal_q.z() << std::endl;
+  std::cout << "w :" << normal_q.w() << std::endl;
 
 
 }
