@@ -37,12 +37,13 @@ TFlisten::~TFlisten(){
 
 void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
 {
+	std::cout <<"                     " << std::endl;
 	std::cout <<"listening drill point" << std::endl;
+	std::cout <<"                     " << std::endl;
 	dp_x = msg.position.x;
 	dp_y = msg.position.y;
 	dp_z = msg.position.z;
-	std::cout << dp_x << dp_y << dp_z <<std::endl;
-	std::cout << "dril_point_marker"<<std::endl;
+	//std::cout << dp_x << dp_y << dp_z <<std::endl;
 	uint32_t shape = visualization_msgs::Marker::ARROW;
 	tf::StampedTransform tool_tf; 
     tf::StampedTransform camera_tf;
@@ -104,7 +105,7 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
     marker.pose.position.x = w2c_x + 0.098; //y = 0.094
     marker.pose.position.y = w2c_y - 0.006; //x = 0.059
     marker.pose.position.z = w2c_z - 0.503; //z = 0.512
-    std::cout<<"x : " << marker.pose.position.x << " y : " <<marker.pose.position.y << 
+    std::cout<<"drill_p x : " << marker.pose.position.x << " y : " <<marker.pose.position.y << 
     " z : " << marker.pose.position.z <<std::endl;
     marker.pose.orientation.x = 0.0;
     marker.pose.orientation.y = 0.0;
@@ -131,7 +132,7 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
     normal_v.pose.position.x = w2c_x + 0.098  + 0.00052/norm_const; //y = 0.094
     normal_v.pose.position.y = w2c_y - 0.006  - 0.37885/norm_const; //x = 0.059
     normal_v.pose.position.z = w2c_z - 0.503  + 0.92545/norm_const; //z = 0.512
-    std::cout<<"x : " << normal_v.pose.position.x << " y : " <<normal_v.pose.position.y << 
+    std::cout<<"normal_p x : " << normal_v.pose.position.x << " y : " <<normal_v.pose.position.y << 
     " z : " << normal_v.pose.position.z <<std::endl;
     normal_v.pose.orientation.x = 0.0;
     normal_v.pose.orientation.y = 0.0;

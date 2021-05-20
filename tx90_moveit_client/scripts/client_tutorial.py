@@ -36,7 +36,7 @@ def all_close(goal, actual, tolerance):
 
 	return True
 
-def euler2quaternion(quaternion):
+def quaternion2euler(quaternion):
 	euler = tf.transformations.euler_from_quaternion(quaternion)
 	roll = euler[0]
 	pitch = euler[1]
@@ -93,7 +93,7 @@ class StaubliScanning(object):
 			current_pose.orientation.y,
 			current_pose.orientation.z,
 			current_pose.orientation.w)
-		euler2quaternion(quaternion)
+		quaternion2euler(quaternion)
 
 	def go_to_joint_state(self):
 		move_group = self.move_group
@@ -132,11 +132,11 @@ class StaubliScanning(object):
 		pose_goal.position.x = 0.778243
 		pose_goal.position.y = 0.011306
 		pose_goal.position.z = 0.943988
-		pose_goal.orientation.x = 0.0
-		pose_goal.orientation.y = 0.70714
-		pose_goal.orientation.z = 0.0
-		pose_goal.orientation.w = 0.70706
-
+		pose_goal.orientation.x = 0.192776
+		pose_goal.orientation.y = 0.6805459
+		pose_goal.orientation.z = 0.1925080
+		pose_goal.orientation.w = 0.6801728
+		
 		move_group.set_pose_target(pose_goal)
 
 		## Now, we call the planner to compute the plan and execute it.
@@ -227,13 +227,13 @@ if __name__ == '__main__':
 	staubli_client = StaubliScanning()
 	######
 
-	staubli_client.go_to_joint_state()
-	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	staubli_client.display_trajectory(cartesian_plan)
-	staubli_client.execute_plan(cartesian_plan)
+	# staubli_client.go_to_joint_state()
+	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
+	# staubli_client.display_trajectory(cartesian_plan)
+	# staubli_client.execute_plan(cartesian_plan)
 	
 	#######
 
-	# staubli_client.go_to_pose_goal()
-	# staubli_client.find_curr_pose()
+	staubli_client.go_to_pose_goal()
+	staubli_client.find_curr_pose()
 	#main()
