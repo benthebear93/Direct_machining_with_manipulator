@@ -39,6 +39,7 @@ void find_normal()
   cloud->points[i].g = 255;
   cloud->points[i].b = 255;
   }
+  pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/before_seg.pcd", *cloud);
 
   //KdTree 오브젝트 생성 
   pcl::KdTreeFLANN<pcl::PointXYZRGB> kdtree;
@@ -82,7 +83,7 @@ void find_normal()
   pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>());
   pcl::PointCloud<pcl::Normal> sourceNormals;
   sourceNormals.push_back(pcl::Normal(plane_parameters[0], plane_parameters[1], plane_parameters[2]));
-  pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/Kdtree_test_KNN.pcd", *cloud);
+  pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/after_seg.pcd", *cloud);
 
   double roll_deg  = deg2rad(31.61866); // X --> Z가 되야함 
   double pitch_deg = deg2rad(89.960435);// Y --> Y는 맞음
