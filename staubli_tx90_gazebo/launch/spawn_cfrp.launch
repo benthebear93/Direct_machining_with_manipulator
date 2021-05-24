@@ -15,14 +15,5 @@
               -R 0.0
               -P 0.0
               -Y 0.0" />
-
-<!--   <node pkg="tf" type="static_transform_publisher" 
-        name="cfrp" args="0 0 1 3.14 0 1.57 /world /my_tf 30"/> -->
-  <!-- convert joint states to TF transforms for rviz, etc -->
-<!--   <node name="cfrp_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
-    <param name="tf_prefix" value="CFRP"/>
-    <remap from="/joint_states" to="/cfrp/joint_states"/>
-  </node>
- -->
   
 </launch>
