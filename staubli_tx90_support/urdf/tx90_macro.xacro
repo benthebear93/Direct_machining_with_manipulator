@@ -347,9 +347,11 @@
     </joint>
 
     <!--D435 -->
-  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+<!--   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
   <xacro:sensor_d435 parent="tool_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
         <origin xyz="0.13 0 0.057" rpy="0 ${pi} ${pi}"/>
-    </xacro:sensor_d435>
+    </xacro:sensor_d435> -->
+
+    
   </xacro:macro>
 </robot>
