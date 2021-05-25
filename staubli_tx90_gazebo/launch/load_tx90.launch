@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find staubli_tx90_gazebo)/urdf/tx90.xacro' use_nominal_extrinsics:=true add_plug:=false" />
+
 </launch>
 
 <!-- use_nominal_extrinsics:=true add_plug:=false!-->
