@@ -228,12 +228,12 @@ if __name__ == '__main__':
 	######
 
 	# staubli_client.go_to_joint_state()
-	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	# staubli_client.display_trajectory(cartesian_plan)
-	# staubli_client.execute_plan(cartesian_plan)
+	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
+	staubli_client.display_trajectory(cartesian_plan)
+	staubli_client.execute_plan(cartesian_plan)
 	
 	#######
 
-	staubli_client.go_to_pose_goal()
-	staubli_client.find_curr_pose()
+	# staubli_client.go_to_pose_goal()
+	# staubli_client.find_curr_pose()
 	#main()
