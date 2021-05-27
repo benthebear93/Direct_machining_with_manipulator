@@ -8,7 +8,8 @@ PCprocess::PCprocess()
 {
   flag_save = 0;
   std::cout << "point cloud process start" << std::endl;
-  sub_ = n_.subscribe("/camera/depth_registered/points", 1 , &PCprocess::cloud_cd, this);
+  sub_ = n_.subscribe("/camera/depth/image_rect_raw", 1 , &PCprocess::cloud_cd, this);
+  //   "/camera/depth_registered/points"
 }
 PCprocess::~PCprocess(){
 
@@ -43,7 +44,7 @@ void PCprocess::cloud_cd(const sensor_msgs::PointCloud2 msg){
     // pcl_conversions::fromPCL(pcl_pc, ros_output);
     if(flag_save ==0){
       std::cout << "saveing.."<< std::endl;
-      pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/ori_pc.pcd", *temp_cloud);
+      pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/real_pc.pcd", *temp_cloud);
       flag_save = 1;
       std::cout << "saved" << std::endl;
     }
@@ -61,7 +62,7 @@ void PCprocess::cloud_cd(const sensor_msgs::PointCloud2 msg){
     ptfilter.filter(*ptr_filtered);
     pc_filtered = *ptr_filtered;
     std::cout << "filtered saving..." << std::endl;
-    pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pc_rgb.pcd", pc_filtered);
+    pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_real_pc.pcd", pc_filtered);
     std::cout << "filtered saved" << std::endl;
 
 }
@@ -70,7 +71,7 @@ int main(int argc, char **argv){
   std::cout << "start!"<< std::endl;
   ros::init (argc, argv, "pc_process");
   PCprocess wp_object;
-  wp_object.read_pcd();
+  //wp_object.read_pcd();
   ros::spin ();
   return 0;
 }
