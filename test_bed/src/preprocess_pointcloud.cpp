@@ -8,7 +8,7 @@ PCprocess::PCprocess()
 {
   flag_save = 0;
   std::cout << "point cloud process start" << std::endl;
-  sub_ = n_.subscribe("/camera/depth/image_rect_raw", 1 , &PCprocess::cloud_cd, this);
+  sub_ = n_.subscribe("/camera/depth/color/points", 1 , &PCprocess::cloud_cd, this);
   //   "/camera/depth_registered/points"
 }
 PCprocess::~PCprocess(){
@@ -57,7 +57,7 @@ void PCprocess::cloud_cd(const sensor_msgs::PointCloud2 msg){
 
     ptfilter.setInputCloud(ptr_filtered);
     ptfilter.setFilterFieldName("z"); 
-    ptfilter.setFilterLimits(0.497, 0.564); //min. max
+    ptfilter.setFilterLimits(0.2, 0.313); //min. max
     ptfilter.setFilterLimitsNegative(false); //option 
     ptfilter.filter(*ptr_filtered);
     pc_filtered = *ptr_filtered;
