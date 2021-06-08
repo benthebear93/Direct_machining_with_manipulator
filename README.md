@@ -22,7 +22,7 @@ rosrun test_bed pcd_to_rviz                                                     
 
 rosrun test_bed preprocess_pointcloud                                               (preprocess for pcd)
 
-rosrun tf static_traform_publisher 0.619517 0.0324866 1.49232 -1.5707 3.141592654 0 world seg_pcd 100                                                                                         (static tf for pcd from world)
+rosrun tf static_transform_publisher 0.619517 0.0324866 1.49232 -1.5707 3.141592654 0 world seg_pcd 100                                                                                         (static tf for pcd from world)
 
 ## [Real robot]
 
