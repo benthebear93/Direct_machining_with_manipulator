@@ -39,16 +39,15 @@ void find_normal()
   cloud->points[i].g = 255;
   cloud->points[i].b = 255;
   }
-  pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/before_seg.pcd", *cloud);
 
   //KdTree 오브젝트 생성 
   pcl::KdTreeFLANN<pcl::PointXYZRGB> kdtree;
   kdtree.setInputCloud (cloud);    //입력 
 
      pcl::PointXYZRGB searchPoint;
-     searchPoint.x = -0.006;
-     searchPoint.y = 0.098;
-     searchPoint.z = 0.503;
+     searchPoint.x = 0.062; //-0.006;
+     searchPoint.y = 0.104; //0.098;
+     searchPoint.z = 0.514; //0.503;
   // pcl::PointXYZRGB searchPoint = cloud->points[3000]; 
 
   //기준점 좌표 출력 
@@ -80,18 +79,20 @@ void find_normal()
   std::cout << "plane param : \n"<< plane_parameters << std::endl;
   std::cout << "curvature : "<< curvature << std::endl;
   std::cout <<" "<<std::endl;
+  // -0.65747 -0.0007881 0.75348
+
   pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>());
   pcl::PointCloud<pcl::Normal> sourceNormals;
   sourceNormals.push_back(pcl::Normal(plane_parameters[0], plane_parameters[1], plane_parameters[2]));
-  pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/after_seg.pcd", *cloud);
+  pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/Kdtree_test_KNN.pcd", *cloud);
 
-  double roll_deg  = deg2rad(31.61866); // X --> Z가 되야함 
-  double pitch_deg = deg2rad(89.960435);// Y --> Y는 맞음
-  double yaw_deg   = deg2rad(0);        // Z --> X가 되야함
+  double roll_deg  = deg2rad(0.06867); // X --> Z가 되야함  35.61866
+  double pitch_deg = deg2rad(48.89);// Y --> Y는 맞음 89.99
+  double yaw_deg   = deg2rad(0.06);        // Z --> X가 되야함
   std::cout <<" "<<std::endl;
   tf::Quaternion normal_q;
-
-  normal_q.setEuler(pitch_deg, yaw_deg, roll_deg); //Y X Z
+  
+  normal_q.setEuler(pitch_deg, yaw_deg, roll_deg); //Y X Z or ZYX
   normal_q = normal_q.normalize();
   std::cout << "x :" << normal_q.x() << std::endl;
   std::cout << "y :" << normal_q.y() << std::endl;
