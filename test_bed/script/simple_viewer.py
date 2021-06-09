@@ -3,7 +3,7 @@ import pptk
 import numpy as np
 from plyfile import PlyData, PlyElement
 filepath = '/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data'
-data = PlyData.read(filepath + '/ori.ply')['vertex']
+data = PlyData.read(filepath + '/cluster10.ply')['vertex']
 print(data)
 xyz = np.c_[data['x'], data['y'], data['z']]
 # rgb = np.c_[data['red'], data['green'], data['blue']]
