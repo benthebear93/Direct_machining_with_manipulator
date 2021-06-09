@@ -6,16 +6,10 @@
   
   <group if="$(arg remap)">
     <!-- remap topics to conform to ROS-I specifications -->
-<!--     <remap from="/arm_controller/follow_joint_trajectory" to="/joint_trajectory_action" />
-    <remap from="/arm_controller/state" to="/feedback_states" />
-    <remap from="/arm_controller/command" to="/joint_path_command"/> -->
-    <!-- for gazebo simulation only-->
-
     <remap from="/arm_controller/follow_joint_trajectory" to="/joint_trajectory_action" />
     <remap from="/arm_controller/state" to="/feedback_states" />
     <remap from="/arm_controller/command" to="/joint_path_command"/>
-    <!-- gazebo with real world -->
-
+    
     <!-- startup simulated world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
       <arg name="world_name" value="worlds/empty.world"/>
@@ -37,6 +31,6 @@
   <!-- send robot URDF to ROS param server,
        and spawn robot in Gazebo, along with necessary ROS nodes -->
   <include file="$(find staubli_tx90_gazebo)/launch/spawn_tx90.launch"/>
-  <include file="$(find staubli_tx90_gazebo)/launch/spawn_cfrp.launch"/>
-<!--   <include file="$(find tx90_moveit_config)/launch/move_group.launch"/> -->
+<!--   <include file="$(find staubli_tx90_gazebo)/launch/spawn_cfrp.launch"/> -->
+  <!-- <include file="$(find tx90_moveit_config)/launch/move_group.launch"/> -->
 </launch>

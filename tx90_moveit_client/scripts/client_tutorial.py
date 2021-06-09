@@ -100,10 +100,10 @@ class StaubliScanning(object):
 
 		joint_goal = move_group.get_current_joint_values()
 		joint_goal[0] = 0
-		joint_goal[1] = np.deg2rad(30)
-		joint_goal[2] = np.deg2rad(110)
+		joint_goal[1] = np.deg2rad(0)
+		joint_goal[2] = np.deg2rad(90)
 		joint_goal[3] = 0
-		joint_goal[4] = np.deg2rad(-50)
+		joint_goal[4] = np.deg2rad(0)
 		joint_goal[5] = np.deg2rad(0)  # 1/6 of a turn
 
 		# The go command can be called with joint values, poses, or without any
@@ -129,13 +129,13 @@ class StaubliScanning(object):
 		## We can plan a motion for this group to a desired pose for the
 		## end-effector:
 		pose_goal = geometry_msgs.msg.Pose()
-		pose_goal.position.x = 0.778243
-		pose_goal.position.y = 0.011306
-		pose_goal.position.z = 0.943988
-		pose_goal.orientation.x = 0.192776
-		pose_goal.orientation.y = 0.6805459
-		pose_goal.orientation.z = 0.1925080
-		pose_goal.orientation.w = 0.6801728
+		pose_goal.position.x = 0.78416
+		pose_goal.position.y = 0.120746
+		pose_goal.position.z = 0.926026
+		pose_goal.orientation.x = -0.1610288
+		pose_goal.orientation.y = 0.6605529
+		pose_goal.orientation.z = 0.2046482
+		pose_goal.orientation.w = 0.7041723
 		
 		move_group.set_pose_target(pose_goal)
 
@@ -227,10 +227,10 @@ if __name__ == '__main__':
 	staubli_client = StaubliScanning()
 	######
 
-	# staubli_client.go_to_joint_state()
-	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	staubli_client.display_trajectory(cartesian_plan)
-	staubli_client.execute_plan(cartesian_plan)
+	staubli_client.go_to_joint_state()
+	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
+	# staubli_client.display_trajectory(cartesian_plan)
+	# staubli_client.execute_plan(cartesian_plan)
 	
 	#######
 

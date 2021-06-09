@@ -102,9 +102,9 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
     marker.id = 0;
     marker.type = visualization_msgs::Marker::SPHERE;
     marker.action = visualization_msgs::Marker::ADD;
-    marker.pose.position.x = w2c_x + 0.098; //y = 0.094
-    marker.pose.position.y = w2c_y - 0.006; //x = 0.059
-    marker.pose.position.z = w2c_z - 0.503; //z = 0.512
+    marker.pose.position.x = w2c_x + 0.104; //y = 0.094
+    marker.pose.position.y = w2c_y + 0.062; //x = 0.059
+    marker.pose.position.z = w2c_z - 0.514; //z = 0.512
     std::cout<<"drill_p x : " << marker.pose.position.x << " y : " <<marker.pose.position.y << 
     " z : " << marker.pose.position.z <<std::endl;
     marker.pose.orientation.x = 0.0;
@@ -129,9 +129,9 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
     normal_v.id = 1;
     normal_v.type = visualization_msgs::Marker::SPHERE;
     normal_v.action = visualization_msgs::Marker::ADD;
-    normal_v.pose.position.x = w2c_x + 0.098  + 0.00052/norm_const; //y = 0.094
-    normal_v.pose.position.y = w2c_y - 0.006  - 0.37885/norm_const; //x = 0.059
-    normal_v.pose.position.z = w2c_z - 0.503  + 0.92545/norm_const; //z = 0.512
+    normal_v.pose.position.x = w2c_x + 0.104  - 0.00078/norm_const; //y = 0.094
+    normal_v.pose.position.y = w2c_y + 0.062  + 0.65747/norm_const; //x = 0.059
+    normal_v.pose.position.z = w2c_z - 0.514  + 0.75348/norm_const; //z = 0.512
     std::cout<<"normal_p x : " << normal_v.pose.position.x << " y : " <<normal_v.pose.position.y << 
     " z : " << normal_v.pose.position.z <<std::endl;
     normal_v.pose.orientation.x = 0.0;
@@ -145,8 +145,8 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
     normal_v.scale.z = 0.01;
 
     // Set the color -- be sure to set alpha to something non-zero!
-    normal_v.color.r = 0.0f;
-    normal_v.color.g = 1.0f;
+    normal_v.color.r = 1.0f;
+    normal_v.color.g = 0.0f;
     normal_v.color.b = 0.0f;
     normal_v.color.a = 1.0;
     // std::cout <<"setting marker" <<std::endl;
