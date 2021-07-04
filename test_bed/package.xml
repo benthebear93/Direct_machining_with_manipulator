@@ -16,7 +16,15 @@ for test_bed robot</p>
   <depend>rviz</depend>
   <depend>joint_state_publisher</depend>
   <depend>gazebo</depend>
-  
+
+  <build_depend>descartes_core</build_depend>
+  <build_depend>descartes_moveit</build_depend>
+  <build_depend>descartes_trajectory</build_depend>
+  <build_depend>descartes_planner</build_depend>
+
+  <build_depend>trajectory_msgs</build_depend>
+  <build_depend>visualization_msgs</build_depend>
+
   <build_depend>geometry_msgs</build_depend>
   <build_depend>tf</build_depend>
   <build_depend>tf2_ros</build_depend>
@@ -37,6 +45,14 @@ for test_bed robot</p>
   <build_export_depend>tf</build_export_depend>
   <build_export_depend>tf2_ros</build_export_depend>
   <build_export_depend>geometry_msgs</build_export_depend>
+  
+  <exec_depend>trajectory_msgs</exec_depend>
+  <exec_depend>visualization_msgs</exec_depend>
+
+  <exec_depend>descartes_core</exec_depend>
+  <exec_depend>descartes_moveit</exec_depend>
+  <exec_depend>descartes_trajectory</exec_depend>
+  <exec_depend>descartes_planner</exec_depend>
 
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>

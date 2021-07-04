@@ -16,6 +16,7 @@ class Visualiser:
         self.x_data, self.y_data = [] , []
 
     def plot_init(self):
+        
         self.ax.set_xlim(0, 300)
         self.ax.set_ylim(0, 300)
         return self.ln

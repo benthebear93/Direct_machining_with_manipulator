@@ -129,13 +129,13 @@ class StaubliScanning(object):
 		## We can plan a motion for this group to a desired pose for the
 		## end-effector:
 		pose_goal = geometry_msgs.msg.Pose()
-		pose_goal.position.x = 0.78416
-		pose_goal.position.y = 0.120746
+		pose_goal.position.x = 0.823
+		pose_goal.position.y = -0.149
 		pose_goal.position.z = 0.926026
-		pose_goal.orientation.x = -0.1610288
-		pose_goal.orientation.y = 0.6605529
-		pose_goal.orientation.z = 0.2046482
-		pose_goal.orientation.w = 0.7041723
+		pose_goal.orientation.x = 0.0001659
+		pose_goal.orientation.y = 0.7070751
+		pose_goal.orientation.z = -0.000276
+		pose_goal.orientation.w = 0.7071383
 		
 		move_group.set_pose_target(pose_goal)
 
@@ -235,5 +235,5 @@ if __name__ == '__main__':
 	#######
 
 	# staubli_client.go_to_pose_goal()
-	# staubli_client.find_curr_pose()
+	staubli_client.find_curr_pose()
 	#main()

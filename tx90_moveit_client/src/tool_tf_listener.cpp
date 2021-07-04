@@ -82,11 +82,11 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
 		w2c_z = camera_tf.getOrigin().z();
 		
 		cam_q = camera_tf.getRotation();
-		// std::cout <<" q_x : " << cam_q.x()<<std::endl;
-		// std::cout <<" q_y : " << cam_q.y()<<std::endl;
-		// std::cout <<" q_z : " << cam_q.z()<<std::endl;
-		// std::cout <<" q_w : " << cam_q.w()<<std::endl;
-		// std::cout << "========================" << std::endl;
+		std::cout <<" q_x : " << cam_q.x()<<std::endl;
+		std::cout <<" q_y : " << cam_q.y()<<std::endl;
+		std::cout <<" q_z : " << cam_q.z()<<std::endl;
+		std::cout <<" q_w : " << cam_q.w()<<std::endl;
+		std::cout << "========================" << std::endl;
 		// get tool tf and cam tf
     }
     catch (tf::TransformException ex){

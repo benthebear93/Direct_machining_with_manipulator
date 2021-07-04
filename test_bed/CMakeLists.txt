@@ -8,18 +8,45 @@ find_package(catkin REQUIRED COMPONENTS
 	roscpp pcl_conversions 
 	pcl_ros std_msgs 
 	sensor_msgs
+	roslib
+	descartes_core
+	descartes_moveit
+	descartes_trajectory
+	descartes_planner
+	geometry_msgs
+	trajectory_msgs
+	visualization_msgs
+	eigen_conversions
+	tf
 )
+add_message_files(FILES boundary.msg )
+add_message_files(FILES scan_path.msg)
 
-catkin_package(INCLUDE_DIRS CATKIN_DEPENDS 
+generate_messages(DEPENDENCIES std_msgs)
+
+catkin_package(INCLUDE_DIRS include 
+	LIBRARIES descartes_core descartes_moveit descartes_planner
+	CATKIN_DEPENDS descartes_core descartes_moveit descartes_planner geometry_msgs roscpp tf trajectory_msgs visualization_msgs descartes_trajectory
 	roscpp 
 	pcl_conversions 
 	pcl_ros
 )
 
+find_package(Eigen REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system)
+
 find_package(roslaunch)
 
 catkin_package()
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(
+	${catkin_INCLUDE_DIRS}
+  	${Eigen_INCLUDE_DIRS} 
+  	include ${catkin_INCLUDE_DIRS}
+  	)
+
+#add_executable(path_traj_gen src/path_traj_gen.cpp)
+#target_link_libraries(path_traj_gen ${catkin_LIBRARIES})
+#add_dependencies(path_traj_gen path_traj_gen)
 
 add_executable(preprocess_pointcloud src/preprocess_pointcloud.cpp)
 target_link_libraries(preprocess_pointcloud ${catkin_LIBRARIES})

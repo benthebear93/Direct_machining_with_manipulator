@@ -35,25 +35,29 @@
 #include <pcl/features/range_image_border_extractor.h>
 #include <pcl/console/parse.h>
 #include <pcl/common/file_io.h> // for getFilenameWithoutExtension
+
+#include "test_bed/boundary.h"
+
 class PCprocess
 {
 public: 
 	PCprocess();
 	~PCprocess();
-	void cloud_cd(const sensor_msgs::PointCloud2 msg);
+	void Cloudcb(const sensor_msgs::PointCloud2 msg);
 	// void do_passthrough(const pcl::PointCloud<pcl::PointXYZRGB>& src, pcl::PointCloud<pcl::PointXYZRGB>& dst);
-	void read_pcd();
-	void segmentation(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud);
-	void extract_border(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud);
+	// void read_pcd();
 private:
 	int argc;
 	char** argv;
 	ros::NodeHandle n_;
 	ros::Subscriber sub_;
-	ros::Publisher pub_;
-	ros::Publisher boundary_pub_x_;
-	ros::Publisher boundary_pub_y_;
-	bool flag_save;
+	// ros::Publisher boundary_pub_x_;
+	// ros::Publisher boundary_pub_y_;
+	ros::Publisher boundary_pub_;
+	bool mbflag_save;
+	bool mbflag_cluster_save;
+	void Segmentation(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud);
+	void ExtractBorder(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud);
 
 };
 #endif

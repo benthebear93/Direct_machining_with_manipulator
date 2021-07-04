@@ -22,20 +22,14 @@
   <arg name="capabilities" default=""/>
   <arg name="disable_capabilities" default=""/>
   <!-- load these non-default MoveGroup capabilities (space seperated) -->
-  <!--
-  <arg name="capabilities" value="
-                a_package/AwsomeMotionPlanningCapability
-                another_package/GraspPlanningPipeline
-                " />
-  -->
+  
+<!--   <arg name="capabilities" value="descartes_capability/MoveGroupDescartesPathService" />
+  
 
-  <!-- inhibit these default MoveGroup capabilities (space seperated) -->
-  <!--
-  <arg name="disable_capabilities" value="
-                move_group/MoveGroupKinematicsService
-                move_group/ClearOctomapService
-                " />
-  -->
+  inhibit these default MoveGroup capabilities (space seperated)
+  
+  <arg name="disable_capabilities" value="move_group/MoveGroupCartesianPathService" /> -->
+  
 
   <arg name="load_robot_description" default="true" />
   <!-- load URDF, SRDF and joint_limits configuration -->
@@ -60,6 +54,8 @@
     <arg name="moveit_sensor_manager" value="staubli_tx90_gazebo" />
   </include>
 
+<!--   <rosparam command="load" file="$(find tx90_moveit_config)/config/setup.yaml"/> -->
+
   <!-- Start the actual move_group node/action server -->
   <node name="move_group" launch-prefix="$(arg launch_prefix)" pkg="moveit_ros_move_group" type="move_group" respawn="false" output="screen" args="$(arg command_args)">
     <!-- Set the display variable, in case OpenGL code is used internally -->
@@ -68,9 +64,13 @@
     <param name="allow_trajectory_execution" value="$(arg allow_trajectory_execution)"/>
     <param name="max_safe_path_cost" value="$(arg max_safe_path_cost)"/>
     <param name="jiggle_fraction" value="$(arg jiggle_fraction)" />
-    <param name="capabilities" value="$(arg capabilities)"/>
-    <param name="disable_capabilities" value="$(arg disable_capabilities)"/>
 
+<!--     <param name="capabilities" value="$(arg capabilities) descartes_capability/MoveGroupDescartesPathService"/>
+    <param name="disable_capabilities" value="$(arg disable_capabilities) move_group/MoveGroupCartesianPathService"/> -->
+
+    <!-- <param name="capabilities" value="descartes_capability/MoveGroupDescartesPathService" /> -->
+
+    <!-- <param name="disable_capabilities" value="move_group/MoveGroupCartesianPathService"/> -->
 
     <!-- Publish the planning scene of the physical robot so that rviz plugin can know actual robot -->
     <param name="planning_scene_monitor/publish_planning_scene" value="$(arg publish_monitored_planning_scene)" />
