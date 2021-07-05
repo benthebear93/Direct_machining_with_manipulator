@@ -183,9 +183,9 @@ class StaubliScanning(object):
 		# wpose.position.x += scale * 0.1  # Second move forward/backwards in (x)
 		# waypoints.append(copy.deepcopy(wpose))
 		for i in range(15):
-			#wpose.position.x += scale * 0.1 
+			wpose.position.x += scale * 0.1 
 			#wpose.position.z += scale * 0.1 
-			wpose.position.z += scale * 0.02
+			# wpose.position.z += scale * 0.02
 			waypoints.append(copy.deepcopy(wpose))
 			print("waypoints ", waypoints[i])
 
