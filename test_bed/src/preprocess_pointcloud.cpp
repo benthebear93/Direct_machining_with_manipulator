@@ -7,7 +7,7 @@ PCprocess::PCprocess()
   mbflag_save = 0;
   mbflag_cluster_save = 0;
   std::cout << "point cloud process start" << std::endl;
-  sub_ = n_.subscribe("/camera/depth_registered/points", 1 , &PCprocess::Cloudcb, this);
+  sub_ = n_.subscribe("process_flag", 1 , &PCprocess::Cloudcb, this);
   boundary_pub_= n_.advertise<test_bed::boundary>("boundary", 100);
 }
 
@@ -163,18 +163,18 @@ void PCprocess::ExtractBorder(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud)
   boundary_pub_.publish(bounday_array);
 }
 
-void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){
-    pcl::PCLPointCloud2 pcl_pc; //pcl point cloud
-    pcl_conversions::toPCL(msg, pcl_pc); // sensor msg to pcl
+void PCprocess::Cloudcb(std_msgs::Int32 msg){ //const sensor_msgs::PointCloud2 msg
+    // pcl::PCLPointCloud2 pcl_pc; //pcl point cloud
+    // pcl_conversions::toPCL(msg, pcl_pc); // sensor msg to pcl
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr temp_cloud(new pcl::PointCloud<pcl::PointXYZRGB>);//pointcloud2
-    pcl::fromPCLPointCloud2(pcl_pc,*temp_cloud); //pcl to pointcloud2
+    //pcl::fromPCLPointCloud2(pcl_pc,*temp_cloud); //pcl to pointcloud2
 
-    if(mbflag_save ==0){
-      std::cout << "saveing.."<< std::endl;
-      pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pcl_output.pcd", *temp_cloud);
-      mbflag_save = 1;
-      std::cout << "saved" << std::endl;
-    }
+    // if(mbflag_save ==0){
+    //   std::cout << "saveing.."<< std::endl;
+    //   pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pcl_output.pcd", *temp_cloud);
+    //   mbflag_save = 1;
+    //   std::cout << "saved" << std::endl;
+    // }
     //////// pass through filter ///////
 
     // pcl::PointCloud<pcl::PointXYZRGB> pc_filtered;

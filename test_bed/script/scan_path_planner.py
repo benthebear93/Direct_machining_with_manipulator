@@ -29,6 +29,7 @@ class ScanPath():
 		self.y_data = []
 		self.fig, self.ax = plt.subplots()
 		self.ln, = plt.plot([], [], 'ro')
+		self.flag_pub = rospy.Publisher('process_flag', Int32, queue_size=10)
 
 	def find_safe_turning_grid(self, x_index, y_index, moving_dir, sweep_dir, occupancy_map_extended):
 		# print("find turning?")

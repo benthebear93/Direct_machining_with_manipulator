@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<library path="lib/libtx_90_tx_90_moveit_ikfast_plugin">
+  <class base_class_type="kinematics::KinematicsBase" name="tx_90_tx_90/IKFastKinematicsPlugin" type="tx_90_tx_90::IKFastKinematicsPlugin">
+    <description>IKFast61 plugin for closed-form kinematics of tx_90 tx_90</description>
+  </class>
+</library>

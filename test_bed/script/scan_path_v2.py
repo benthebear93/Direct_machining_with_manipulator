@@ -13,7 +13,7 @@ from matplotlib.patches import Polygon
 from scipy.spatial import ConvexHull, convex_hull_plot_2d
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
-import 
+from std_msgs.msg import Int32
 EXTEND_AREA = 100.0
 
 class ScanPath():
@@ -97,7 +97,7 @@ class ScanPath():
 		px , py = self.planning(x_start, y_start, x_end, y_end,yw, sweep_dir, up_down, grid_map)
 		px = [ (x * self.xy_resolution+min_x)/1000 for x in px]
 		py = [ (y * self.xy_resolution+min_y)/1000 for y in py]
-		path = scan_path()
+		path = scan_path() 
 		path.path_x = px
 		path.path_y = py
 		self.path_pub.publish(path)

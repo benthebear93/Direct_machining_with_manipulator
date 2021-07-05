@@ -5,6 +5,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include "std_msgs/Int32MultiArray.h"
+#include "std_msgs/Int32.h"
 
 #include <pcl/conversions.h>
 #include <pcl/point_cloud.h>
@@ -43,7 +44,7 @@ class PCprocess
 public: 
 	PCprocess();
 	~PCprocess();
-	void Cloudcb(const sensor_msgs::PointCloud2 msg);
+	void Cloudcb(std_msgs::Int32 msg);
 	// void do_passthrough(const pcl::PointCloud<pcl::PointXYZRGB>& src, pcl::PointCloud<pcl::PointXYZRGB>& dst);
 	// void read_pcd();
 private:
