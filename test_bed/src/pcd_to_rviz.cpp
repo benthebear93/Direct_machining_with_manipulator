@@ -19,6 +19,8 @@
 #include <pcl/filters/extract_indices.h>
 #include<pcl/io/pcd_io.h>//which contains the required definitions to load and store point clouds to PCD and other file formats.
  
+#include <tf/transform_broadcaster.h>
+
 main (int argc, char **argv)
 {
   ros::init (argc, argv, "pcd_to_rviz");
@@ -29,16 +31,18 @@ main (int argc, char **argv)
   pcl::PointCloud <pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud <pcl::PointXYZRGB>);
 
   sensor_msgs::PointCloud2 output;
-  pcl::io::loadPCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/cluster10.pcd", *cloud); //Modify the path of your pcd file
+  pcl::io::loadPCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/real_pc.pcd", *cloud); //Modify the path of your pcd file
 
   pcl::PointCloud<pcl::PointXYZRGB> pc_transformed;
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr ptr_transformed(new pcl::PointCloud<pcl::PointXYZRGB>);
 
   Eigen::Matrix4f trans;
+
   trans<< 0,   1,  0, 0.645298,
           1,   0,  0, 0.0,
           0,   0,  -1,  1.43868,
           0,   0,  0,     1;
+
   pcl::transformPointCloud(*cloud, *ptr_transformed, trans);
 
   pc_transformed = *ptr_transformed;
@@ -47,11 +51,10 @@ main (int argc, char **argv)
 
   
   pcl::toROSMsg(*ptr_transformed, output);
-
-  //Convert the cloud to ROS message
-  output.header.frame_id = "pcd";
+  output.header.frame_id = "world";
   output.header.stamp = ros::Time::now();
   
+  //Convert the cloud to ROS message
   while (ros::ok())
   {
     pcl_pub.publish(output);

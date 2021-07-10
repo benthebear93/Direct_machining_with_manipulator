@@ -21,22 +21,10 @@
 # joint_state_controller:
 #   type: joint_state_controller/JointStateController
 #   publish_rate: 50
-controller_list:
-  - name: arm_controller
-    action_ns: follow_joint_trajectory
-    default: True
-    type: FollowJointTrajectory
-    joints:
-      - joint_1
-      - joint_2
-      - joint_3
-      - joint_4
-      - joint_5
-      - joint_6
 # controller_list:
-#   - name: ""
-#     action_ns: joint_trajectory_action
-#     #default: True
+#   - name: arm_controller
+#     action_ns: follow_joint_trajectory
+#     default: True
 #     type: FollowJointTrajectory
 #     joints:
 #       - joint_1
@@ -45,3 +33,15 @@ controller_list:
 #       - joint_4
 #       - joint_5
 #       - joint_6
+controller_list:
+  - name: ""
+    action_ns: joint_trajectory_action
+    #default: True
+    type: FollowJointTrajectory
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6

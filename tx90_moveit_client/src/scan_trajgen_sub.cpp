@@ -32,6 +32,7 @@ typedef std::vector<descartes_core::TrajectoryPtPtr> TrajectoryVec;
 typedef TrajectoryVec::const_iterator TrajectoryIter;
 
 ros::Publisher marker_publisher_;
+ros::Publisher traj_pub_;
 
 std::vector<descartes_core::TrajectoryPtPtr> makePath();
 
@@ -166,6 +167,7 @@ int main(int argc, char** argv)
 	ros::NodeHandle nh;
 
 	marker_publisher_ = nh.advertise<visualization_msgs::MarkerArray>("visualize_trajectory_curve",1,true);
+  traj_pub_         = nh.advertise<trajectory_msgs::JointTrajectory>("traj", 100);
 	// Required for communication with moveit components	
   ROS_INFO("Ready to add two ints.");
   ros::AsyncSpinner spinner (1);
@@ -305,8 +307,9 @@ descartes_core::TrajectoryPtPtr makeTolerancedCartesianPoint(const Eigen::Isomet
 
 bool executeTrajectory(const trajectory_msgs::JointTrajectory& trajectory)
 {
+  traj_pub_.publish(trajectory);
   // Create a Follow Joint Trajectory Action Client
-  actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction> ac ("follow_joint_trajectory", true);
+  actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction> ac ("joint_trajectory_action", true);
   if (!ac.waitForServer(ros::Duration(2.0)))
   {
     std::cout << "problem here" << ac.waitForServer(ros::Duration(2.0)) << std::endl;
@@ -316,7 +319,7 @@ bool executeTrajectory(const trajectory_msgs::JointTrajectory& trajectory)
 
   control_msgs::FollowJointTrajectoryGoal goal;
   goal.trajectory = trajectory;
-  goal.goal_time_tolerance = ros::Duration(1.0);
+  goal.goal_time_tolerance = ros::Duration(1.0); 
   
   return ac.sendGoalAndWait(goal) == actionlib::SimpleClientGoalState::SUCCEEDED;
 }

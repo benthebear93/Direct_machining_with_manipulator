@@ -101,8 +101,8 @@
     <material>Gazebo/Grey</material>
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
-  <gazebo reference="${prefix}bed_base">
-    <material>Gazebo/Grey</material>
+  <gazebo reference="${prefix}bed_color">
+    <material>Gazebo/Yellow</material>
   </gazebo>
   <gazebo reference="${prefix}PVS_1000_chuck">
     <material>Gazebo/light_grey</material>

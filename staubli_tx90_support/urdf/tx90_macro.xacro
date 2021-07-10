@@ -214,7 +214,7 @@
   <!-- <link name="${prefix}surface_cfrp">
     <visual>
       <origin xyz="0.0 0.0 0.0"/>
-      <material name="orange">
+      <material name="orange"> 
         <color rgba="0.79216 0.81961 0.93333 1" />
       </material>
       <geometry>
@@ -244,14 +244,17 @@
                izz="22.024" />
     </inertial>
     <visual>
+      <material name="bed_color"> 
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
         <mesh
           filename="package://test_bed/meshes/base_link.STL" />
       </geometry>
       <material
-        name="">
-        <color nrgba="0.52549 0.52549 0.52549 1" />
+        name="bed_color">
+        <color nrgba="0.79216 0.81961 0.93333 1" />
       </material>
     </visual>
     <collision>
