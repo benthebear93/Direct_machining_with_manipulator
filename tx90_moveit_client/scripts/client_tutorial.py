@@ -225,6 +225,7 @@ def main():
 	#print"=========go to pose goal========="
 if __name__ == '__main__':
 	staubli_client = StaubliScanning()
+	#ROS_INFO("START?")
 	######
 
 	staubli_client.go_to_joint_state()

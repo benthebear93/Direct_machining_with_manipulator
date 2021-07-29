@@ -1,0 +1,1 @@
+### simple inverse kinematic using reinforcement learning for 6 dof manipulator
