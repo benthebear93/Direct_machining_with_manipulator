@@ -15,13 +15,6 @@ import numpy as np
 from moveit_msgs.srv import GetPositionFK
 
 def all_close(goal, actual, tolerance):
-	"""
-	Convenience method for testing if a list of values are within a tolerance of their counterparts in another list
-	@param: goal       A list of floats, a Pose or a PoseStamped
-	@param: actual     A list of floats, a Pose or a PoseStamped
-	@param: tolerance  A float
-	@returns: bool
-	"""
 	all_equal = True
 	if type(goal) is list:
 		for index in range(len(goal)):

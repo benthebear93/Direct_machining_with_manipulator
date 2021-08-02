@@ -64,6 +64,10 @@ add_executable(pcd_to_rviz src/pcd_to_rviz.cpp)
 target_link_libraries(pcd_to_rviz ${catkin_LIBRARIES})
 add_dependencies(pcd_to_rviz pcd_to_rviz)
 
+add_executable(save_pc src/save_pc.cpp)
+target_link_libraries(save_pc ${catkin_LIBRARIES})
+add_dependencies(save_pc save_pc)
+
 foreach(dir config launch meshes urdf)
 	install(DIRECTORY ${dir}/
 		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
