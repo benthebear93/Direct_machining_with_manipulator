@@ -57,7 +57,7 @@ private:
 	// ros::Publisher boundary_pub_x_;
 	// ros::Publisher boundary_pub_y_;
 	ros::Publisher boundary_pub_;
-	ros::Publisher pcl_pub_;
+	ros::Publisher pc_pub_;
 	bool mbflag_save;
 	bool mbflag_cluster_save;
 	void Segmentation(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud);

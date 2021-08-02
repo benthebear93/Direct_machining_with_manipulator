@@ -9,7 +9,7 @@ PCprocess::PCprocess()
   std::cout << "point cloud process start" << std::endl;
   sub_ = n_.subscribe("/camera/depth_registered/points", 1 , &PCprocess::Cloudcb, this);
   boundary_pub_= n_.advertise<test_bed::boundary>("boundary", 100);
-  pcl_pub_ = n_.advertise<sensor_msgs::PointCloud2> ("pc_output", 1);
+  pc_pub_ = n_.advertise<sensor_msgs::PointCloud2> ("pc_output", 1);
 }
 
 PCprocess::~PCprocess()
@@ -176,7 +176,7 @@ void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 m
 
     output.header.frame_id = "world";
     output.header.stamp = ros::Time::now();
-    pcl_pub_.publish(output);
+    pc_pub_.publish(output);
 
     // if(mbflag_save ==0){
     //   std::cout << "saveing.."<< std::endl;
