@@ -91,7 +91,7 @@ void PCprocess::ExtractBorder(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud)
   pcl::PointCloud<PointType>& point_cloud = *point_cloud_ptr; //getting address
   pcl::PointCloud<pcl::PointWithViewpoint> far_ranges; //set range
   Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ()); //set sensor pose
-  std::string filename = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/tf_test.pcd";
+  std::string filename = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/new_cluster4.pcd";
   pcl::io::loadPCDFile (filename, point_cloud);
   scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
                                                              point_cloud.sensor_origin_[1],
@@ -190,9 +190,26 @@ void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 m
     output.header.stamp = ros::Time::now();
     pc_pub_.publish(output);
 
-    PCprocess::Segmentation(ptr_transformed);
+    pcl::PointCloud<pcl::PointXYZRGB> pc_filtered;
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr ptr_filtered (new pcl::PointCloud<pcl::PointXYZRGB>);
+    pcl::PassThrough<pcl::PointXYZRGB> ptfilter;
+
+    *ptr_filtered = *ptr_transformed;
+
+    ptfilter.setInputCloud(ptr_filtered);
+    ptfilter.setFilterFieldName("z"); 
+    ptfilter.setFilterLimits(0.141, 0.2);  // min. max
+    ptfilter.setFilterLimitsNegative(false); // option 
+    ptfilter.filter(*ptr_filtered);
+
+    pc_filtered = *ptr_filtered;
+    // std::cout << "filtered saving..." << std::endl;
+    // pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pcl_output.pcd", pc_filtered);
+    // std::cout << "filtered saved" << std::endl;
+
+    PCprocess::Segmentation(ptr_filtered);
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr segmented_pc (new pcl::PointCloud<pcl::PointXYZRGB>);
-    pcl::io::loadPCDFile<pcl::PointXYZRGB> ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/new_cluster1.pcd", *segmented_pc);
+    pcl::io::loadPCDFile<pcl::PointXYZRGB> ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/new_cluster4.pcd", *segmented_pc);
     PCprocess::ExtractBorder(segmented_pc);
   }
 }
