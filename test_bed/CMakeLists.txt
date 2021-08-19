@@ -60,13 +60,9 @@ add_executable(normal_visualize src/normal_visualize.cpp)
 target_link_libraries(normal_visualize ${catkin_LIBRARIES})
 add_dependencies(normal_visualize normal_visualize)
 
-add_executable(pcd_to_rviz src/pcd_to_rviz.cpp)
-target_link_libraries(pcd_to_rviz ${catkin_LIBRARIES})
-add_dependencies(pcd_to_rviz pcd_to_rviz)
-
-add_executable(save_pc src/save_pc.cpp)
-target_link_libraries(save_pc ${catkin_LIBRARIES})
-add_dependencies(save_pc save_pc)
+add_executable(tf_change src/tf_change.cpp)
+target_link_libraries(tf_change ${catkin_LIBRARIES})
+add_dependencies(tf_change tf_change)
 
 foreach(dir config launch meshes urdf)
 	install(DIRECTORY ${dir}/

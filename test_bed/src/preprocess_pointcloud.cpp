@@ -7,9 +7,10 @@ PCprocess::PCprocess()
   mbflag_save = 0;
   mbflag_cluster_save = 0;
   std::cout << "point cloud process start" << std::endl;
-  sub_ = n_.subscribe("/camera/depth_registered/points", 1 , &PCprocess::Cloudcb, this);
+  sub_ = n_.subscribe("/camera/depth/color/points", 1 , &PCprocess::Cloudcb, this);
   boundary_pub_= n_.advertise<test_bed::boundary>("boundary", 100);
   pc_pub_ = n_.advertise<sensor_msgs::PointCloud2> ("pc_output", 1);
+  pc_segpub_ = n_.advertise<sensor_msgs::PointCloud2> ("seg_out", 1);
 }
 
 PCprocess::~PCprocess()
@@ -36,12 +37,7 @@ void PCprocess::Segmentation(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud)
 
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cluster_cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
   pcl::ExtractIndices<pcl::PointXYZRGB> extract;
-
-
-  //std::cout << "Number of clusters is equal to " << clusters.size () << std::endl;
-  //std::cout << "First cluster has " << clusters[0].indices.size () << " points." << std::endl;
-  //std::cout << "These are the indices of the points of the initial" <<
-  //std::endl << "cloud that belong to the first cluster:" << std::endl;
+  pcl::PointCloud<pcl::PointXYZRGB> TotalCloud;
  int currentClusterNum = 1;
  if(mbflag_cluster_save == 0)
  {
@@ -49,8 +45,10 @@ void PCprocess::Segmentation(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud)
     {
         // ...add all its points to a new cloud...
         pcl::PointCloud<pcl::PointXYZRGB>::Ptr cluster(new pcl::PointCloud<pcl::PointXYZRGB>);
+
         for (std::vector<int>::const_iterator point = i->indices.begin(); point != i->indices.end(); point++)
             cluster->points.push_back(in_cloud->points[*point]);
+
         cluster->width = cluster->points.size();
         cluster->height = 1;
         cluster->is_dense = true;
@@ -61,11 +59,19 @@ void PCprocess::Segmentation(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud)
         //std::cout << "Cluster " << currentClusterNum << " has " << cluster->points.size() << " points." << std::endl;
         std::string fileName = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/new_cluster" + boost::to_string(currentClusterNum) + ".pcd";
         pcl::io::savePCDFileASCII(fileName, *cluster);
-
         currentClusterNum++;
-        mbflag_cluster_save = 1;
     }
+    mbflag_cluster_save = 1;
   }
+  cluster_cloud = reg.getColoredCloud();
+  pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/region_growing_rgb_result.pcd", *cluster_cloud);
+  // sensor_msgs::PointCloud2 output;
+  // pcl::toROSMsg(TotalCloud, output);
+
+  // output.header.frame_id = "world";
+  // output.header.stamp = ros::Time::now();
+  // pc_segpub_.publish(output);
+
 }
 //Segmentation
 
@@ -150,27 +156,33 @@ void PCprocess::ExtractBorder(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud)
 }
 
 void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 msg
-    ROS_INFO("callback start");
+  pcl::PointCloud<pcl::PointXYZRGB> pc_transformed;
+  pcl::PointCloud<pcl::PointXYZRGB>::Ptr ptr_transformed(new pcl::PointCloud<pcl::PointXYZRGB>);
+
+  if(mbflag_save ==0)
+  {
+    //ROS_INFO("callback start");
+    ROS_INFO("saving");
     pcl::PCLPointCloud2 pcl_pc; //pcl point cloud
     pcl_conversions::toPCL(msg, pcl_pc); // sensor msg to pcl
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr temp_cloud(new pcl::PointCloud<pcl::PointXYZRGB>);//pointcloud2
     pcl::fromPCLPointCloud2(pcl_pc,*temp_cloud); //pcl to pointcloud2
-    pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/actual_pc_v2.pcd", *temp_cloud);
-    
-    pcl::PointCloud<pcl::PointXYZRGB> pc_transformed;
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr ptr_transformed(new pcl::PointCloud<pcl::PointXYZRGB>);
-
+    pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/actual_pc_v4.pcd", *temp_cloud);
     Eigen::Matrix4f trans;
 
-    trans<< 0,   1,  0, 0.645298,
-            1,   0,  0, 0.0,
-            0,   0,  -1,  1.43868,
+    trans<< 0,   -1,  0, 0.580,
+            -1,   0,  0, 0.077,
+            0,   0,  -1, 0.765,
             0,   0,  0,     1;
 
     pcl::transformPointCloud(*temp_cloud , *ptr_transformed, trans);   
     pc_transformed = *ptr_transformed;
-    pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/changed_pc_v2.pcd", pc_transformed);
-      
+    pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/changed_pc_v4.pcd", pc_transformed);
+    ROS_INFO("saved");
+    mbflag_save = 1;
+  }
+  else{
+    pcl::io::loadPCDFile<pcl::PointXYZRGB> ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/changed_pc_v4.pcd", *ptr_transformed);
     sensor_msgs::PointCloud2 output;
     pcl::toROSMsg(*ptr_transformed, output);
 
@@ -178,35 +190,11 @@ void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 m
     output.header.stamp = ros::Time::now();
     pc_pub_.publish(output);
 
-    // if(mbflag_save ==0){
-    //   std::cout << "saveing.."<< std::endl;
-    //   pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pcl_output.pcd", *temp_cloud);
-    //   mbflag_save = 1;
-    //   std::cout << "saved" << std::endl;
-    // }
-    //////// pass through filter ///////
-
-    // pcl::PointCloud<pcl::PointXYZRGB> pc_filtered;
-    // pcl::PointCloud<pcl::PointXYZRGB>::Ptr ptr_filtered (new pcl::PointCloud<pcl::PointXYZRGB>);
-    // pcl::PassThrough<pcl::PointXYZRGB> ptfilter;
-
-    // *ptr_filtered = *temp_cloud;
-
-    // ptfilter.setInputCloud(ptr_filtered);
-    // ptfilter.setFilterFieldName("z"); 
-    // ptfilter.setFilterLimits(0.871, 0.899);  // min. max
-    // ptfilter.setFilterLimitsNegative(false); // option 
-    // ptfilter.filter(*ptr_filtered);
-
-    // pc_filtered = *temp_cloud;
-    //std::cout << "filtered saving..." << std::endl;
-    //pcl::io::savePCDFile ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pcl_output.pcd", pc_filtered);
-    //std::cout << "filtered saved" << std::endl;
-
     PCprocess::Segmentation(ptr_transformed);
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr segmented_pc (new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::io::loadPCDFile<pcl::PointXYZRGB> ("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/new_cluster1.pcd", *segmented_pc);
     PCprocess::ExtractBorder(segmented_pc);
+  }
 }
 
 int main(int argc, char **argv){
