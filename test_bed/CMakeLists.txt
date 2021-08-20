@@ -64,6 +64,10 @@ add_executable(tf_change src/tf_change.cpp)
 target_link_libraries(tf_change ${catkin_LIBRARIES})
 add_dependencies(tf_change tf_change)
 
+add_executable(extract_boundary src/extract_boundary.cpp)
+target_link_libraries(extract_boundary ${catkin_LIBRARIES})
+add_dependencies(extract_boundary extract_boundary)
+
 foreach(dir config launch meshes urdf)
 	install(DIRECTORY ${dir}/
 		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
