@@ -187,7 +187,7 @@
       </inertial>
   </link>
   
-  <link name="${prefix}PVS_1000_chuck">
+<!--   <link name="${prefix}PVS_1000_chuck">
     <visual>
       <origin xyz="0.0 0.07 0.0"/>
       <geometry>
@@ -209,7 +209,7 @@
         <mass value="3.4926" />/>
         <inertia ixx="0.039719" ixy="0.0" ixz="0.0" iyy="0.006139" iyz="-0.00014653" izz="0.038919"/>
     </inertial>
-  </link>
+  </link> -->
 
   <!-- <link name="${prefix}surface_cfrp">
     <visual>
@@ -235,7 +235,7 @@
     </inertial>
   </link> -->
 
-  <link name="${prefix}bed_base">
+<!--   <link name="${prefix}bed_base">
     <inertial>
       <origin xyz="0.062333 0.11301 0.77365" rpy="0 0 0" />
       <mass value="199.8" />
@@ -264,7 +264,7 @@
           filename="package://test_bed/meshes/base_link.STL" />
       </geometry>
     </collision>
-  </link>
+  </link> -->
 
     <!-- joints: main serial chain -->
     <joint name="${prefix}joint_1" type="revolute">
@@ -344,7 +344,7 @@
     <!-- ROS-Industrial 'tool0' frame: all-zeros tool frame -->
     <link name="${prefix}tool0" />
     <joint name="${prefix}flange-tool0" type="fixed">
-      <origin xyz="0.191 0 0.1027" rpy="0 0 0" />
+      <origin xyz="0.17295 0.0034 0.103" rpy="0 0 0" />
       <parent link="${prefix}tool_link" />
       <child link="${prefix}tool0" />
     </joint>
@@ -352,7 +352,7 @@
     <!--D435 -->
   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
   <xacro:sensor_d435 parent="tool_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-        <origin xyz="0.13 0 0.057" rpy="0 ${pi} ${pi}"/>
+        <origin xyz="0.186 0.00 -0.006" rpy="${pi} ${pi} ${pi}"/>
     </xacro:sensor_d435>
   </xacro:macro>
 </robot>

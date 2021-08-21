@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+  <!--spawn tx90 by send robot_description -->
+  <include file="$(find staubli_tx90_gazebo)/launch/spawn_tx90.launch"/>
+  <include file="$(find tx90_moveit_config)/launch/move_group.launch"/>
+
+<!--
+  <arg name="robot_ip" />
+  <param name="robot_ip_address" type="str" value="$(arg robot_ip)" />
+  <include file="$(find staubli_val3_driver)/launch/robot_state.launch">
+    <arg name="robot_ip" value="$(arg robot_ip)" />
+  </include>
+  <include file="$(find staubli_val3_driver)/launch/motion_streaming_interface.launch">
+    <arg name="robot_ip" value="$(arg robot_ip)" />
+  </include>
+  <node pkg="industrial_robot_client" type="joint_trajectory_action"
+    name="joint_trajectory_action" />
+-->
+<!--   <include file ="$(find realsense2_camera)/launch/demo_pointcloud.launch"/> -->
+
+</launch>
+

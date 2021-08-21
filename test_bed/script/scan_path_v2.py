@@ -21,6 +21,7 @@ class ScanPath():
 		self.xy_resolution = xy_resolution #11mm for one grid
 		self.sensor_x_length = sensor_x_length #32mm 
 		self.path_pub = rospy.Publisher('path', scan_path, queue_size=10)
+		
 	def planning(self, x_start, y_start, x_end, y_end, yw, sweep_dir, up_down, grid_map):
 		line_counter = 1
 		x_pos = x_start

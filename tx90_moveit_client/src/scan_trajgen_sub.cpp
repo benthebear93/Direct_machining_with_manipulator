@@ -203,6 +203,8 @@ int main(int argc, char** argv)
 
 	nh.getParam("controller_joint_names", names);
 
+  names = {"joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6"};
+
 	trajectory_msgs::JointTrajectory joint_solution;
 	joint_solution.joint_names = names;
 	const static double default_joint_vel = 0.5; // rad/s
@@ -223,38 +225,30 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
   const static int num_steps = 20;
   const static double time_between_points = 0.5;
 
-  double path_x[106] = {0.736, 0.747, 0.758, 0.769, 0.78, 0.791, 0.802, 
-    0.813, 0.824, 0.835, 0.846, 0.857, 0.868, 0.879, 0.879, 
-    0.868, 0.857, 0.846, 0.835, 0.824, 0.813, 0.802, 0.791, 0.78, 
-    0.769, 0.758, 0.747, 0.736, 0.725, 0.725, 0.736, 0.747, 
-    0.758, 0.769, 0.78, 0.791, 0.802, 0.813, 0.824, 0.835, 
-    0.846, 0.857, 0.868, 0.879, 0.879, 0.868, 0.857, 0.846, 
-    0.835, 0.824, 0.813, 0.802, 0.791, 0.78, 0.769, 0.758, 0.747, 
-    0.736, 0.725, 0.725, 0.736, 0.747, 0.758, 0.769, 0.78, 
-    0.791, 0.802, 0.813, 0.824, 0.835, 0.846, 0.857, 0.868, 
-    0.879, 0.879, 0.868, 0.857, 0.846, 0.835, 0.824, 0.813, 
-    0.802, 0.791, 0.78, 0.769, 0.758, 0.747, 0.736, 0.725, 0.725, 0.736, 
-    0.747, 0.758, 0.769, 0.78, 0.791, 0.802, 0.813, 0.824, 0.835, 0.846, 
-    0.857, 0.868, 0.879};
-  double path_y[106] = {-0.046, -0.046, -0.046, -0.046, -0.046, -0.046,  //6
-    -0.046, -0.046, -0.046, -0.046, -0.046, -0.046, -0.046, -0.046,  //8
-    -0.024, -0.024, -0.024, -0.024, -0.024, -0.024, -0.024, -0.024, //8
-    -0.024, -0.024, -0.024, -0.024, -0.024, -0.024, -0.024, -0.002, //8
-    -0.002, -0.002, -0.002, -0.002, -0.002, -0.002, -0.002, -0.002, //8
-    -0.002, -0.002, -0.002, -0.002, -0.002, -0.002, 0.02, 0.02, 0.02, //9
-    0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, //11
-    0.02, 0.042, 0.042, 0.042, 0.042, 0.042, 0.042, 0.042, 0.042, 0.042, //10
-    0.042, 0.042, 0.042, 0.042, 0.042, 0.042, 0.064, 0.064, 0.064, 0.064, //10
-    0.064, 0.064, 0.064, 0.064, 0.064, 0.064, 0.064, 0.064, 0.064, 0.064, //10
-    0.064, 0.086, 0.086, 0.086, 0.086, 0.086, 0.086, 0.086, 0.086, 0.086,  //10
-    0.086, 0.086, 0.086, 0.086, 0.086, 0.086}; //6
+  double path_x[76] = {0.701, 0.712, 0.723, 0.734, 0.745, 0.756, 0.767, 0.778, 0.789, 0.8, 0.8, 
+    0.789, 0.778, 0.767, 0.756, 0.745, 0.734, 0.723, 0.712, 0.701, 0.69, 0.69, 0.701, 0.712, 
+    0.723, 0.734, 0.745, 0.756, 0.767, 0.778, 0.789, 0.8, 0.8, 0.789, 0.778, 0.767, 0.756, 
+    0.745, 0.734, 0.723, 0.712, 0.701, 0.69, 0.69, 0.701, 0.712, 0.723, 0.734, 0.745, 0.756, 
+    0.767, 0.778, 0.789, 0.8, 0.8, 0.789, 0.778, 0.767, 0.756, 0.745, 0.734, 0.723, 0.712,
+     0.701, 0.69, 0.69, 0.701, 0.712, 0.723, 0.734, 0.745, 0.756, 0.767, 0.778, 0.789, 0.8};
+
+  double path_y[76] = {-0.082, -0.082, -0.082, -0.082, -0.082, -0.082, -0.082, -0.082, -0.082, 
+    -0.082, -0.06, -0.06, -0.06, -0.06, -0.06, -0.06, -0.06, -0.06, -0.06, -0.06, -0.06, -0.038, 
+    -0.038, -0.038, -0.038, -0.038, -0.038, -0.038, -0.038, -0.038, -0.038, -0.038, -0.016, -0.016, 
+    -0.016, -0.016, -0.016, -0.016, -0.016, -0.016, -0.016, -0.016, -0.016, 0.006, 0.006, 0.006, 0.006, 
+    0.006, 0.006, 0.006, 0.006, 0.006, 0.006, 0.006, 0.028, 0.028, 0.028, 0.028, 0.028, 0.028, 0.028, 
+    0.028, 0.028, 0.028, 0.028, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05};
+
+  double z_value = 0.227;
 
   int path_size = (sizeof(path_x)/sizeof(*path_x));
+  std::cout << "path_size :" << path_size << std::endl;
   EigenSTL::vector_Isometry3d pattern_poses;
-  for (int i = 0; i < path_size-2; i++)
+  for (int i = 0; i < path_size; i++)
   {
+    std::cout << "i : " << std::endl;
     Eigen::Isometry3d pose = Eigen::Isometry3d::Identity();
-    pose.translation() = Eigen::Vector3d(path_x[i], path_y[i], 0.1);
+    pose.translation() = Eigen::Vector3d(path_x[i], path_y[i], z_value);
     pose *=Eigen::AngleAxisd(M_PI/2.0, Eigen::Vector3d::UnitY());
     pattern_poses.push_back(pose);
   }
@@ -268,10 +262,9 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
 
   //   pattern_poses.push_back(pose);
   // }
-  for(int i=0; i<pattern_poses.size(); i++)
+  for(int i=0; i<pattern_poses.size()*2; i++)
   { std::cout << "I  :"   << i <<std::endl;
     std::cout << pattern_poses[i].translation() <<" front "<<std::endl;
-
   }
   // Eigen::Isometry3d pattern_origin = Eigen::Isometry3d::Identity();
   // //set pattern start position
@@ -283,7 +276,7 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
   { 
     Eigen::Isometry3d temp_path = pose; //pattern_origin * 
     path_marker.push_back(temp_path);
-    descartes_core::TrajectoryPtPtr pt = makeCartesianPoint(pose, time_between_points);//pattern_origin * 
+    descartes_core::TrajectoryPtPtr pt = makeCartesianPoint(pose, 0.1);//pattern_origin *
     result.push_back(pt);
   }
   publishPosesMarkers(path_marker);
@@ -316,10 +309,9 @@ bool executeTrajectory(const trajectory_msgs::JointTrajectory& trajectory)
     ROS_ERROR("Could not connect to action server");
     return false;
   }
-
   control_msgs::FollowJointTrajectoryGoal goal;
   goal.trajectory = trajectory;
-  goal.goal_time_tolerance = ros::Duration(1.0); 
+  goal.goal_time_tolerance = ros::Duration(2.0); 
   
   return ac.sendGoalAndWait(goal) == actionlib::SimpleClientGoalState::SUCCEEDED;
 }

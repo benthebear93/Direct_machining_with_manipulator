@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 	pcl::PointCloud<pcl::PointWithViewpoint> far_ranges; // set range
 	Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ()); // set sensor pose
 
-	std::string filename = filepath + "/pcd_data/new_cluster3.pcd";
+	std::string filename = filepath + "/pcd_data/new_cluster6.pcd";
 	pcl::io::loadPCDFile (filename, point_cloud);
 	scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
 	                                                         point_cloud.sensor_origin_[1],
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 		  if (border_descriptions[y*range_image.width + x].traits[pcl::BORDER_TRAIT__SHADOW_BORDER])
 		    shadow_points.points.push_back (range_image[y*range_image.width + x]);
 		}
-	}
+	}                                                                                                                                                                                                                                                                                                         
 	while(ros::ok())
 	{
 		// custom ros msgs type init 

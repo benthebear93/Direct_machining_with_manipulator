@@ -16,6 +16,6 @@ arm_controller:
     joint_4: {trajectory: 0.1, goal: 0.1}
     joint_5: {trajectory: 0.1, goal: 0.1}
     joint_6: {trajectory: 0.1, goal: 0.1}
-  stop_trajectory_duration: 0.5
+  stop_trajectory_duration: 5.0
   state_publish_rate:  25
   action_monitor_rate: 10
