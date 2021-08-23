@@ -32,10 +32,6 @@ add_executable(keyence_profile src/keyence_profile.cpp)
 target_link_libraries(keyence_profile ${catkin_LIBRARIES})
 add_dependencies(keyence_profile keyence_profile_generate_messages_cpp)
 
-add_executable(lk_keyence_output src/lk_keyence_output.cpp)
-target_link_libraries(lk_keyence_output ${catkin_LIBRARIES})
-add_dependencies(lk_keyence_output lk_keyence_output_generate_messages_cpp)
-
 add_executable(lpf src/lpf.cpp)
 target_link_libraries(lpf ${catkin_LIBRARIES})
 add_dependencies(lpf lpf_generate_messages_cpp)
@@ -47,3 +43,4 @@ add_dependencies(stream_16 stream_16_generate_messages_cpp)
 add_executable(pcl_to_csv src/pcl_to_csv.cpp)
 target_link_libraries(pcl_to_csv ${catkin_LIBRARIES})
 add_dependencies(pcl_to_csv pcl_to_csv_generate_messages_cpp)
+
