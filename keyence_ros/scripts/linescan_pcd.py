@@ -34,13 +34,18 @@ class PPTK:
                 final_xyz.append(xyz)
         final_xyz = np.array(final_xyz)
         pptk_c.final_pptk = final_xyz
+        v = pptk.viewer(final_xyz)
+        v.set(point_size=0.000001)
 
     def callback_pptk(self, msg):
         vector = msg.data
         self.save_point.append(vector)
         end = len(self.save_point)
-        # print(self.save_point)
-        print("end : ", end)
+        print("end:", end)
+        if end>400:
+            save_npy = np.array(self.save_point)
+            np.save('/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/keyence_ros/pcd_files/test_save2', save_npy) # x_save.npy
+            rospy.sleep(1000000000000) # Sleeps for 1 sec
         #print("savep ", pptk.save_point[0][0]," ", pptk.save_point[0][1]," ", pptk.save_point[0][2])
         #print("save_point", len(pptk_c.save_point))
         # if end > 500 and pptk_c.flag ==0:
