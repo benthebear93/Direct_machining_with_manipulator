@@ -1,0 +1,7 @@
+{
+    "board": "OpenCR:OpenCR:OpenCR",
+    "configuration": "upload_method=UploadMethod",
+    "port": "/dev/ttyACM1",
+    "sketch": "arduino/env_test/zaxis_v.1.1.5/zaxis_v.1.1.5.ino",
+    "programmer": "ArduinoISP"
+}

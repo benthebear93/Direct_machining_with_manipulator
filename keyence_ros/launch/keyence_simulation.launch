@@ -1,0 +1,10 @@
+<launch>
+    <node name="keyence_output" pkg="keyence_ros" type="keyence_output">
+    </node>
+    <node name="profile_check" pkg="keyence_ros" type="profile_check.py">
+    </node>
+    <node name="pos_stream" pkg="MoMach_ros" type="pos_stream">
+    </node>
+    <node name="laser_plot" pkg="rqt_plot" type="rqt_plot" args="/mid_laser /error_com1 /error_com2">
+    </node>
+</launch>

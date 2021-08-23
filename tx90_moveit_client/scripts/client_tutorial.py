@@ -172,28 +172,12 @@ class StaubliScanning(object):
 		waypoints = []
 
 		wpose = group.get_current_pose().pose
-		# wpose.position.z -= scale * 0.1  # First move up (z)
-		# wpose.position.y += scale * 1.5  # and sideways (y)
-		# waypoints.append(copy.deepcopy(wpose))1`1
-
-		# wpose.position.x += scale * 0.1  # Second move forward/backwards in (x)
-		# waypoints.append(copy.deepcopy(wpose))
-		for i in range(15):
-			wpose.position.z -= scale * 0.05
-			#wpose.position.z += scale * 0.1 
-			# wpose.position.z += scale * 0.02
+		for i in range(7):
+			wpose.position.z -= scale * 0.1
 			waypoints.append(copy.deepcopy(wpose))
 			print("waypoints ", waypoints[i])
-		for i in range(15):
+		for i in range(7):
 			wpose.position.x += scale * 0.1 
-			#wpose.position.z += scale * 0.1 
-			# wpose.position.z += scale * 0.02
-			waypoints.append(copy.deepcopy(wpose))
-			print("waypoints ", waypoints[i])
-		for i in range(15):
-			wpose.position.y += scale * 0.1 
-			#wpose.position.z += scale * 0.1 
-			# wpose.position.z += scale * 0.02
 			waypoints.append(copy.deepcopy(wpose))
 			print("waypoints ", waypoints[i])
 		# We want the Cartesian path to be interpolated at a resolution of 1 cm
@@ -206,46 +190,14 @@ class StaubliScanning(object):
 		# Note: We are just planning, not asking move_group to actually move the robot yet:
 		return plan, fraction
 
-	def display_trajectory(self,plan):
-		display_trajectory_publisher = self.display_trajectory_publisher
-
-		display_trajectory = moveit_msgs.msg.DisplayTrajectory()
-		display_trajectory.trajectory_start = self.robot.get_current_state()
-		display_trajectory.trajectory.append(plan)
-		display_trajectory_publisher.publish(display_trajectory)
-
 	def execute_plan(self, plan):
 		self.move_group.execute(plan, wait=True)
 
-def main():
-	staubli_client = StaubliScanning()
-	# staubli_client.go_to_pose_goal()
-	staubli_client.go_to_joint_state()
-	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	staubli_client.display_trajectory(cartesian_plan)
-	staubli_client.execute_plan(cartesian_plan)
-	# print "=========cartesian done========="
-	# rospy.sleep(2) 
-	#plan , faction = staubli_client.plan_cartesian_path()
-	#staubli_client.execute_plan(plan)
-	staubli_client.find_curr_pose() 
-	#print"=========go to pose goal========="
 if __name__ == '__main__':
 	staubli_client = StaubliScanning()
-	#ROS_INFO("START?")
-	######
-
-	# staubli_client.go_to_joint_state()
 	
-	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	staubli_client.display_trajectory(cartesian_plan)
-	staubli_client.execute_plan(cartesian_plan)
 	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	# staubli_client.display_trajectory(cartesian_plan)
 	# staubli_client.execute_plan(cartesian_plan)
-	
-	#######
 
+	staubli_client.go_to_joint_state()
 	#staubli_client.go_to_pose_goal()
-	staubli_client.find_curr_pose()
-	#main()
