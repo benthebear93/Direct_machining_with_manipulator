@@ -11,6 +11,7 @@
 #include <vector>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
+#include <string>
 //#include <fstream>
 
 using namespace std;
@@ -26,14 +27,17 @@ class Scanner{
         float pos_y;
         float pos_z;
         float temp;
+        
         std::string frame_id;
         std::string tf_frame;
         std_msgs::Float64MultiArray arr_profile;
         Cloud::Ptr  point3d{new Cloud};
+        Cloud::Ptr  sum_pointcloud{new Cloud};
+        Cloud::Ptr  temp_pointcloud{new Cloud};
         tf::TransformListener listener;
         tf::StampedTransform btolj; //base to LJ sensor
         //vector<xyz> point_storage;
-
+        string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed"; // basic file path
     private:
 
         ros::NodeHandle nh_, pnh_{"~"};
@@ -42,7 +46,6 @@ class Scanner{
         ros::Publisher  arr_profile_;
 
         ros::Subscriber cloud_sub_;
-
         void cloudMsgCallback(const sensor_msgs::PointCloud2& msg);
 };
 
@@ -73,25 +76,25 @@ bool Scanner::init()
     point3d->is_dense         = false;
     point3d->width            = 800;
     point3d->height           = 1;
+    sum_pointcloud.reset(new Cloud);
+    temp_pointcloud.reset(new Cloud);
 
     return true;
 }
 
 void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
 {
-    try
-    {
+    try{
         ros::Time now = ros::Time::now();
-        // listener.waitForTransform("base_link", "tool0", now, ros::Duration(0.05));
+        listener.waitForTransform("base_link", "tool0", now, ros::Duration(0.01));
         listener.lookupTransform("base_link", "tool0", ros::Time(0), btolj);
         pos_x = btolj.getOrigin().x();
         pos_y = btolj.getOrigin().y();
         pos_z = btolj.getOrigin().z(); //sensor coordinate from base_link
     }
-    catch (tf::TransformException ex)
-    {
+    catch (tf::TransformException ex){
         ROS_ERROR("%s",ex.what()); 
-        //ros::Duration(1.0).sleep();
+        ros::Duration(1.0).sleep();
     }
     pcl::PCLPointCloud2 pcl_pc;  // pcl point cloud
     pcl_conversions::toPCL(msg, pcl_pc);  // sensor msg to pcl
@@ -106,8 +109,7 @@ void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
     point3d->header.frame_id = "base_link";
     point3d->is_dense = false; // cloud could have NaNs
     point3d->height = 1;
-    double x = 0,y = 0,z =0;
-    //std::cout << profile_size << std::endl;
+    float x = 0,y = 0,z =0;
 
     for(int i =0; i<profile_size; i++)
     {
@@ -127,22 +129,27 @@ void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
         {   
             // std::cout << "y : " << check_y << "temp : "<< temp << std::endl;
             //point_storage.push_back({x,y,z});
-            arr_profile.data.push_back(x);
-            arr_profile.data.push_back(y);
-            arr_profile.data.push_back(z);
+            // arr_profile.data.push_back(x);
+            // arr_profile.data.push_back(y);
+            // arr_profile.data.push_back(z);
             if(i==profile_size-1)
             {
-                
                 // std::cout << "posy :" << y << "temp :" << temp << std::endl;
                 temp = y;
-                arr_profile_.publish(arr_profile);
-                arr_profile.data.clear();
+                // arr_profile_.publish(arr_profile);
+                // arr_profile.data.clear();
+                *sum_pointcloud = *sum_pointcloud + *point3d; 
             }
         } 
         else
             temp = y;
     }
-    // point_pub_.publish(point3d);
+
+    // ROS_INFO("HERE?");
+//     std::string fileName = filepath +"/pcd_data/profile.pcd";
+//     pcl::io::savePCDFileASCII(fileName, *sum_pointcloud);
+//     // ROS_INFO("SAVED?");
+//     point_pub_.publish(sum_pointcloud);
 }
 
 int main(int argc, char**argv)
@@ -150,4 +157,9 @@ int main(int argc, char**argv)
     ros::init(argc, argv, "generate_surface");
     Scanner Scanner;
     ros::spin();
+    if (!ros::ok()) {
+        ROS_INFO("save pcd");
+        std::string fileName = Scanner.filepath +"/pcd_data/profile.pcd";
+        pcl::io::savePCDFileASCII(fileName, *Scanner.sum_pointcloud);
+    }
 }
