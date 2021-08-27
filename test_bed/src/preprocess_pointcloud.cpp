@@ -167,11 +167,10 @@ void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 m
     ROS_INFO("saving3");
     Eigen::Matrix4f trans;
 
-    trans<< 0,   -1,  0, 0.580,
+    trans<< 0,   -1,  0, 0.610,
             -1,   0,  0, 0.077,
             0,   0,  -1, 0.765,
             0,   0,  0,     1;
-
     pcl::transformPointCloud(*temp_cloud , *ptr_transformed, trans);   
     pc_transformed = *ptr_transformed;
     pcl::io::savePCDFile (filepath + "/pcd_data/changed_pc_v4.pcd", pc_transformed);

@@ -12,6 +12,7 @@
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
 #include <string>
+#include <ctime>
 //#include <fstream>
 
 using namespace std;
@@ -26,7 +27,7 @@ class Scanner{
         float pos_x;
         float pos_y;
         float pos_z;
-        float temp;
+        int temp;
         
         std::string frame_id;
         std::string tf_frame;
@@ -84,6 +85,9 @@ bool Scanner::init()
 
 void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
 {
+    clock_t start, finish;
+    double duration;
+ 
     try{
         ros::Time now = ros::Time::now();
         listener.waitForTransform("base_link", "tool0", now, ros::Duration(0.01));
@@ -94,8 +98,8 @@ void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
     }
     catch (tf::TransformException ex){
         ROS_ERROR("%s",ex.what()); 
-        ros::Duration(1.0).sleep();
-    }
+        ros::Duration(0.01).sleep();
+    } //0.0006sec
     pcl::PCLPointCloud2 pcl_pc;  // pcl point cloud
     pcl_conversions::toPCL(msg, pcl_pc);  // sensor msg to pcl
 
@@ -109,8 +113,8 @@ void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
     point3d->header.frame_id = "base_link";
     point3d->is_dense = false; // cloud could have NaNs
     point3d->height = 1;
-    float x = 0,y = 0,z =0;
-
+    float x = 0,y = 0,z =0; //5e-05sec
+    start = clock();
     for(int i =0; i<profile_size; i++)
     {
         x = input_cloud.points[i].x + pos_x;
@@ -121,35 +125,19 @@ void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
             z = 1;
             x = 1;
         }
-        // std::cout << "x : " << x << "y : " << y << "z : " << z << std::endl;
-        point3d->points.push_back(pcl::PointXYZ(x, y, z));
-        temp = int(temp*1000);
-        int check_y = int(y*1000);
-        if(check_y!=temp)
+        point3d->points.push_back(pcl::PointXYZ(x, y, z)); //push back points
+        //int check_y = int(y*100000);
+        if(pos_y!=temp)
         {   
-            // std::cout << "y : " << check_y << "temp : "<< temp << std::endl;
-            //point_storage.push_back({x,y,z});
-            // arr_profile.data.push_back(x);
-            // arr_profile.data.push_back(y);
-            // arr_profile.data.push_back(z);
             if(i==profile_size-1)
             {
-                // std::cout << "posy :" << y << "temp :" << temp << std::endl;
-                temp = y;
-                // arr_profile_.publish(arr_profile);
-                // arr_profile.data.clear();
                 *sum_pointcloud = *sum_pointcloud + *point3d; 
             }
         } 
-        else
-            temp = y;
-    }
-
-    // ROS_INFO("HERE?");
-//     std::string fileName = filepath +"/pcd_data/profile.pcd";
-//     pcl::io::savePCDFileASCII(fileName, *sum_pointcloud);
-//     // ROS_INFO("SAVED?");
-//     point_pub_.publish(sum_pointcloud);
+        // else
+    }//3e-05sec
+    temp = pos_y;
+    // ROS_INFO("check");
 }
 
 int main(int argc, char**argv)

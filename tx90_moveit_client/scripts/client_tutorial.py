@@ -125,9 +125,9 @@ class StaubliScanning(object):
 		## We can plan a motion for this group to a desired pose for the
 		## end-effector:
 		pose_goal = geometry_msgs.msg.Pose()
-		pose_goal.position.x = 0.701	
-		pose_goal.position.y = -0.082
-		pose_goal.position.z = 0.227 #0.73 base
+		pose_goal.position.x = 0.690	
+		pose_goal.position.y = -0.025
+		pose_goal.position.z = 0.175 #0.73 base
 		pose_goal.orientation.x = -0.000
 		pose_goal.orientation.y = 0.707
 		pose_goal.orientation.z = 0.000
@@ -200,4 +200,4 @@ if __name__ == '__main__':
 	# staubli_client.execute_plan(cartesian_plan)
 
 	staubli_client.go_to_joint_state()
-	#staubli_client.go_to_pose_goal()
+	# staubli_client.go_to_pose_goal()

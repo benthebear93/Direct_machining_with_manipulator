@@ -22,6 +22,8 @@
 
 //Some tricks from boost
 #include <boost/algorithm/string.hpp>
+//custom msg
+#include <tx90_moveit_client/scan_path.h>
 
 //Definitions for the path visualization
 #define   AXIS_LINE_WIDTH 0.0025
@@ -33,8 +35,9 @@ typedef TrajectoryVec::const_iterator TrajectoryIter;
 
 ros::Publisher marker_publisher_;
 ros::Publisher traj_pub_;
-
+ros::Subscriber path_sub_;
 std::vector<descartes_core::TrajectoryPtPtr> makePath();
+
 
 EigenSTL::vector_Isometry3d HometoStart(EigenSTL::vector_Isometry3d points)
 {
@@ -154,6 +157,12 @@ void publishPosesMarkers(const EigenSTL::vector_Isometry3d& poses) // vector of 
 
 }
 
+void pathCallback(const tx90_moveit_client::scan_path msg)
+{
+  float x = msg.path_x[0];
+  float y = msg.path_y[0];
+  std::cout << "x: "<< x <<" y: " << y << std::endl;
+}
 // make cartesian point (path) with NO Tolerance on the TCP 
 descartes_core::TrajectoryPtPtr makeCartesianPoint(const Eigen::Isometry3d& pose, double dt); 
 // make cartesian point (path) with free rotation on the TCP
@@ -168,9 +177,9 @@ int main(int argc, char** argv)
 
 	marker_publisher_ = nh.advertise<visualization_msgs::MarkerArray>("visualize_trajectory_curve",1,true);
   traj_pub_         = nh.advertise<trajectory_msgs::JointTrajectory>("traj", 100);
+  path_sub_         = nh.subscribe("/path", 100, pathCallback);
 	// Required for communication with moveit components	
-  ROS_INFO("Ready to add two ints.");
-  ros::AsyncSpinner spinner (1);
+  ros::AsyncSpinner spinner (100);
   spinner.start();
 
 	descartes_core::RobotModelPtr model (new descartes_moveit::IkFastMoveitStateAdapter());
@@ -192,7 +201,7 @@ int main(int argc, char** argv)
 	if (!planner.initialize(model))
 	{ROS_ERROR("Failed to initialize planner");return -2;}	
   if (!planner.planPath(points))
-	{ROS_ERROR("Could not solve for a valid path");return -3;}\
+	{ROS_ERROR("Could not solve for a valid path");return -3;}
 
 	std::vector<descartes_core::TrajectoryPtPtr> result;
 
@@ -225,25 +234,25 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
   const static int num_steps = 20;
   const static double time_between_points = 0.5;
 
-  double path_x[65] = {0.653, 0.653, 0.653, 0.653, 0.653, 0.653, 0.653, 
-    0.653, 0.653, 0.653, 0.653, 0.653, 0.675, 0.675, 0.675, 0.675, 
-    0.675, 0.675, 0.675, 0.675, 0.675, 0.675, 0.675, 0.675, 0.675, 0.697,
-     0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697,
-      0.697, 0.697, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 
-      0.719, 0.719, 0.719, 0.719, 0.719, 0.741, 0.741, 0.741, 0.741, 0.741,
-       0.741, 0.741, 0.741, 0.741, 0.741, 0.741, 0.741, 0.741, 0.763};
+  float path_x[65] = {0.695, 0.695, 0.695, 0.695, 0.695, 0.695, 0.695, 0.695, 
+  0.695, 0.695, 0.695, 0.695, 0.717, 0.717, 0.717, 0.717, 0.717, 0.717, 0.717, 
+  0.717, 0.717, 0.717, 0.717, 0.717, 0.717, 0.739, 0.739, 0.739, 0.739, 0.739, 
+  0.739, 0.739, 0.739, 0.739, 0.739, 0.739, 0.739, 0.739, 0.761, 0.761, 0.761, 
+  0.761, 0.761, 0.761, 0.761, 0.761, 0.761, 0.761, 0.761, 0.761, 0.761, 0.783, 
+  0.783, 0.783, 0.783, 0.783, 0.783, 0.783, 0.783, 0.783, 0.783, 0.783, 0.783, 
+  0.783, 0.805
+};
 
-  double path_y[65] = {-0.075, -0.064, -0.053, -0.042, -0.031, -0.02, 
-    -0.009, 0.002, 0.013, 0.024, 0.035, 0.046, 0.046, 0.035, 0.024, 
-    0.013, 0.002, -0.009, -0.02, -0.031, -0.042, -0.053, -0.064, 
-    -0.075, -0.086, -0.086, -0.075, -0.064, -0.053, -0.042, -0.031, 
-    -0.02, -0.009, 0.002, 0.013, 0.024, 0.035, 0.046, 0.046, 0.035, 
-    0.024, 0.013, 0.002, -0.009, -0.02, -0.031, -0.042, -0.053, -0.064, 
-    -0.075, -0.086, -0.086, -0.075, -0.064, -0.053, -0.042, -0.031, 
-    -0.02, -0.009, 0.002, 0.013, 0.024, 0.035, 0.046, 0.046};
 
-  double z_value = 0.214; 
+  float path_y[65] = {-0.08, -0.069, -0.058, -0.047, -0.036, -0.025, -0.014, 
+  -0.003, 0.008, 0.019, 0.03, 0.041, 0.041, 0.03, 0.019, 0.008, -0.003, -0.014, 
+  -0.025, -0.036, -0.047, -0.058, -0.069, -0.08, -0.091, -0.091, -0.08, -0.069, 
+  -0.058, -0.047, -0.036, -0.025, -0.014, -0.003, 0.008, 0.019, 0.03, 0.041, 
+  0.041, 0.03, 0.019, 0.008, -0.003, -0.014, -0.025, -0.036, -0.047, -0.058, 
+  -0.069, -0.08, -0.091, -0.091, -0.08, -0.069, -0.058, -0.047, -0.036, -0.025, 
+  -0.014, -0.003, 0.008, 0.019, 0.03, 0.041, 0.041};
 
+  float z_value = 0.2; 
   int path_size = (sizeof(path_x)/sizeof(*path_x));
   std::cout << "path_size :" << path_size << std::endl;
   EigenSTL::vector_Isometry3d pattern_poses;
@@ -251,7 +260,7 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
   {
     std::cout << "i : " << i << std::endl;
     Eigen::Isometry3d pose = Eigen::Isometry3d::Identity();
-    pose.translation() = Eigen::Vector3d(path_x[i]+0.1, path_y[i], z_value);
+    pose.translation() = Eigen::Vector3d(path_x[i]+0.068, path_y[i]+0.03, z_value);
     pose *=Eigen::AngleAxisd(M_PI/2.0, Eigen::Vector3d::UnitY());
     pattern_poses.push_back(pose);
   }
