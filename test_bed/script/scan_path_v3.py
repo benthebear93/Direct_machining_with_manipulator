@@ -14,7 +14,8 @@ from scipy.spatial import ConvexHull, convex_hull_plot_2d
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
 from std_msgs.msg import Int32
-EXTEND_AREA = 100.0
+import time
+EXTEND_AREA = 200.0
 
 class ScanPath():
 	def __init__(self, xy_resolution, sensor_x_length):
@@ -22,7 +23,10 @@ class ScanPath():
 		self.sensor_x_length = sensor_x_length #32mm 
 		self.path_pub = rospy.Publisher('path', scan_path, queue_size=10)
 
-	def planning(self, x_start, y_start, x_end, y_end, sweep_dir, linechange_size, grid_map):
+	def planning(self, x_start, y_start, x_end, y_end,x_end2, y_end2, sweep_dir, linechange_size, grid_map):
+		print("xend: ",x_end, "yend: ", y_end)
+		print("xend: ",x_end2, "yend: ", y_end2)
+		print("x_start: ",x_start, "y_start: ", y_start)
 		line_counter = 0
 		x_pos = x_start
 		y_pos = y_start #scanning start position
@@ -44,10 +48,12 @@ class ScanPath():
 				else:
 					x_pos, y_pos, sweep_dir = change_sweep_dir(x_pos, y_pos, sweep_dir, linechange_size) 
 					line_counter +=1
-					px.append(x_pos)
-					py.append(y_pos)
 					if y_pos == y_end and x_pos == x_end: #arrived
 						break
+					if y_pos == y_end2  and x_pos == y_end2:
+						break
+					px.append(x_pos)
+					py.append(y_pos)
 			# last scan line
 			else:
 				n_y_pos = y_pos + sweep_dir
@@ -55,12 +61,12 @@ class ScanPath():
 					if n_y_pos > y_end:
 						break
 				else:
-					if n_y_pos < x_start:
+					if n_y_pos < y_start:
 						break
 				x_pos = n_x_pos
 				px.append(x_pos)
 				py.append(y_pos)
-		print("line :", line_counter)
+
 		xy_res = np.array(grid_map).shape #x y resolution
 		plt.imshow(grid_map, label='occupancy map')
 		plt.plot(px, py, '-k', label='scan path')
@@ -92,22 +98,35 @@ class ScanPath():
 		y_start = int(round(corners[3][1]))
 		x_end = int(round(corners[0][0]))
 		y_end = int(round(corners[0][1]))
-
+		x_end2 =  int(round(corners[1][0]))
+		y_end2 =  int(round(corners[1][1]))
+		if x_start%2 !=0:
+			if x_end%2==0:
+				x_end +=1
+			if x_end2%2==0:
+				x_end2 +=1
+		else:
+			if x_end%2!=0:
+				x_end +=1
+			if x_end2%2!=0:
+				x_end2 +=1
 		for i in range(y_start,y_end+1): 
 			for j in range(x_start, x_end+1):
 				grid_map[i][j] = 1
 
 		sweep_dir, linechange_size = sweep_dircheck(x_start, x_end, y_start, y_end, grid_resolution)
-		px, py = self.planning(x_start, y_start, x_end, y_end, sweep_dir, linechange_size, grid_map)
+		px, py = self.planning(x_start, y_start, x_end, y_end, x_end2, y_end2, sweep_dir, linechange_size, grid_map)
 		px = [ (x * self.xy_resolution+min_x)/1000 for x in px]
 		py = [ (y * self.xy_resolution+min_y)/1000 for y in py]
 		path = scan_path() 
 		path.path_x = px
 		path.path_y = py
+		print(len(px), px)
+		print(len(py), py)
 		self.path_pub.publish(path)
 
 def change_sweep_dir(x_pos, y_pos, sweep_dir, up_down):
-	print("changing line")
+	# print("changing line")
 
 	sweep_dir *= -1
 	x_pos = x_pos + up_down
