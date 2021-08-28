@@ -1,10 +1,10 @@
 <package format="2">
-  <name>gripper_2</name>
+  <name>tx90_spindle</name>
   <version>1.0.0</version>
   <description>
-    <p>URDF Description package for gripper_2</p>
+    <p>URDF Description package for tx90_spindle</p>
     <p>This package contains configuration data, 3D models and launch files
-for gripper_2 robot</p>
+for tx90_spindle robot</p>
   </description>
   <author>TODO</author>
   <maintainer email="TODO@email.com" />

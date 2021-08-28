@@ -10,7 +10,7 @@
     name="spawn_model"
     pkg="gazebo_ros"
     type="spawn_model"
-    args="-file $(find gripper_2)/urdf/gripper_2.urdf -urdf -model gripper_2"
+    args="-file $(find tx90_spindle)/urdf/tx90_spindle.urdf -urdf -model tx90_spindle"
     output="screen" />
   <node
     name="fake_joint_calibration"

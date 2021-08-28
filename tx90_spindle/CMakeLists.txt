@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-project(gripper_2)
+project(tx90_spindle)
 
 find_package(catkin REQUIRED)
 
