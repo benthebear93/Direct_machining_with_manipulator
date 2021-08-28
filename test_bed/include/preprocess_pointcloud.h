@@ -13,7 +13,6 @@
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/io/pcd_io.h>
-#include <iostream>
 
 #include <typeinfo> 
 #include <pcl/filters/passthrough.h>
@@ -39,30 +38,35 @@
 #include <pcl/common/file_io.h> // for getFilenameWithoutExtension
 #include <pcl/common/transforms.h>
 
+#include <iostream>
+#include <string>
 #include "test_bed/boundary.h"
-
+using namespace std;
+// Pre processing class for any point cloud data
 class PCprocess
 {
 public: 
 	PCprocess();
 	~PCprocess();
-	void Cloudcb(const sensor_msgs::PointCloud2 msg);
+	void Cloudcb(const sensor_msgs::PointCloud2 msg); // subscriber callback function from realsense
 	// void do_passthrough(const pcl::PointCloud<pcl::PointXYZRGB>& src, pcl::PointCloud<pcl::PointXYZRGB>& dst);
 	// void read_pcd();
+
 private:
 	int argc;
 	char** argv;
+	string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed"; // basic file path
 	ros::NodeHandle n_;
 	ros::Subscriber sub_;
 	// ros::Publisher boundary_pub_x_;
 	// ros::Publisher boundary_pub_y_;
-	ros::Publisher boundary_pub_;
+	//ros::Publisher boundary_pub_;
 	ros::Publisher pc_pub_;
-	bool mbflag_save;
-	bool mbflag_cluster_save;
-	void Segmentation(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud);
-	void ExtractBorder(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud);
-	void TfChange(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud);
-
+	ros::Publisher pc_segpub_;
+	bool mbflag_save; // first point cloud save flag
+	bool mbflag_cluster_save; // segment save flag
+	void Segmentation(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud); // segmentation
+	//void ExtractBorder(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud); // extracting border
+	void TfChange(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud); // tf change
 };
 #endif

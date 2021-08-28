@@ -21,7 +21,8 @@ class ScanPath():
 		self.xy_resolution = xy_resolution #11mm for one grid
 		self.sensor_x_length = sensor_x_length #32mm 
 		self.path_pub = rospy.Publisher('path', scan_path, queue_size=10)
-	def planning(self, x_start, y_start, x_end, y_end, yw, sweep_dir, up_down, grid_map):
+		
+	def planning(self, x_start, y_start, x_end, y_end, sweep_dir, up_down, grid_map):
 		line_counter = 1
 		x_pos = x_start
 		y_pos = y_start
@@ -75,6 +76,8 @@ class ScanPath():
 		y_data = data.boundary_y 
 		x_data = [ int(x * 1000) for x in x_data]
 		y_data = [ int(y * 1000) for y in y_data]
+		print("min _x :", min(x_data)/1000.0, "max_x :", max(x_data)/1000.0 )
+		print("min _y :", min(y_data)/1000.0, "max_y :", max(y_data)/1000.0 )
 		# print(x_data)
 		# print(y_data)
 		up_down_size = int(round(self.sensor_x_length/self.xy_resolution))
@@ -94,7 +97,7 @@ class ScanPath():
 				grid_map[i][j] = 1
 
 		from_upper, sweep_dir, up_down = sweep_updown(x_start, x_end, y_start, y_end, up_down_size)
-		px , py = self.planning(x_start, y_start, x_end, y_end,yw, sweep_dir, up_down, grid_map)
+		px , py = self.planning(x_start, y_start, x_end, y_end, sweep_dir, up_down, grid_map)
 		px = [ (x * self.xy_resolution+min_x)/1000 for x in px]
 		py = [ (y * self.xy_resolution+min_y)/1000 for y in py]
 		path = scan_path() 

@@ -110,6 +110,9 @@ class StaubliScanning(object):
 
 		# For testing:
 		current_joints = move_group.get_current_joint_values()
+		print("                              ")
+		print("current joint ",current_joints)
+		print("                              ")
 		return all_close(joint_goal, current_joints, 0.01)
 
 	def go_to_pose_goal(self):
@@ -122,13 +125,13 @@ class StaubliScanning(object):
 		## We can plan a motion for this group to a desired pose for the
 		## end-effector:
 		pose_goal = geometry_msgs.msg.Pose()
-		pose_goal.position.x = 0.823
-		pose_goal.position.y = -0.149
-		pose_goal.position.z = 0.926026
-		pose_goal.orientation.x = 0.0001659
-		pose_goal.orientation.y = 0.7070751
-		pose_goal.orientation.z = -0.000276
-		pose_goal.orientation.w = 0.7071383
+		pose_goal.position.x = 0.756	
+		pose_goal.position.y = -0.026
+		pose_goal.position.z = 0.273 #0.73 base
+		pose_goal.orientation.x = -0.000
+		pose_goal.orientation.y = 0.707
+		pose_goal.orientation.z = 0.000
+		pose_goal.orientation.w = 0.707
 		
 		move_group.set_pose_target(pose_goal)
 
@@ -169,19 +172,14 @@ class StaubliScanning(object):
 		waypoints = []
 
 		wpose = group.get_current_pose().pose
-		# wpose.position.z -= scale * 0.1  # First move up (z)
-		# wpose.position.y += scale * 1.5  # and sideways (y)
-		# waypoints.append(copy.deepcopy(wpose))1`1
-
-		# wpose.position.x += scale * 0.1  # Second move forward/backwards in (x)
-		# waypoints.append(copy.deepcopy(wpose))
-		for i in range(15):
-			wpose.position.x += scale * 0.1 
-			#wpose.position.z += scale * 0.1 
-			# wpose.position.z += scale * 0.02
+		for i in range(7):
+			wpose.position.z -= scale * 0.1
 			waypoints.append(copy.deepcopy(wpose))
 			print("waypoints ", waypoints[i])
-
+		for i in range(7):
+			wpose.position.x += scale * 0.1 
+			waypoints.append(copy.deepcopy(wpose))
+			print("waypoints ", waypoints[i])
 		# We want the Cartesian path to be interpolated at a resolution of 1 cm
 		# which is why we will specify 0.01 as the eef_step in Cartesian
 		# translation.  We will disable the jump threshold by setting it to 0.0 disabling:
@@ -192,42 +190,14 @@ class StaubliScanning(object):
 		# Note: We are just planning, not asking move_group to actually move the robot yet:
 		return plan, fraction
 
-	def display_trajectory(self,plan):
-		display_trajectory_publisher = self.display_trajectory_publisher
-
-		display_trajectory = moveit_msgs.msg.DisplayTrajectory()
-		display_trajectory.trajectory_start = self.robot.get_current_state()
-		display_trajectory.trajectory.append(plan)
-		display_trajectory_publisher.publish(display_trajectory)
-
 	def execute_plan(self, plan):
 		self.move_group.execute(plan, wait=True)
 
-def main():
-	staubli_client = StaubliScanning()
-	# staubli_client.go_to_pose_goal()
-	staubli_client.go_to_joint_state()
-	cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	staubli_client.display_trajectory(cartesian_plan)
-	staubli_client.execute_plan(cartesian_plan)
-	# print "=========cartesian done========="
-	# rospy.sleep(2) 
-	#plan , faction = staubli_client.plan_cartesian_path()
-	#staubli_client.execute_plan(plan)
-	staubli_client.find_curr_pose()
-	#print"=========go to pose goal========="
 if __name__ == '__main__':
 	staubli_client = StaubliScanning()
-	#ROS_INFO("START?")
-	######
-
-	staubli_client.go_to_joint_state()
-	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
-	# staubli_client.display_trajectory(cartesian_plan)
-	# staubli_client.execute_plan(cartesian_plan)
 	
-	#######
+	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
+	# staubli_client.execute_plan(cartesian_plan)
 
-	# staubli_client.go_to_pose_goal()
-	staubli_client.find_curr_pose()
-	#main()
+	#staubli_client.go_to_joint_state()
+	staubli_client.go_to_pose_goal()

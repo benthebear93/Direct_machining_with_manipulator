@@ -22,6 +22,8 @@
 
 //Some tricks from boost
 #include <boost/algorithm/string.hpp>
+//custom msg
+#include <tx90_moveit_client/scan_path.h>
 
 //Definitions for the path visualization
 #define   AXIS_LINE_WIDTH 0.0025
@@ -33,8 +35,9 @@ typedef TrajectoryVec::const_iterator TrajectoryIter;
 
 ros::Publisher marker_publisher_;
 ros::Publisher traj_pub_;
-
+ros::Subscriber path_sub_;
 std::vector<descartes_core::TrajectoryPtPtr> makePath();
+
 
 EigenSTL::vector_Isometry3d HometoStart(EigenSTL::vector_Isometry3d points)
 {
@@ -154,6 +157,12 @@ void publishPosesMarkers(const EigenSTL::vector_Isometry3d& poses) // vector of 
 
 }
 
+void pathCallback(const tx90_moveit_client::scan_path msg)
+{
+  float x = msg.path_x[0];
+  float y = msg.path_y[0];
+  std::cout << "x: "<< x <<" y: " << y << std::endl;
+}
 // make cartesian point (path) with NO Tolerance on the TCP 
 descartes_core::TrajectoryPtPtr makeCartesianPoint(const Eigen::Isometry3d& pose, double dt); 
 // make cartesian point (path) with free rotation on the TCP
@@ -168,9 +177,9 @@ int main(int argc, char** argv)
 
 	marker_publisher_ = nh.advertise<visualization_msgs::MarkerArray>("visualize_trajectory_curve",1,true);
   traj_pub_         = nh.advertise<trajectory_msgs::JointTrajectory>("traj", 100);
+  path_sub_         = nh.subscribe("/path", 100, pathCallback);
 	// Required for communication with moveit components	
-  ROS_INFO("Ready to add two ints.");
-  ros::AsyncSpinner spinner (1);
+  ros::AsyncSpinner spinner (100);
   spinner.start();
 
 	descartes_core::RobotModelPtr model (new descartes_moveit::IkFastMoveitStateAdapter());
@@ -192,7 +201,7 @@ int main(int argc, char** argv)
 	if (!planner.initialize(model))
 	{ROS_ERROR("Failed to initialize planner");return -2;}	
   if (!planner.planPath(points))
-	{ROS_ERROR("Could not solve for a valid path");return -3;}\
+	{ROS_ERROR("Could not solve for a valid path");return -3;}
 
 	std::vector<descartes_core::TrajectoryPtPtr> result;
 
@@ -202,6 +211,8 @@ int main(int argc, char** argv)
 	std::vector<std::string> names;
 
 	nh.getParam("controller_joint_names", names);
+
+  names = {"joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6"};
 
 	trajectory_msgs::JointTrajectory joint_solution;
 	joint_solution.joint_names = names;
@@ -223,38 +234,19 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
   const static int num_steps = 20;
   const static double time_between_points = 0.5;
 
-  double path_x[106] = {0.736, 0.747, 0.758, 0.769, 0.78, 0.791, 0.802, 
-    0.813, 0.824, 0.835, 0.846, 0.857, 0.868, 0.879, 0.879, 
-    0.868, 0.857, 0.846, 0.835, 0.824, 0.813, 0.802, 0.791, 0.78, 
-    0.769, 0.758, 0.747, 0.736, 0.725, 0.725, 0.736, 0.747, 
-    0.758, 0.769, 0.78, 0.791, 0.802, 0.813, 0.824, 0.835, 
-    0.846, 0.857, 0.868, 0.879, 0.879, 0.868, 0.857, 0.846, 
-    0.835, 0.824, 0.813, 0.802, 0.791, 0.78, 0.769, 0.758, 0.747, 
-    0.736, 0.725, 0.725, 0.736, 0.747, 0.758, 0.769, 0.78, 
-    0.791, 0.802, 0.813, 0.824, 0.835, 0.846, 0.857, 0.868, 
-    0.879, 0.879, 0.868, 0.857, 0.846, 0.835, 0.824, 0.813, 
-    0.802, 0.791, 0.78, 0.769, 0.758, 0.747, 0.736, 0.725, 0.725, 0.736, 
-    0.747, 0.758, 0.769, 0.78, 0.791, 0.802, 0.813, 0.824, 0.835, 0.846, 
-    0.857, 0.868, 0.879};
-  double path_y[106] = {-0.046, -0.046, -0.046, -0.046, -0.046, -0.046,  //6
-    -0.046, -0.046, -0.046, -0.046, -0.046, -0.046, -0.046, -0.046,  //8
-    -0.024, -0.024, -0.024, -0.024, -0.024, -0.024, -0.024, -0.024, //8
-    -0.024, -0.024, -0.024, -0.024, -0.024, -0.024, -0.024, -0.002, //8
-    -0.002, -0.002, -0.002, -0.002, -0.002, -0.002, -0.002, -0.002, //8
-    -0.002, -0.002, -0.002, -0.002, -0.002, -0.002, 0.02, 0.02, 0.02, //9
-    0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, //11
-    0.02, 0.042, 0.042, 0.042, 0.042, 0.042, 0.042, 0.042, 0.042, 0.042, //10
-    0.042, 0.042, 0.042, 0.042, 0.042, 0.042, 0.064, 0.064, 0.064, 0.064, //10
-    0.064, 0.064, 0.064, 0.064, 0.064, 0.064, 0.064, 0.064, 0.064, 0.064, //10
-    0.064, 0.086, 0.086, 0.086, 0.086, 0.086, 0.086, 0.086, 0.086, 0.086,  //10
-    0.086, 0.086, 0.086, 0.086, 0.086, 0.086}; //6
-
+  // float path_x[98] = {0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.817, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795};
+  // float path_y[98] = {-0.085, -0.074, -0.063, -0.052, -0.041, -0.03, -0.019, -0.008, 0.003, 0.014, 0.025, 0.036, 0.047, 0.047, 0.036, 0.025, 0.014, 0.003, -0.008, -0.019, -0.03, -0.041, -0.052, -0.063, -0.074, -0.085, -0.096, -0.096, -0.085, -0.074, -0.063, -0.052, -0.041, -0.03, -0.019, -0.008, 0.003, 0.014, 0.025, 0.036, 0.047, 0.047, 0.036, 0.025, 0.014, 0.003, -0.008, -0.019, -0.03, -0.041, -0.052, -0.063, -0.074, -0.085, -0.096, -0.096, -0.085, -0.074, -0.063, -0.052, -0.041, -0.03, -0.019, -0.008, 0.003, 0.014, 0.025, 0.036, 0.047, 0.047, 0.036, 0.025, 0.014, 0.003, -0.008, -0.019, -0.03, -0.041, -0.052, -0.063, -0.074, -0.085, -0.096, -0.096, -0.096, -0.085, -0.074, -0.063, -0.052, -0.041, -0.03, -0.019, -0.008, 0.003, 0.014, 0.025, 0.036, 0.047};
+  float path_x[2] = {0.754, 0.756};
+  float path_y[2] = {-0.026, -0.026};
+  float z_value = 0.2; 
   int path_size = (sizeof(path_x)/sizeof(*path_x));
+  std::cout << "path_size :" << path_size << std::endl;
   EigenSTL::vector_Isometry3d pattern_poses;
-  for (int i = 0; i < path_size-2; i++)
+  for (int i = 0; i < path_size; i++)
   {
+    std::cout << "i : " << i << std::endl;
     Eigen::Isometry3d pose = Eigen::Isometry3d::Identity();
-    pose.translation() = Eigen::Vector3d(path_x[i], path_y[i], 0.1);
+    pose.translation() = Eigen::Vector3d(path_x[i]+0.068, path_y[i]+0.03, z_value);
     pose *=Eigen::AngleAxisd(M_PI/2.0, Eigen::Vector3d::UnitY());
     pattern_poses.push_back(pose);
   }
@@ -268,11 +260,10 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
 
   //   pattern_poses.push_back(pose);
   // }
-  for(int i=0; i<pattern_poses.size(); i++)
-  { std::cout << "I  :"   << i <<std::endl;
-    std::cout << pattern_poses[i].translation() <<" front "<<std::endl;
-
-  }
+  // for(int i=0; i<pattern_poses.size()*2; i++)
+  // { std::cout << "I  :"   << i <<std::endl;
+  //   std::cout << pattern_poses[i].translation() <<" front "<<std::endl;
+  // }
   // Eigen::Isometry3d pattern_origin = Eigen::Isometry3d::Identity();
   // //set pattern start position
   // pattern_origin.translation() = Eigen::Vector3d(0.725, 0.086, 0.1); 
@@ -283,7 +274,7 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
   { 
     Eigen::Isometry3d temp_path = pose; //pattern_origin * 
     path_marker.push_back(temp_path);
-    descartes_core::TrajectoryPtPtr pt = makeCartesianPoint(pose, time_between_points);//pattern_origin * 
+    descartes_core::TrajectoryPtPtr pt = makeCartesianPoint(pose, 0.1);//pattern_origin *
     result.push_back(pt);
   }
   publishPosesMarkers(path_marker);
@@ -316,10 +307,9 @@ bool executeTrajectory(const trajectory_msgs::JointTrajectory& trajectory)
     ROS_ERROR("Could not connect to action server");
     return false;
   }
-
   control_msgs::FollowJointTrajectoryGoal goal;
   goal.trajectory = trajectory;
-  goal.goal_time_tolerance = ros::Duration(1.0); 
+  goal.goal_time_tolerance = ros::Duration(2.0); 
   
   return ac.sendGoalAndWait(goal) == actionlib::SimpleClientGoalState::SUCCEEDED;
 }

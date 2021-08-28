@@ -18,7 +18,10 @@
 
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+   <param name="publish_frequency" type="double" value="250.0" />
   </node>
+<!--   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+  </node> -->
 <!--   <include file="$(find staubli_tx90_gazebo)/launch/load_cfrp.launch" /> -->
   <include file="$(find staubli_tx90_gazebo)/launch/tx90_control.launch"/>
   

@@ -10,7 +10,8 @@ find_package(catkin REQUIRED COMPONENTS
   descartes_planner
   descartes_utilities
   trajectory_msgs
-
+  
+  message_generation 
   moveit_commander
   rospy
   roscpp
@@ -19,6 +20,8 @@ find_package(catkin REQUIRED COMPONENTS
   tf_conversions
   eigen_conversions
 )
+add_message_files(FILES scan_path.msg)
+generate_messages(DEPENDENCIES std_msgs)
 
 catkin_package(INCLUDE_DIRS CATKIN_DEPENDS roscpp tf)
 
