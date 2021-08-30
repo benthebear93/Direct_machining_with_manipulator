@@ -2,6 +2,7 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/features/normal_3d.h>
+#include "std_msgs/Int32MultiArray.h"
 
 #include <ros/ros.h>
 #include <tf/transform_listener.h>
@@ -11,9 +12,37 @@
 #include <vector>
 #include <ctime>
 #include <cmath>
+#include <string>
 #define PI 3.14159265
+
+std::string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner"; // basic file path
 double rad2deg(double radian);
 double deg2rad(double degree);
+class FindNormal
+{
+public:
+	FindNormal();
+	~FindNormal();
+  void find_normal();
+private:
+	int argc;
+	char** argv;
+	ros::NodeHandle n_;
+	ros::Publisher drill_point_pub_;
+	float dp_x = 0;
+	float dp_y = 0;
+	float dp_z = 0;
+};
+
+FindNormal::FindNormal()
+{
+	drill_point_pub_ = n_.advertise<std_msgs::Int32MultiArray>("drill_point", 1);
+}
+FindNormal::~FindNormal(){
+
+}
+
+
 double rad2deg(double radian)
 {
     return radian*180/PI;
@@ -23,45 +52,52 @@ double deg2rad(double degree)
     return degree*PI/180;
 }
 
-void find_normal()
+void FindNormal::find_normal()
 {
-  // *.PCD 파일 읽기 (https://raw.githubusercontent.com/adioshun/gitBook_Tutorial_PCL/master/Intermediate/sample/cloud_cluster_0.pcd)
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);    
-  pcl::io::loadPCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/pass_pc_rgb.pcd", *cloud);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr scanned_cloud (new pcl::PointCloud<pcl::PointXYZ>);    
+  pcl::io::loadPCDFile<pcl::PointXYZ>(filepath+"/pcd_data/surface.pcd", *scanned_cloud);
+
+  copyPointCloud(*scanned_cloud, *cloud); //linescanner xyz to xyzrgb for visualization
+  std::cout << "copying ....." << std::endl;
   std::cout << "                 " << std::endl;
   std::cout << "finding normal......" << std::endl;
   std::cout << "                 " << std::endl;
-  std::cout << "input cloud size: " << cloud->points.size() << std::endl;
+  std::cout << "input cloud size: " << scanned_cloud->points.size() << std::endl;
   
-  // 시각적 확인을 위해 색상 통일 (255,255,255)
+  // set rgb value as black 
   for (size_t i = 0; i < cloud->points.size(); ++i){
-  cloud->points[i].r = 255;
-  cloud->points[i].g = 255;
-  cloud->points[i].b = 255;
+  cloud->points[i].r = 0;
+  cloud->points[i].g = 0;
+  cloud->points[i].b = 0;
   }
 
-  //KdTree 오브젝트 생성 
+  //KdTree object init
   pcl::KdTreeFLANN<pcl::PointXYZRGB> kdtree;
   kdtree.setInputCloud (cloud);    //입력 
 
-     pcl::PointXYZRGB searchPoint;
-     searchPoint.x = 0.062; //-0.006;
-     searchPoint.y = 0.104; //0.098;
-     searchPoint.z = 0.514; //0.503;
-  // pcl::PointXYZRGB searchPoint = cloud->points[3000]; 
+  pcl::PointXYZRGB searchPoint;
+  searchPoint.x = 0.772; 
+  searchPoint.y = -0.049;
+  searchPoint.z = 0.270;
 
-  //기준점 좌표 출력 
+  std_msgs::Int32MultiArray drill_p;
+  drill_p.data.push_back(searchPoint.x*1000);
+  drill_p.data.push_back(searchPoint.y*1000);
+  drill_p.data.push_back(searchPoint.z*1000);
+  drill_point_pub_.publish(drill_p);
+  //print search point
   std::cout << "searchPoint :" << searchPoint.x << " " << searchPoint.y << " " << searchPoint.z  << std::endl;
 
 
-  //기준점에서 가까운 순서중 K번째까지의 포인트 탐색 (K nearest neighbor search)
+  //select K nearest neighbor point
   int K = 1000;   // 탐색할 포인트 수 설정 
   std::vector<int> pointIdxNKNSearch(K);
   std::vector<float> pointNKNSquaredDistance(K);
 
   if ( kdtree.nearestKSearch (searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0 )
   {
-    //시각적 확인을 위하여 색상 변경 (0,255,0)
+    // colorized searched point
     for (size_t i = 0; i < pointIdxNKNSearch.size (); ++i)
     {
       cloud->points[pointIdxNKNSearch[i]].r = 0;
@@ -69,43 +105,40 @@ void find_normal()
       cloud->points[pointIdxNKNSearch[i]].b = 255;
     }
   }
-
-  // // 탐색된 점의 수 출력 
+  // number of searched point (should be same with set search point number)
   std::cout << "searched points ：" << pointIdxNKNSearch.size() << std::endl;
 
   float curvature;
   Eigen::Vector4f plane_parameters; 
-  computePointNormal(*cloud,pointIdxNKNSearch,plane_parameters,curvature); 
-  std::cout << "plane param : \n"<< plane_parameters << std::endl;
-  std::cout << "curvature : "<< curvature << std::endl;
-  std::cout <<" "<<std::endl;
-  // -0.65747 -0.0007881 0.75348
+  computePointNormal(*cloud, pointIdxNKNSearch, plane_parameters, curvature); 
+  std::cout << "plane param : \n" << plane_parameters << std::endl;
+  std::cout << "curvature : " << curvature << std::endl;
+  std::cout << " " <<std::endl;
 
-  pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>());
-  pcl::PointCloud<pcl::Normal> sourceNormals;
-  sourceNormals.push_back(pcl::Normal(plane_parameters[0], plane_parameters[1], plane_parameters[2]));
-  pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data/Kdtree_test_KNN.pcd", *cloud);
+  // pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>());
+  // pcl::PointCloud<pcl::Normal> sourceNormals;
+  // sourceNormals.push_back(pcl::Normal(plane_parameters[0], plane_parameters[1], plane_parameters[2]));
+  //pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner/pcd_data/Kdtree_test_KNN.pcd", *cloud);
 
-  double roll_deg  = deg2rad(0.06867); // X --> Z가 되야함  35.61866
-  double pitch_deg = deg2rad(48.89);// Y --> Y는 맞음 89.99
-  double yaw_deg   = deg2rad(0.06);        // Z --> X가 되야함
+  double roll_deg  = deg2rad(2.06); // X --> Z가 되야함  35.61866
+  double pitch_deg = deg2rad(-86.5);// Y --> Y는 맞음 89.99
+  double yaw_deg   = deg2rad(-21.5);        // Z --> X가 되야함
   std::cout <<" "<<std::endl;
   tf::Quaternion normal_q;
   
-  normal_q.setEuler(pitch_deg, yaw_deg, roll_deg); //Y X Z or ZYX
+  //normal_q.setEuler(pitch_deg, yaw_deg, roll_deg); //Y X Z or ZYX
+  normal_q.setEuler(pitch_deg, yaw_deg, roll_deg);
   normal_q = normal_q.normalize();
   std::cout << "x :" << normal_q.x() << std::endl;
   std::cout << "y :" << normal_q.y() << std::endl;
   std::cout << "z :" << normal_q.z() << std::endl;
   std::cout << "w :" << normal_q.w() << std::endl;
-
-
 }
 
 int main (int argc, char** argv)
 {
-  find_normal();
   ros::init(argc, argv, "find_normal");
+  FindNormal findnormal;
+  while (ros::ok()) findnormal.find_normal();
   ros::spin();
-  return 0;
 }

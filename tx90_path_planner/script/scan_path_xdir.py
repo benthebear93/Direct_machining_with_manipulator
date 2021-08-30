@@ -5,8 +5,8 @@ from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
 import cv2
 from std_msgs.msg import Int32MultiArray
-from test_bed.msg import boundary
-from test_bed.msg import scan_path
+from tx90_path_planner.msg import boundary
+from tx90_path_planner.msg import scan_path
 
 import numpy as np
 from matplotlib.patches import Polygon

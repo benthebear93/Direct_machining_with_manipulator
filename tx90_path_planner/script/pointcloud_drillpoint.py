@@ -13,7 +13,7 @@ import sys
 import rospy
 from geometry_msgs.msg import Pose
 import tf
-file_path = '/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed/pcd_data'
+file_path = '/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner/pcd_data'
 
 class Pc2Img():
     def __init__(self):

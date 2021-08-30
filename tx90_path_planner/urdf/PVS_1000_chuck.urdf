@@ -25,7 +25,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://test_bed/meshes/PVS_1000_chuck.STL" />
+        <mesh filename="package://tx90_path_planner/meshes/PVS_1000_chuck.STL" />
       </geometry>
       <material
         name="">

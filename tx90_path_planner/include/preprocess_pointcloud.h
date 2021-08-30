@@ -40,7 +40,7 @@
 
 #include <iostream>
 #include <string>
-#include "test_bed/boundary.h"
+#include "tx90_path_planner/boundary.h"
 using namespace std;
 // Pre processing class for any point cloud data
 class PCprocess
@@ -55,7 +55,7 @@ public:
 private:
 	int argc;
 	char** argv;
-	string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed"; // basic file path
+	string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner"; // basic file path
 	ros::NodeHandle n_;
 	ros::Subscriber sub_;
 	// ros::Publisher boundary_pub_x_;

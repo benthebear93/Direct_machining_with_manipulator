@@ -18,16 +18,16 @@
 
 #include <iostream>
 #include <string>
-#include "test_bed/boundary.h"
+#include "tx90_path_planner/boundary.h"
 using namespace std;
 int main(int argc, char **argv)
 {
 	ROS_INFO("Extract boundary");
 	ros::init (argc, argv, "extract_boundary");
 	ros::NodeHandle nh;
-	ros::Publisher boundary_pub = nh.advertise<test_bed::boundary>("boundary", 100);
+	ros::Publisher boundary_pub = nh.advertise<tx90_path_planner::boundary>("boundary", 100);
 	ros::Rate loop_rate(100);
-	string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed"; // basic file path
+	string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner"; // basic file path
 	typedef pcl::PointXYZ PointType;
 	float angular_resolution= 0.5f;
 	pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 	while(ros::ok())
 	{
 		// custom ros msgs type init 
-		test_bed::boundary bounday_array;
+		tx90_path_planner::boundary bounday_array;
 
 		for (int i =0; i<border_points.points.size(); i++)
 		{

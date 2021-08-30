@@ -6,7 +6,7 @@
     default="False" />
   <param
     name="robot_description"
-    textfile="$(find test_bed)/urdf/test_bed.urdf" />
+    textfile="$(find tx90_path_planner)/urdf/tx90_path_planner.urdf" />
   <param
     name="use_gui"
     value="$(arg gui)" />
@@ -22,5 +22,5 @@
     name="rviz"
     pkg="rviz"
     type="rviz"
-    args="-d $(find test_bed)/urdf.rviz" />
+    args="-d $(find tx90_path_planner)/urdf.rviz" />
 </launch>

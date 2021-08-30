@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-project(test_bed)
+project(tx90_path_planner)
 
 find_package(catkin REQUIRED COMPONENTS 
 	roslaunch 
@@ -43,10 +43,6 @@ include_directories(
   	${Eigen_INCLUDE_DIRS} 
   	include ${catkin_INCLUDE_DIRS}
   	)
-
-#add_executable(path_traj_gen src/path_traj_gen.cpp)
-#target_link_libraries(path_traj_gen ${catkin_LIBRARIES})
-#add_dependencies(path_traj_gen path_traj_gen)
 
 add_executable(preprocess_pointcloud src/preprocess_pointcloud.cpp)
 target_link_libraries(preprocess_pointcloud ${catkin_LIBRARIES})
