@@ -40,7 +40,7 @@ class Scanner{
         tf::TransformListener listener;
         tf::StampedTransform btolj; //base to LJ sensor
         //vector<xyz> point_storage;
-        string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/test_bed"; // basic file path
+        string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner"; // basic file path
     private:
 
         ros::NodeHandle nh_, pnh_{"~"};
