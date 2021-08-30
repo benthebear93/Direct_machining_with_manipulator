@@ -217,7 +217,7 @@
     <visual>
       <origin xyz="0.0 0.07 0.0"/>
       <geometry>
-        <mesh filename="package://test_bed/meshes/PVS_1000_chuck.dae" />
+        <mesh filename="package://tx90_path_planner/meshes/PVS_1000_chuck.dae" />
       </geometry>
       <material name="light_grey">
         <color rgba="10.0 0.0 0.0 0.5" />
@@ -226,7 +226,7 @@
 
     <collision>
         <geometry>
-            <mesh filename="package://test_bed/meshes/PVS_1000_chuck.STL" />
+            <mesh filename="package://tx90_path_planner/meshes/PVS_1000_chuck.STL" />
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </collision>
@@ -244,13 +244,13 @@
         <color rgba="0.79216 0.81961 0.93333 1" />
       </material>
       <geometry>
-        <mesh filename="package://test_bed/meshes/surface_cfrp.STL" />
+        <mesh filename="package://tx90_path_planner/meshes/surface_cfrp.STL" />
       </geometry>
     </visual>
 
     <collision>
         <geometry>
-            <mesh filename="package://test_bed/meshes/surface_cfrp.STL" />
+            <mesh filename="package://tx90_path_planner/meshes/surface_cfrp.STL" />
         </geometry>
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </collision>
@@ -276,7 +276,7 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://test_bed/meshes/base_link.STL" />
+          filename="package://tx90_path_planner/meshes/base_link.STL" />
       </geometry>
       <material
         name="bed_color">
@@ -287,7 +287,7 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://test_bed/meshes/base_link.STL" />
+          filename="package://tx90_path_planner/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link> -->

@@ -11,14 +11,14 @@
         </material>
         <geometry>
           <mesh
-            filename="package://test_bed/meshes/surface_cfrp.STL" />
+            filename="package://tx90_path_planner/meshes/surface_cfrp.STL" />
         </geometry>
       </visual>
 
       <collision>
           <geometry>
             <mesh
-              filename="package://test_bed/meshes/surface_cfrp.STL" />
+              filename="package://tx90_path_planner/meshes/surface_cfrp.STL" />
           </geometry>
           <origin xyz="0 0 0" rpy="0 0 0"/>
       </collision>
