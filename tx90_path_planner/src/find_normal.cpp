@@ -11,7 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
-#include <cmath>
+#include <math.h>
 #include <string>
 #define PI 3.14159265
 
@@ -115,19 +115,26 @@ void FindNormal::find_normal()
   std::cout << "curvature : " << curvature << std::endl;
   std::cout << " " <<std::endl;
 
-  // pcl::PointCloud<pcl::Normal>::Ptr cloud_normals(new pcl::PointCloud<pcl::Normal>());
-  // pcl::PointCloud<pcl::Normal> sourceNormals;
-  // sourceNormals.push_back(pcl::Normal(plane_parameters[0], plane_parameters[1], plane_parameters[2]));
-  //pcl::io::savePCDFile<pcl::PointXYZRGB>("/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner/pcd_data/Kdtree_test_KNN.pcd", *cloud);
+  double x = plane_parameters[0];
+  double y = plane_parameters[1];
+  double z = plane_parameters[2];
+  
+  double roll_deg  = atan2(y, x);
+  double pitch_deg = atan2(z, x);
+  double yaw_deg   = atan2(y, z);
 
-  double roll_deg  = deg2rad(2.06); // X --> Z가 되야함  35.61866
-  double pitch_deg = deg2rad(-86.5);// Y --> Y는 맞음 89.99
-  double yaw_deg   = deg2rad(-21.5);        // Z --> X가 되야함
+  std::cout << "x :" << rad2deg(roll_deg) << std::endl; //-84.783
+  std::cout << "y :" << rad2deg(pitch_deg) << std::endl; //87.93
+  std::cout << "z :" << rad2deg(yaw_deg) << std::endl;   //-21.5
+
+  roll_deg  = deg2rad(roll_deg);  // X
+  pitch_deg = deg2rad(pitch_deg);  // Y
+  yaw_deg   = deg2rad(roll_deg); // Z
   std::cout <<" "<<std::endl;
   tf::Quaternion normal_q;
   
   //normal_q.setEuler(pitch_deg, yaw_deg, roll_deg); //Y X Z or ZYX
-  normal_q.setEuler(pitch_deg, yaw_deg, roll_deg);
+  normal_q.setEuler(pitch_deg, roll_deg, yaw_deg); //Y X Z 
   normal_q = normal_q.normalize();
   std::cout << "x :" << normal_q.x() << std::endl;
   std::cout << "y :" << normal_q.y() << std::endl;
