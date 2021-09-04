@@ -3,12 +3,11 @@ import pptk
 import numpy as np
 from plyfile import PlyData, PlyElement
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 filepath = '/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner/pcd_data'
-data = PlyData.read(filepath + '/new_cluster7.ply')['vertex']
-data2 = PlyData.read(filepath + '/surface.ply')['vertex']
-
 data = '/new_cluster7.ply'
 data2 = '/surface2.ply'
+
 class CurveChecker():
     def __init__(self, filename):
         self.data = PlyData.read(filepath + filename)['vertex']
@@ -41,14 +40,28 @@ Curve2 = CurveChecker(data2)
 y2, z2 = Curve2.slice_line()
 
 for i in range(len(z2)):
-    z2[i]-=92
+    z2[i]-=92 #set offset
 
 fig, ax = plt.subplots()
-ax.set_title("Depth camera vs Line scanner", fontsize=16)
-ax.set_xlabel('y (mm)', fontsize = 15)
-ax.set_ylabel('z (mm)', fontsize = 15)
-ax.tick_params(axis="y", direction="in", which='major', labelsize=14)
-ax.tick_params(axis="x", direction="in")
-ax.plot(y,z)
-ax.plot(y2,z2)
+plt.setp(ax.spines.values(), linewidth=1.7)
+ax.set_title("Depth camera vs Line scanner", fontsize=17)
+ax.set_xlabel('y (mm)', fontsize = 16)
+ax.set_ylabel('z (mm)', fontsize = 16)
+
+ax.xaxis.set_minor_locator(ticker.AutoMinorLocator())
+ax.yaxis.set_minor_locator(ticker.AutoMinorLocator())
+
+ax.xaxis.set_ticks_position('both')
+ax.yaxis.set_ticks_position('both')
+#ax.yaxis.set_tick_params(which='minor',direction="in")
+ax.tick_params(axis="x", direction="in", which='major', labelsize=13, width=2)
+ax.tick_params(axis="x", direction="in", which='minor', labelsize=13)
+
+ax.tick_params(axis="y", direction="in", which='major', labelsize=13, width=2)
+ax.tick_params(axis="y", direction="in", which='minor', labelsize=13)
+
+ax.plot(y,z, label='Depth camera')
+ax.plot(y2,z2, label='Line scanner')
+plt.legend(loc='upper right', ncol=1)
+plt.grid(True)
 plt.show()
