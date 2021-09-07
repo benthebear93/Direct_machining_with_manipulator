@@ -67,7 +67,7 @@ void PCprocess::Segmentation(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud)
     mbflag_cluster_save = 1;
   }
   cluster_cloud = reg.getColoredCloud();
-  //pcl::io::savePCDFile<pcl::PointXYZRGB>(filepath + "/pcd_data/region_growing_rgb_result.pcd", *cluster_cloud);
+  pcl::io::savePCDFile<pcl::PointXYZRGB>(filepath + "/pcd_data/region_growing_rgb_result.pcd", *cluster_cloud);
 }
 
 void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 msg
@@ -113,7 +113,7 @@ void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 m
 
     ptfilter.setInputCloud(ptr_filtered);
     ptfilter.setFilterFieldName("z"); 
-    ptfilter.setFilterLimits(0.141, 0.2);  // min. max
+    ptfilter.setFilterLimits(0.141, 0.25);  // min. max
     ptfilter.setFilterLimitsNegative(false); // option 
     ptfilter.filter(*ptr_filtered);
 

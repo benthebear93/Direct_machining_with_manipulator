@@ -52,6 +52,6 @@ if __name__=='__main__':
     if rospy.is_shutdown():
         print('save')
         pptk_view(pptk_c.save_point)
-        np.save('/home/benlee/catkin_ws/src/pptk_save_reduce2', pptk_c.final_pptk)
+        np.save('/home/benlee/catkin_ws/src/final_scan2', pptk_c.final_pptk)
 
     

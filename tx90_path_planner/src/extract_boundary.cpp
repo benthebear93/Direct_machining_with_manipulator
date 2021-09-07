@@ -20,6 +20,7 @@
 #include <string>
 #include "tx90_path_planner/boundary.h"
 using namespace std;
+
 int main(int argc, char **argv)
 {
 	ROS_INFO("Extract boundary");
