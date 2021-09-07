@@ -18,20 +18,21 @@
 std::string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner"; // basic file path
 double rad2deg(double radian);
 double deg2rad(double degree);
+
 class FindNormal
 {
-public:
-	FindNormal();
-	~FindNormal();
-  void find_normal();
-private:
-	int argc;
-	char** argv;
-	ros::NodeHandle n_;
-	ros::Publisher drill_point_pub_;
-	float dp_x = 0;
-	float dp_y = 0;
-	float dp_z = 0;
+  public:
+    FindNormal();
+    ~FindNormal();
+    void find_normal();
+  private:
+    int argc;
+    char** argv;
+    ros::NodeHandle n_;
+    ros::Publisher drill_point_pub_;
+    float dp_x = 0;
+    float dp_y = 0;
+    float dp_z = 0;
 };
 
 FindNormal::FindNormal()
@@ -41,7 +42,6 @@ FindNormal::FindNormal()
 FindNormal::~FindNormal(){
 
 }
-
 
 double rad2deg(double radian)
 {
@@ -56,7 +56,7 @@ void FindNormal::find_normal()
 {
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);    
   pcl::PointCloud<pcl::PointXYZ>::Ptr scanned_cloud (new pcl::PointCloud<pcl::PointXYZ>);    
-  pcl::io::loadPCDFile<pcl::PointXYZ>(filepath+"/pcd_data/surface.pcd", *scanned_cloud);
+  pcl::io::loadPCDFile<pcl::PointXYZ>(filepath+"/pcd_data/final_scan2.pcd", *scanned_cloud);
 
   copyPointCloud(*scanned_cloud, *cloud); //linescanner xyz to xyzrgb for visualization
   std::cout << "copying ....." << std::endl;
@@ -77,9 +77,9 @@ void FindNormal::find_normal()
   kdtree.setInputCloud (cloud);    //입력 
 
   pcl::PointXYZRGB searchPoint;
-  searchPoint.x = 0.772; 
-  searchPoint.y = -0.049;
-  searchPoint.z = 0.270;
+  searchPoint.x = 0.774; 
+  searchPoint.y = -0.0038;
+  searchPoint.z = 0.288;
 
   std_msgs::Int32MultiArray drill_p;
   drill_p.data.push_back(searchPoint.x*1000);
@@ -119,22 +119,22 @@ void FindNormal::find_normal()
   double y = plane_parameters[1];
   double z = plane_parameters[2];
   
-  double roll_deg  = atan2(y, x);
+  double roll_deg  = atan2(y, z);
   double pitch_deg = atan2(z, x);
-  double yaw_deg   = atan2(y, z);
+  double yaw_deg   = atan2(y, x); // rad
 
-  std::cout << "x :" << rad2deg(roll_deg) << std::endl; //-84.783
-  std::cout << "y :" << rad2deg(pitch_deg) << std::endl; //87.93
-  std::cout << "z :" << rad2deg(yaw_deg) << std::endl;   //-21.5
+  // little modification for orientation from normal vector
+  // roll_deg  = -1.5708-roll_deg;  // X
+  // pitch_deg = 1.5708/2+pitch_deg;  // Y
+  // yaw_deg   = -yaw_deg; // Z
 
-  roll_deg  = deg2rad(roll_deg);  // X
-  pitch_deg = deg2rad(pitch_deg);  // Y
-  yaw_deg   = deg2rad(roll_deg); // Z
-  std::cout <<" "<<std::endl;
-  tf::Quaternion normal_q;
-  
-  //normal_q.setEuler(pitch_deg, yaw_deg, roll_deg); //Y X Z or ZYX
-  normal_q.setEuler(pitch_deg, roll_deg, yaw_deg); //Y X Z 
+  std::cout << "x :" << rad2deg(roll_deg) << std::endl;
+  std::cout << "y :" << rad2deg(pitch_deg) << std::endl;
+  std::cout << "z :" << rad2deg(yaw_deg) << std::endl;
+  std::cout << "   " << std::endl;
+
+  tf::Quaternion normal_q;  
+  normal_q.setRPY(roll_deg, pitch_deg, yaw_deg); //Y X Z 
   normal_q = normal_q.normalize();
   std::cout << "x :" << normal_q.x() << std::endl;
   std::cout << "y :" << normal_q.y() << std::endl;
