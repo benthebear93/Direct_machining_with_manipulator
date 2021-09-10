@@ -118,60 +118,23 @@ class StaubliScanning(object):
 	def go_to_pose_goal(self):
 		move_group = self.move_group
 
-		## BEGIN_SUB_TUTORIAL plan_to_pose
-		##
-		## Planning to a Pose Goal
-		## ^^^^^^^^^^^^^^^^^^^^^^^
-		## We can plan a motion for this group to a desired pose for the
-		## end-effector:
+
 		pose_goal = geometry_msgs.msg.Pose()
-		pose_goal.position.x = 0.774
-		pose_goal.position.y = -0.038
-		pose_goal.position.z = 0.252#-0.226 + 0.478
-		# double roll_deg  = deg2rad(56.250); // X -->  35.61866
-		# double pitch_deg = deg2rad(10.860);// Y -->   89.99
-		# double yaw_deg   = deg2rad(73.923);        // 
-		# pose_goal.orientation.x = 0.0008234
-		# pose_goal.orientation.y = 0.9702901
-		# pose_goal.orientation.z = -0.2419205
-		# pose_goal.orientation.w = 0.80033023
-		pose_goal.orientation.x = -0.004808
-		pose_goal.orientation.y = 0.56816
-		pose_goal.orientation.z = 0.01140
-		pose_goal.orientation.w = 0.82282
+		pose_goal.position.x = 0.778-0.003 # 3mm offset 
+		pose_goal.position.y = -0.018+0.004 # 5mm offset
+		pose_goal.position.z = -0.260 + 0.478 # negative is actual z position value 
+
+		pose_goal.orientation.x = 0.001674
+		pose_goal.orientation.y = -0.932839
+		pose_goal.orientation.z = -0.001748                                                                                              
+		pose_goal.orientation.w = -0.36028 	
 
 		move_group.set_pose_target(pose_goal)
 
-		## Now, we call the planner to compute the plan and execute it.
 		plan = move_group.go(wait=True)
-		# Calling `stop()` ensures that there is no residual movement
 		move_group.stop()
-		# It is always good to clear your targets after planning with poses.
-		# Note: there is no equivalent function for clear_joint_value_targets()
 		move_group.clear_pose_targets()
 
-		## END_SUB_TUTORIAL
-
-		# For testing:
-		# Note that since this section of code will not be included in the tutorials
-		# we use the class variable rather than the copied state variable
-		# # curret_pose = self.move_group.get_curret_pose().pose
-		# pose_goal = geometry_msgs.msg.Pose()
-		# pose_goal.orientation.w = 1.0
-		# pose_goal.position.x = 0.1
-		# pose_goal.position.y = 0.1
-		# pose_goal.position.z = 0.4
-		# self.move_group.set_pose_target(pose_goal)
-
-		# plan = self.move_group.go(wait=True)
-
-		# self.move_group.stop()
-
-		# self.move_group.clear_pos_targets()
-
-		# curret_pose = self.move_group.get_curret_pose().pose
-		# print("curret_pose", curret_pose)
-		# return all_close(pose_goal, curret_pose, 0.01)
 
 	def plan_cartesian_path(self, scale=1):
 		print ("plan cartersian")
