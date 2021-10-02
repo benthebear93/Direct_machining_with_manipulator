@@ -1,8 +1,17 @@
 #include <pcl/point_cloud.h>
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/io/pcd_io.h>
+
+#include <pcl/conversions.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/io/pcd_io.h>
+
 #include <pcl/features/normal_3d.h>
 #include "std_msgs/Int32MultiArray.h"
+#include <ros/ros.h>
+#include <sensor_msgs/PointCloud2.h>
 
 #include <ros/ros.h>
 #include <tf/transform_listener.h>
@@ -40,6 +49,7 @@ class FindNormal
     ros::NodeHandle n_;
     ros::Publisher drill_point_pub_;
     ros::Publisher drill_point_pose_;
+    ros::Publisher pc_pub_;
     float dp_x = 0;
     float dp_y = 0;
     float dp_z = 0;
@@ -49,6 +59,7 @@ FindNormal::FindNormal()
 {
 	drill_point_pub_  = n_.advertise<std_msgs::Int32MultiArray>("drill_point", 1);
   drill_point_pose_ = n_.advertise<geometry_msgs::Pose>("drill_pose", 1); 
+  pc_pub_ = n_.advertise<sensor_msgs::PointCloud2> ("rviz_pc", 1);
   
 }
 FindNormal::~FindNormal(){
@@ -95,15 +106,15 @@ void FindNormal::find_normal(){
   kdtree.setInputCloud (cloud);    //입력 
 
   pcl::PointXYZRGB searchPoint;
-  searchPoint.x = 0.778; 
-  searchPoint.y = -0.018;
+  searchPoint.x = 0.724; 
+  searchPoint.y = -0.055;
   searchPoint.z = 0.274;
 
   //print search point
   std::cout << "searchPoint :" << searchPoint.x << " " << searchPoint.y << " " << searchPoint.z  << std::endl;
 
   //select K nearest neighbor point
-  int K = 50;   // 탐색할 포인트 수 설정 
+  int K = 25;   // 탐색할 포인트 수 설정 
   std::vector<int> pointIdxNKNSearch(K);
   std::vector<float> pointNKNSquaredDistance(K);
 
@@ -188,7 +199,11 @@ void FindNormal::find_normal(){
   drill_pose.orientation.z = normal_q.z();
   drill_pose.orientation.w = normal_q.w();
   drill_point_pose_.publish(drill_pose);
-
+  sensor_msgs::PointCloud2 output;
+  output.header.frame_id = "world";
+  output.header.stamp = ros::Time::now();
+  pcl::toROSMsg(*cloud, output);
+  pc_pub_.publish(output);
 
 }
 

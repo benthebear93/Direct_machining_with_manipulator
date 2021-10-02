@@ -120,6 +120,7 @@ void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 m
     //pc_filtered = *ptr_filtered;
 
     PCprocess::Segmentation(ptr_filtered);
+    ROS_INFO("Segmentation done");
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr segmented_pc (new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::io::loadPCDFile<pcl::PointXYZRGB> (filepath + "/pcd_data/new_cluster4.pcd", *segmented_pc);
     //PCprocess::ExtractBorder(segmented_pc);
