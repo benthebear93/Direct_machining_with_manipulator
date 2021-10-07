@@ -18,7 +18,8 @@ Machining on unknown surface often requries, such as repairing made product that
 ### scanning to generate surface
     rosrun tx90_moveit_client scan_trajgen_sub  
     rosrun keyence_ros gen_surface  
-    rosrun keyecen_ros pptk_view.py  
+    rosrun keyecen_ros pptk_view.py
+    rosrun keyence_ros load_np.py
 ### Normal vector estimation and reaching
     rosrun tx90_path_planner normal_vector_est  
     rosrun tx90_moveit_client tx90_client.py  

@@ -202,7 +202,7 @@ class StaubliScanning(object):
 
 if __name__ == '__main__':
 	staubli_client = StaubliScanning()
-	
+	staubli_client.find_curr_pose()
 	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
 	# staubli_client.execute_plan(cartesian_plan)
 

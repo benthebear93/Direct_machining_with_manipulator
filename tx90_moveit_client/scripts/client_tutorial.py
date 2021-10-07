@@ -120,14 +120,14 @@ class StaubliScanning(object):
 
 
 		pose_goal = geometry_msgs.msg.Pose()
-		pose_goal.position.x = 0.778-0.003 # 3mm offset 
-		pose_goal.position.y = -0.018+0.004 # 5mm offset
+		pose_goal.position.x = 0.724-0.002 # 3mm offset 
+		pose_goal.position.y = -0.055+0.0045 # 5mm offset
 		pose_goal.position.z = -0.260 + 0.478 # negative is actual z position value 
 
-		pose_goal.orientation.x = 0.001674
-		pose_goal.orientation.y = -0.932839
-		pose_goal.orientation.z = -0.001748                                                                                              
-		pose_goal.orientation.w = -0.36028 	
+		pose_goal.orientation.x = -0.00232593
+		pose_goal.orientation.y = -0.93067
+		pose_goal.orientation.z = 0.00240073                                                                                             
+		pose_goal.orientation.w = -0.365844	
 
 		move_group.set_pose_target(pose_goal)
 
