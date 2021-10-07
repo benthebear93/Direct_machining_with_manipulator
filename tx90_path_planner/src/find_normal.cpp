@@ -114,16 +114,21 @@ void FindNormal::find_normal(){
   std::cout << "searchPoint :" << searchPoint.x << " " << searchPoint.y << " " << searchPoint.z  << std::endl;
 
   //select K nearest neighbor point
-  int K = 25;   // 탐색할 포인트 수 설정 
+  // int K = 5;   // 탐색할 포인트 수 설정 
+  float radius = 0.001;
   std::vector<int> pointIdxNKNSearch(K);
   std::vector<float> pointNKNSquaredDistance(K);
-
+  double temp_x = 0;
+  double temp_y = 0;
   if ( kdtree.nearestKSearch (searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0 ){
     // colorized searched point
     for (size_t i = 0; i < pointIdxNKNSearch.size (); ++i){
       cloud->points[pointIdxNKNSearch[i]].r = 0;
       cloud->points[pointIdxNKNSearch[i]].g = 0;
       cloud->points[pointIdxNKNSearch[i]].b = 255;
+      temp_x = cloud->points[pointIdxNKNSearch[i]].x;
+      temp_y = cloud->points[pointIdxNKNSearch[i]].y;
+      std::cout << "temp_x: " << temp_x << "temp_y: "<<temp_y << std::endl;
     }
   }
   // number of searched point (should be same with set search point number)
@@ -147,7 +152,6 @@ void FindNormal::find_normal(){
   double pitch_deg = atan2(z, x);//atan2(z, x);
   double yaw_deg   = atan2(y, x); // rad
   std::cout << "before roll : " << rad2deg(roll_deg) << " pitch : "<< rad2deg(pitch_deg) << "yaw : " << rad2deg(yaw_deg) << std::endl;
-
   if(pitch_deg <0){
     pitch_deg = 1.5708 + pitch_deg;
     for (int i=0; i <50; i++){
@@ -164,6 +168,13 @@ void FindNormal::find_normal(){
     roll_deg = PI-roll_deg;
     yaw_deg = -PI+yaw_deg;
     for (int i=0; i <50; i++){
+      // if(i==0){
+      //   temp_x = searchPoint.x + i*x/100.0;
+      //   temp_y = searchPoint.y + i*y/100.0;
+      //   std::cout << "temp_x: " << temp_x << "temp_y: "<<temp_y << std::endl;
+      // }
+      temp_x = searchPoint.x + i*x/100.0;
+      temp_y = searchPoint.y + i*y/100.0;
       cloud->points[500+i].x = searchPoint.x + i*x/100.0;
       cloud->points[500+i].y = searchPoint.y + i*y/100.0;
       cloud->points[500+i].z = searchPoint.z + i*z/100.0;
