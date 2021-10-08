@@ -3,7 +3,7 @@ import pptk
 import numpy as np
 from plyfile import PlyData, PlyElement
 filepath = '/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner/pcd_data'
-data = PlyData.read(filepath + '/final_scan2.ply')['vertex']
+data = PlyData.read(filepath + '/downsample_normal_surface.ply')['vertex']
 print(data)
 xyz = np.c_[data['x'], data['y'], data['z']]
 # rgb = np.c_[data['red'], data['green'], data['blue']]

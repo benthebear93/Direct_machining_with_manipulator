@@ -78,8 +78,8 @@ void FindNormal::find_normal(){
 
   ptfilter.setInputCloud(temp_cloud);
   ptfilter.setFilterFieldName("z"); 
-  ptfilter.setFilterLimits(0.141, 0.25);  // min. max
-  ptfilter.setFilterLimitsNegative(true); // option 
+  ptfilter.setFilterLimits(0.250, 0.300);  // min. max
+  ptfilter.setFilterLimitsNegative(false); // option 
   ptfilter.filter(*temp_cloud);
 
   std::cout << "copying ....." << std::endl;
@@ -92,7 +92,7 @@ void FindNormal::find_normal(){
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);
   pcl::VoxelGrid<pcl::PointXYZRGB> sor;
   sor.setInputCloud (temp_cloud);
-  sor.setLeafSize (0.002f, 0.002f, 0.002f);
+  sor.setLeafSize (0.001f, 0.001f, 0.001f);
   sor.filter (*cloud);
   std::cout << "downsampled cloud size: " << cloud->points.size() << std::endl;
   for (size_t i = 0; i < cloud->points.size(); ++i){
@@ -106,18 +106,18 @@ void FindNormal::find_normal(){
   kdtree.setInputCloud (cloud);    //입력 
 
   pcl::PointXYZRGB searchPoint;
-  searchPoint.x = 0.724; 
-  searchPoint.y = -0.055;
-  searchPoint.z = 0.274;
+  searchPoint.x = 0.732; 
+  searchPoint.y = -0.040;
+  searchPoint.z = 0.285;
 
   //print search point
   std::cout << "searchPoint :" << searchPoint.x << " " << searchPoint.y << " " << searchPoint.z  << std::endl;
 
   //select K nearest neighbor point
-  // int K = 5;   // 탐색할 포인트 수 설정 
-  float radius = 0.001;
+  int K = 10;   // 탐색할 포인트 수 설정 
   std::vector<int> pointIdxNKNSearch(K);
-  std::vector<float> pointNKNSquaredDistance(K);
+  float radius = 0.01;
+  std::vector<float> pointNKNSquaredDistance(radius);
   double temp_x = 0;
   double temp_y = 0;
   if ( kdtree.nearestKSearch (searchPoint, K, pointIdxNKNSearch, pointNKNSquaredDistance) > 0 ){
