@@ -64,6 +64,10 @@ add_executable(extract_boundary src/extract_boundary.cpp)
 target_link_libraries(extract_boundary ${catkin_LIBRARIES})
 add_dependencies(extract_boundary extract_boundary)
 
+add_executable(pass src/pass.cpp)
+target_link_libraries(pass ${catkin_LIBRARIES})
+add_dependencies(pass pass)
+
 foreach(dir config launch meshes urdf)
 	install(DIRECTORY ${dir}/
 		DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})

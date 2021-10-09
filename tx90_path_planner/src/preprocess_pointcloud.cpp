@@ -38,7 +38,6 @@ void PCprocess::Segmentation(pcl::PointCloud<pcl::PointXYZRGB>::Ptr in_cloud)
 
   std::vector <pcl::PointIndices> clusters;
   reg.extract (clusters);
-
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cluster_cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
   pcl::ExtractIndices<pcl::PointXYZRGB> extract;
   pcl::PointCloud<pcl::PointXYZRGB> TotalCloud;

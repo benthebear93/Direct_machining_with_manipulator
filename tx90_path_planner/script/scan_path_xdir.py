@@ -72,14 +72,14 @@ class ScanPath():
 		return px, py
 
 	def get_boundary(self, data):
-		x_data = data.boundary_x
-		y_data = data.boundary_y 
 		x_data = [ int(x * 1000) for x in x_data]
 		y_data = [ int(y * 1000) for y in y_data]
 		print("min _x :", min(x_data)/1000.0, "max_x :", max(x_data)/1000.0 )
 		print("min _y :", min(y_data)/1000.0, "max_y :", max(y_data)/1000.0 )
-		# print(x_data)
-		# print(y_data)
+		print("      ")
+		print("here :", x_data)
+		print("here :", y_data)
+		print("      ")
 		up_down_size = int(round(self.sensor_x_length/self.xy_resolution))
 		grid_map, min_x, max_x, min_y, max_y, self.xy_resolution, xw, yw = gen_grid_map(x_data, y_data, self.xy_resolution)
 		grid_x = [(x - min_x)/self.xy_resolution for x in x_data]

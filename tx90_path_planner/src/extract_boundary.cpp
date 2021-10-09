@@ -16,9 +16,16 @@
 #include <pcl/console/parse.h>
 #include <pcl/common/file_io.h> // for getFilenameWithoutExtension
 
+#include <pcl/visualization/cloud_viewer.h>
+#include <pcl/visualization/range_image_visualizer.h>
+#include <pcl/visualization/point_cloud_color_handlers.h>
+#include <pcl/features/range_image_border_extractor.h>
+#include <pcl/common/file_io.h> // for getFilenameWithoutExtension
+
 #include <iostream>
 #include <string>
 #include "tx90_path_planner/boundary.h"
+
 using namespace std;
 
 int main(int argc, char **argv)
@@ -28,25 +35,32 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh;
 	ros::Publisher boundary_pub = nh.advertise<tx90_path_planner::boundary>("boundary", 100);
 	ros::Rate loop_rate(100);
+
 	string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner"; // basic file path
-	typedef pcl::PointXYZ PointType;
+
 	float angular_resolution= 0.5f;
-	pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
+	angular_resolution = pcl::deg2rad (angular_resolution);
+
 	bool setUnseenToMaxRange = false;
 	setUnseenToMaxRange = true;
 	int tmp_coordinate_frame;
-	angular_resolution = pcl::deg2rad (angular_resolution);
+
+	typedef pcl::PointXYZ PointType;
+	pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
+
 	pcl::PointCloud<PointType>::Ptr point_cloud_ptr (new pcl::PointCloud<PointType>); // making point cloUd
 	pcl::PointCloud<PointType>& point_cloud = *point_cloud_ptr; // getting address
 	pcl::PointCloud<pcl::PointWithViewpoint> far_ranges; // set range
-	Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ()); // set sensor pose
 
-	std::string filename = filepath + "/pcd_data/new_cluster4.pcd";
+	Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ()); // set sensor pose
+	std::string filename = filepath + "/pcd_data/fig_cluster4.pcd";
 	pcl::io::loadPCDFile (filename, point_cloud);
 	scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
 	                                                         point_cloud.sensor_origin_[1],
 	                                                         point_cloud.sensor_origin_[2])) *
 	                  Eigen::Affine3f (point_cloud.sensor_orientation_);
+	std::cout<< "sensor origin: " << point_cloud.sensor_origin_[0] << point_cloud.sensor_origin_[1] << point_cloud.sensor_origin_[2] << std::endl;
+
 	//std::string far_ranges_filename = pcl::getFilenameWithoutExtension (filename)+"_far_ranges.pcd";
 
 	float noise_level = 0.0;
