@@ -28,7 +28,6 @@ int main(int argc, char **argv)
 	ROS_INFO("Extract pass");
 	ros::init (argc, argv, "pass");
 	ros::NodeHandle nh;
-	ros::Publisher boundary_pub = nh.advertise<tx90_path_planner::boundary>("boundary", 100);
 	ros::Rate loop_rate(100);
 	string filepath = "/home/benlee/catkin_ws/src/Direct_machining_with_manipulator/tx90_path_planner"; // basic file path
 	typedef pcl::PointXYZ PointType;
