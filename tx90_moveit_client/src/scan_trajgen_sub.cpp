@@ -246,7 +246,7 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
   {
     std::cout << "i : " << i << std::endl;
     Eigen::Isometry3d pose = Eigen::Isometry3d::Identity();
-    pose.translation() = Eigen::Vector3d(path_x[i]+0.05, path_y[i]+0.03, z_value); //0.068 , 0.03
+    pose.translation() = Eigen::Vector3d(path_x[i]+0.09, path_y[i]+0.015, z_value); //0.068 , 0.03
     pose *=Eigen::AngleAxisd(M_PI/2.0, Eigen::Vector3d::UnitY());
     pattern_poses.push_back(pose);
   }

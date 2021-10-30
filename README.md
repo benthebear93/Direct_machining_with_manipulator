@@ -14,7 +14,7 @@ Machining on unknown surface often requries, such as repairing made product that
     rosrun realsense2_camera demo_pointcloud.launch  
     rosrun tx90_path_planner preprocessing_pointcloud  
     rosrun tx90_path_planner extract_boundary  
-    rosrun tx90_path_planner scan_path_v3.py  
+    rosrun tx90_path_planner scan_path_ydir.py
 ### scanning to generate surface
     rosrun tx90_moveit_client scan_trajgen_sub  
     rosrun keyence_ros gen_surface  

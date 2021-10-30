@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>736</width>
+    <height>579</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>264</width>
+     <height>498</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Non opt</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture1">
+          <property name="text">
+           <string>posture1</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture2">
+          <property name="text">
+           <string>posture2</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture3">
+          <property name="text">
+           <string>posture3</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture4">
+          <property name="text">
+           <string>posture4</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture5">
+          <property name="text">
+           <string>posture5</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture6">
+          <property name="text">
+           <string>posture6</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture7">
+          <property name="text">
+           <string>posture7</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture8">
+          <property name="text">
+           <string>posture8</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture9">
+          <property name="text">
+           <string>posture9</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture10">
+          <property name="text">
+           <string>posture10</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture11">
+          <property name="text">
+           <string>posture11</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture12">
+          <property name="text">
+           <string>posture12</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture13">
+          <property name="text">
+           <string>posture13</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture14">
+          <property name="text">
+           <string>posture14</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="non_posture15">
+          <property name="text">
+           <string>posture15</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Opt</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture1">
+          <property name="text">
+           <string>posture1</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture2">
+          <property name="text">
+           <string>posture2</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture3">
+          <property name="text">
+           <string>posture3</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture4">
+          <property name="text">
+           <string>posture4</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture5">
+          <property name="text">
+           <string>posture5</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture6">
+          <property name="text">
+           <string>posture6</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture7">
+          <property name="text">
+           <string>posture7</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture8">
+          <property name="text">
+           <string>posture8</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture9">
+          <property name="text">
+           <string>posture9</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture10">
+          <property name="text">
+           <string>posture10</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture11">
+          <property name="text">
+           <string>posture11</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture12">
+          <property name="text">
+           <string>posture12</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture13">
+          <property name="text">
+           <string>posture13</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture14">
+          <property name="text">
+           <string>posture14</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="opt_posture15">
+          <property name="text">
+           <string>posture15</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>0</y>
+     <width>211</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Joint angle set</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>40</y>
+     <width>415</width>
+     <height>114</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="1" column="3">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_5"/>
+    </item>
+    <item row="1" column="4">
+     <widget class="QLabel" name="label_9">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Joint6</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Joint1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QLabel" name="label_6">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Joint3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="5">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_6"/>
+    </item>
+    <item row="0" column="3">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_2"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_7">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Joint4</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLabel" name="label_8">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Joint5</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_4"/>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+    </item>
+    <item row="0" column="5">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_3"/>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Joint2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="5">
+     <widget class="QPushButton" name="move_joint">
+      <property name="text">
+       <string>Moveit</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="5">
+     <widget class="QPushButton" name="reset">
+      <property name="text">
+       <string>Reset</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>160</y>
+     <width>160</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_3"/>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

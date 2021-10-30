@@ -24,10 +24,10 @@
 
 #include <iostream>
 #include <string>
+#include <ros/package.h>
 #include "tx90_path_planner/boundary.h"
 
 using namespace std;
-
 int main(int argc, char **argv)
 {
 	ROS_INFO("Extract boundary");
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	pcl::PointCloud<pcl::PointWithViewpoint> far_ranges; // set range
 
 	Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ()); // set sensor pose
-	std::string filename = filepath + "/pcd_data/new_cluster6.pcd";
+	std::string filename = filepath + "/pcd_data/new_cluster4.pcd";
 	pcl::io::loadPCDFile (filename, point_cloud);
 	scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
 	                                                         point_cloud.sensor_origin_[1],
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 
 	float noise_level = 0.0;
 	float min_range = 0.0f;
-	int border_size = 2;
+	int border_size = 1;
 	pcl::RangeImage::Ptr range_image_ptr (new pcl::RangeImage);
 	pcl::RangeImage& range_image = *range_image_ptr;   
 	range_image.createFromPointCloud (point_cloud, angular_resolution, pcl::deg2rad (360.0f), pcl::deg2rad (180.0f),
