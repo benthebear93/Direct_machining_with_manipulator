@@ -55,12 +55,10 @@ int main(int argc, char **argv)
 	Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ()); // set sensor pose
 	std::string filename = filepath + "/pcd_data/new_cluster4.pcd";
 	pcl::io::loadPCDFile (filename, point_cloud);
-	scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
-	                                                         point_cloud.sensor_origin_[1],
-	                                                         point_cloud.sensor_origin_[2])) *
-	                  Eigen::Affine3f (point_cloud.sensor_orientation_);
-	std::cout<< "sensor origin: " << point_cloud.sensor_origin_[0] << point_cloud.sensor_origin_[1] << point_cloud.sensor_origin_[2] << std::endl;
-
+	scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (0.678,
+	                                                         0.0535,
+	                                                        -0.252) ) *
+	                  Eigen::Affine3f ( Eigen::Quaternionf(0.00002, 0.707, 0.000058, 0.7071));
 	//std::string far_ranges_filename = pcl::getFilenameWithoutExtension (filename)+"_far_ranges.pcd";
 
 	float noise_level = 0.0;
