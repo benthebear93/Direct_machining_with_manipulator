@@ -19,10 +19,10 @@ from matplotlib.path import Path
 from std_msgs.msg import Int32
 EXTEND_AREA = 10.0
 
-def simple_plot(data_x, data_y):
+def simple_plot(data_x, data_y, min_x, max_x, min_y, max_y):
     fig, ax = plt.subplots()
     plt.setp(ax.spines.values(), linewidth=1.7)
-    ax.set_title("contour", fontsize=17)
+    ax.set_title("Workpiece contour", fontsize=17)
     ax.set_xlabel('x (mm)', fontsize = 16)
     ax.set_ylabel('y (mm)', fontsize = 16)
 
@@ -38,7 +38,12 @@ def simple_plot(data_x, data_y):
     ax.tick_params(axis="y", direction="in", which='major', labelsize=13, width=2)
     ax.tick_params(axis="y", direction="in", which='minor', labelsize=13)
 
+    ax.set_axisbelow(True)
+    extra_space = 25
+    ax.set_xlim(xmin=min_x-extra_space, xmax=max_x+extra_space)
+    ax.set_ylim(ymin=min_y-extra_space, ymax=max_y+extra_space)
     ax.scatter(data_x, data_y, label='workpiece contour')
+    ax.grid(color="#A2A6AB")
     plt.legend(loc='upper right', ncol=1)
     plt.show()
 
@@ -70,10 +75,10 @@ def get_boundary(data):
     y_data = [ int(y * 1000) for y in y_data]
     # x_data = np.sort(x_data)
     # y_data = np.sort(y_data)
-    simple_plot(x_data, y_data)
     print("x_data: ", x_data, "y_data: ", y_data)
     grid_resolution = int(round(sensor_x_length/xy_resolution))
     grid_map, min_x, max_x, min_y, max_y, xy_resolution = gen_grid_map(x_data, y_data, xy_resolution)
+    simple_plot(x_data, y_data, min_x, max_x, min_y, max_y)
     grid_x = [(x - min_x)/xy_resolution for x in x_data]
     grid_y = [(y - min_y)/xy_resolution for y in y_data] #expand scanning area in case
     print("scan grid map is x: ", round(max(grid_x)-min(grid_x)), " y: ", round(max(grid_y)-min(grid_y))) 
