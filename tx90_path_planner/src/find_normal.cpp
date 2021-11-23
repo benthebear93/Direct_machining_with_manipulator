@@ -69,7 +69,7 @@ FindNormal::~FindNormal(){
 void FindNormal::find_normal(){
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr temp_cloud (new pcl::PointCloud<pcl::PointXYZRGB>);    
   pcl::PointCloud<pcl::PointXYZ>::Ptr scanned_cloud (new pcl::PointCloud<pcl::PointXYZ>);    
-  pcl::io::loadPCDFile<pcl::PointXYZ>(filepath+"/pcd_data/final_scan2.pcd", *scanned_cloud);
+  pcl::io::loadPCDFile<pcl::PointXYZ>(filepath+"/pcd_data/new_cluster4.pcd", *scanned_cloud);
   
 
   copyPointCloud(*scanned_cloud, *temp_cloud); //linescanner xyz to xyzrgb for visualization
@@ -92,7 +92,7 @@ void FindNormal::find_normal(){
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);
   pcl::VoxelGrid<pcl::PointXYZRGB> sor;
   sor.setInputCloud (temp_cloud);
-  sor.setLeafSize (0.001f, 0.001f, 0.001f);
+  sor.setLeafSize (0.01, 0.01, 0.01);
   sor.filter (*cloud);
   std::cout << "downsampled cloud size: " << cloud->points.size() << std::endl;
   for (size_t i = 0; i < cloud->points.size(); ++i){
@@ -181,7 +181,7 @@ void FindNormal::find_normal(){
     }
   }
 
-  pcl::io::savePCDFileASCII(filepath+"/pcd_data/downsample_normal_surface.pcd", *cloud);
+  pcl::io::savePCDFileASCII(filepath+"/pcd_data/new_cluster_downsaple.pcd", *cloud);
 
   std::cout << "after roll : " << rad2deg(roll_deg) << " pitch : "<< rad2deg(pitch_deg) << "yaw : " << rad2deg(yaw_deg) << std::endl;
   std::cout << "   " << std::endl;

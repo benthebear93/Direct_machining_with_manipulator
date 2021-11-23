@@ -81,7 +81,7 @@ void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 m
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr temp_cloud(new pcl::PointCloud<pcl::PointXYZRGB>);//pointcloud2
     pcl::fromPCLPointCloud2(pcl_pc,*temp_cloud); //pcl to pointcloud2
     ROS_INFO("save original pc");
-    pcl::io::savePCDFile (filepath + "/pcd_data/d435i_205.pcd", *temp_cloud);
+    pcl::io::savePCDFile (filepath + "/pcd_data/actual_pc.pcd", *temp_cloud);
     Eigen::Matrix4f trans;
 
     trans<< 0,   -1,  0, 0.610,
@@ -91,7 +91,7 @@ void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 m
     pcl::transformPointCloud(*temp_cloud , *ptr_transformed, trans);   
     pc_transformed = *ptr_transformed;
     ROS_INFO("save tf changed pc");
-    pcl::io::savePCDFile (filepath + "/pcd_data/actual_pc.pcd", pc_transformed);
+    pcl::io::savePCDFile (filepath + "/pcd_data/changed_pc.pcd", pc_transformed);
     mbflag_save = 1;
   }
   else
@@ -121,7 +121,7 @@ void PCprocess::Cloudcb(const sensor_msgs::PointCloud2 msg){ //std_msgs::Int32 m
     PCprocess::Segmentation(ptr_filtered);
     ROS_INFO("Segmentation done");
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr segmented_pc (new pcl::PointCloud<pcl::PointXYZRGB>);
-    pcl::io::loadPCDFile<pcl::PointXYZRGB> (filepath + "/pcd_data/new_cluster4.pcd", *segmented_pc);
+    pcl::io::loadPCDFile<pcl::PointXYZRGB> (filepath + "/pcd_data/new_cluster6.pcd", *segmented_pc);
     //PCprocess::ExtractBorder(segmented_pc);
   }
 }

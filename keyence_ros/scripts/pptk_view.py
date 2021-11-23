@@ -36,6 +36,7 @@ def pptk_view(save_point):
 
 def callback_pptk(msg):
     vector = msg.data
+    print(msg)
     pptk_c.save_point.append(vector)
 
 def get_measurement():

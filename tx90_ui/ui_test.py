@@ -85,8 +85,8 @@ class WindowClass(QMainWindow, form_class) :
 
 
     def read_jointq(self):
-        non_filename = 'ros_non_optimized_result.xlsx'
-        opt_filename = 'optimized_result.xlsx'
+        non_filename = 'ros_flat_v2.xlsx'
+        opt_filename = 'test3.xlsx'
         df = pd.read_excel(non_filename, header=None, names=None, index_col=None)
         print("df", df)
         number_pose = len(df)

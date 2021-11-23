@@ -30,6 +30,8 @@
 using namespace std;
 int main(int argc, char **argv)
 {
+	string file = "/pcd_data/new_cluster5.pcd";
+
 	ROS_INFO("Extract boundary");
 	ros::init (argc, argv, "extract_boundary");
 	ros::NodeHandle nh;
@@ -53,7 +55,7 @@ int main(int argc, char **argv)
 	pcl::PointCloud<pcl::PointWithViewpoint> far_ranges; // set range
 
 	Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ()); // set sensor pose
-	std::string filename = filepath + "/pcd_data/new_cluster4.pcd";
+	std::string filename = filepath + file;
 	pcl::io::loadPCDFile (filename, point_cloud);
 	scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (0.678,
 	                                                         0.0535,

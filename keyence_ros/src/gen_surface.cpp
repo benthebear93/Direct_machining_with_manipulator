@@ -93,6 +93,7 @@ bool Scanner::init()
 
 void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
 {
+    ROS_INFO("here time ");
     try{
         ros::Time now = ros::Time::now();
         listener.waitForTransform("base_link", "lj_v7080_optical_frame", now, ros::Duration(0.0001));
@@ -105,7 +106,7 @@ void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
         ROS_ERROR("%s",ex.what()); 
         ros::Duration(0.01).sleep();
     }
-    //ROS_INFO("tf time ");
+    ROS_INFO("tf time ");
     pcl::PCLPointCloud2 pcl_pc;  // pcl point cloud
     pcl_conversions::toPCL(msg, pcl_pc);  // sensor msg to pcl
 
@@ -114,7 +115,7 @@ void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
 
     int profile_size = msg.width;
     float x = 0,y = 0,z =0; //5e-05sec
-    for(int i =0; i<profile_size; i++) //i+=8
+    for(int i =0; i<profile_size; i+=8) //i+=8
     {
         x = input_cloud.points[i].x + pos_x;
         y = input_cloud.points[i].y + pos_y;
@@ -127,9 +128,9 @@ void Scanner::cloudMsgCallback(const sensor_msgs::PointCloud2& msg)
         profile_sum.data.push_back(x);
         profile_sum.data.push_back(y);
         profile_sum.data.push_back(z);
-        if(i==profile_size-1) //-8
+        if(i==profile_size-8) //-8
         {
-            //ROS_INFO("pubping");
+            ROS_INFO("pubping");
             profile_sum_.publish(profile_sum);
             profile_sum.data.clear();
         }
