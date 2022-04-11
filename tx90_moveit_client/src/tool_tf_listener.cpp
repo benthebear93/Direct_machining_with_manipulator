@@ -4,14 +4,14 @@
 #include <math.h>
 #include "geometry_msgs/Pose.h"
 #include <iostream>
-
+#include "std_msgs/Int32MultiArray.h"
 
 class TFlisten
 {
 public:
 	TFlisten();
 	~TFlisten();
-	void drill_point_callback(const geometry_msgs::Pose msg);
+	void drill_point_callback(const std_msgs::Int32MultiArray msg);
 private:
 	int argc;
 	char** argv;
@@ -35,15 +35,18 @@ TFlisten::~TFlisten(){
 
 }
 
-void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
+void TFlisten::drill_point_callback(const std_msgs::Int32MultiArray msg)
 {
 	std::cout <<"                     " << std::endl;
 	std::cout <<"listening drill point" << std::endl;
 	std::cout <<"                     " << std::endl;
-	dp_x = msg.position.x;
-	dp_y = msg.position.y;
-	dp_z = msg.position.z;
-	//std::cout << dp_x << dp_y << dp_z <<std::endl;
+	dp_x = msg.data[0];
+	dp_y = msg.data[1];
+	dp_z = msg.data[2];
+	dp_x = dp_x/1000.0;
+	dp_y = dp_y/1000.0;
+	dp_z = dp_z/1000.0;
+	std::cout << dp_x << dp_y << dp_z <<std::endl;
 	uint32_t shape = visualization_msgs::Marker::ARROW;
 	tf::StampedTransform tool_tf; 
     tf::StampedTransform camera_tf;
@@ -57,54 +60,54 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
     wp_q.setRPY(0, 0, 0);
     wp_tf.setRotation(wp_q);
 
-    try{
-    	ros::Time now = ros::Time::now();
-		listener_.waitForTransform("world", "tool_tip_link", now, ros::Duration(3.0));
-		listener_.lookupTransform("world","tool_tip_link", ros::Time(0), tool_tf);
+    // try{
+    // 	ros::Time now = ros::Time::now();
+	// 	listener_.waitForTransform("world", "tool_tip_link", now, ros::Duration(3.0));
+	// 	listener_.lookupTransform("world","tool_tip_link", ros::Time(0), tool_tf);
 
-		// std::cout <<"tool tip link x : " << tool_tf.getOrigin().x();
-		// std::cout <<" y : " << tool_tf.getOrigin().y();
-		// std::cout <<" z : " << tool_tf.getOrigin().z()<<std::endl;
+	// 	// std::cout <<"tool tip link x : " << tool_tf.getOrigin().x();
+	// 	// std::cout <<" y : " << tool_tf.getOrigin().y();
+	// 	// std::cout <<" z : " << tool_tf.getOrigin().z()<<std::endl;
 
-		tool_q = tool_tf.getRotation();
-		// std::cout <<" q_x: " << tool_q.x()<<std::endl;
-		// std::cout <<" q_y: " << tool_q.y()<<std::endl;
-		// std::cout <<" q_z: " << tool_q.z()<<std::endl;
-		// std::cout <<" q_w: " << tool_q.w()<<std::endl;
+	// 	tool_q = tool_tf.getRotation();
+	// 	// std::cout <<" q_x: " << tool_q.x()<<std::endl;
+	// 	// std::cout <<" q_y: " << tool_q.y()<<std::endl;
+	// 	// std::cout <<" q_z: " << tool_q.z()<<std::endl;
+	// 	// std::cout <<" q_w: " << tool_q.w()<<std::endl;
 
-		listener_.waitForTransform("world", "camera_depth_frame", now, ros::Duration(3.0));
-		listener_.lookupTransform("world","camera_depth_frame", ros::Time(0), camera_tf);
-		std::cout <<"camera x : " << camera_tf.getOrigin().x();
-		std::cout <<" y : " << camera_tf.getOrigin().y();
-		std::cout <<" z : " << camera_tf.getOrigin().z()<<std::endl;
-		w2c_x = camera_tf.getOrigin().x();
-		w2c_y = camera_tf.getOrigin().y();
-		w2c_z = camera_tf.getOrigin().z();
+	// 	listener_.waitForTransform("world", "camera_depth_frame", now, ros::Duration(3.0));
+	// 	listener_.lookupTransform("world","camera_depth_frame", ros::Time(0), camera_tf);
+	// 	std::cout <<"camera x : " << camera_tf.getOrigin().x();
+	// 	std::cout <<" y : " << camera_tf.getOrigin().y();
+	// 	std::cout <<" z : " << camera_tf.getOrigin().z()<<std::endl;
+	// 	w2c_x = camera_tf.getOrigin().x();
+	// 	w2c_y = camera_tf.getOrigin().y();
+	// 	w2c_z = camera_tf.getOrigin().z();
 		
-		cam_q = camera_tf.getRotation();
-		std::cout <<" q_x : " << cam_q.x()<<std::endl;
-		std::cout <<" q_y : " << cam_q.y()<<std::endl;
-		std::cout <<" q_z : " << cam_q.z()<<std::endl;
-		std::cout <<" q_w : " << cam_q.w()<<std::endl;
-		std::cout << "========================" << std::endl;
-		// get tool tf and cam tf
-    }
-    catch (tf::TransformException ex){
-		ROS_ERROR("%s",ex.what()); 
-		ros::Duration(1.0).sleep();
-    }
+	// 	cam_q = camera_tf.getRotation();
+	// 	std::cout <<" q_x : " << cam_q.x()<<std::endl;
+	// 	std::cout <<" q_y : " << cam_q.y()<<std::endl;
+	// 	std::cout <<" q_z : " << cam_q.z()<<std::endl;
+	// 	std::cout <<" q_w : " << cam_q.w()<<std::endl;
+	// 	std::cout << "========================" << std::endl;
+	// 	// get tool tf and cam tf
+    // }
+    // catch (tf::TransformException ex){
+	// 	ROS_ERROR("%s",ex.what()); 
+	// 	ros::Duration(1.0).sleep();
+    // }
 	visualization_msgs::Marker marker;
 	visualization_msgs::Marker normal_v;
 
-	marker.header.frame_id = "/world";
+	marker.header.frame_id = "/base_link";
 	marker.header.stamp = ros::Time::now();
     marker.ns = "basic_shapes";
     marker.id = 0;
     marker.type = visualization_msgs::Marker::SPHERE;
     marker.action = visualization_msgs::Marker::ADD;
-    marker.pose.position.x = w2c_x + 0.104; //y = 0.094
-    marker.pose.position.y = w2c_y + 0.062; //x = 0.059
-    marker.pose.position.z = w2c_z - 0.514; //z = 0.512
+    marker.pose.position.x = dp_x;
+    marker.pose.position.y = dp_y;
+    marker.pose.position.z = dp_z;
     std::cout<<"drill_p x : " << marker.pose.position.x << " y : " <<marker.pose.position.y << 
     " z : " << marker.pose.position.z <<std::endl;
     marker.pose.orientation.x = 0.0;
@@ -123,15 +126,15 @@ void TFlisten::drill_point_callback(const geometry_msgs::Pose msg)
     marker.color.b = 0.0f;
     marker.color.a = 1.0;
 
-    normal_v.header.frame_id = "/world";
+    normal_v.header.frame_id = "/base_link";
 	normal_v.header.stamp = ros::Time::now();
     normal_v.ns = "basic_shapes";
     normal_v.id = 1;
     normal_v.type = visualization_msgs::Marker::SPHERE;
     normal_v.action = visualization_msgs::Marker::ADD;
-    normal_v.pose.position.x = w2c_x + 0.104  - 0.00078/norm_const; //y = 0.094
-    normal_v.pose.position.y = w2c_y + 0.062  + 0.65747/norm_const; //x = 0.059
-    normal_v.pose.position.z = w2c_z - 0.514  + 0.75348/norm_const; //z = 0.512
+    normal_v.pose.position.x = dp_x ;// dp_x/norm_const; //y = 0.094
+    normal_v.pose.position.y = dp_y - dp_x/norm_const; //x = 0.059
+    normal_v.pose.position.z = dp_z + dp_x/norm_const; //z = 0.512
     std::cout<<"normal_p x : " << normal_v.pose.position.x << " y : " <<normal_v.pose.position.y << 
     " z : " << normal_v.pose.position.z <<std::endl;
     normal_v.pose.orientation.x = 0.0;

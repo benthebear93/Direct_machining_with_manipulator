@@ -91,24 +91,24 @@ class StaubliScanning(object):
 	def go_to_joint_state(self):
 		move_group = self.move_group
 
-		joint_goal = move_group.get_current_joint_values()
-		joint_goal[0] = 0
-		joint_goal[1] = np.deg2rad(0)
-		joint_goal[2] = np.deg2rad(90)
-		joint_goal[3] = 0
-		joint_goal[4] = np.deg2rad(0)
-		joint_goal[5] = np.deg2rad(0)  # 1/6 of a turn
+		# joint_goal = move_group.get_current_joint_values()
+		# joint_goal[0] = 0
+		# joint_goal[1] = np.deg2rad(0)
+		# joint_goal[2] = np.deg2rad(90)
+		# joint_goal[3] = 0
+		# joint_goal[4] = np.deg2rad(0)
+		# joint_goal[5] = np.deg2rad(0)  # 1/6 of a turn
 
-		# The go command can be called with joint values, poses, or without any
-		# parameters if you have already set the pose or joint target for the group
-		move_group.go(joint_goal, wait=True)
+		# # The go command can be called with joint values, poses, or without any
+		# # parameters if you have already set the pose or joint target for the group
+		# move_group.go(joint_goal, wait=True)
 
-		# Calling ``stop()`` ensures that there is no residual movement
-		move_group.stop()
+		# # Calling ``stop()`` ensures that there is no residual movement
+		# move_group.stop()
 
-		## END_SUB_TUTORIAL
+		# ## END_SUB_TUTORIAL
 
-		# For testing:
+		# # For testing:
 		current_joints = move_group.get_current_joint_values()
 		print("                              ")
 		print("current joint ",current_joints)
@@ -118,53 +118,23 @@ class StaubliScanning(object):
 	def go_to_pose_goal(self):
 		move_group = self.move_group
 
-		## BEGIN_SUB_TUTORIAL plan_to_pose
-		##
-		## Planning to a Pose Goal
-		## ^^^^^^^^^^^^^^^^^^^^^^^
-		## We can plan a motion for this group to a desired pose for the
-		## end-effector:
+
 		pose_goal = geometry_msgs.msg.Pose()
-		pose_goal.position.x = 0.756	
-		pose_goal.position.y = -0.026
-		pose_goal.position.z = 0.273 #0.73 base
-		pose_goal.orientation.x = -0.000
-		pose_goal.orientation.y = 0.707
-		pose_goal.orientation.z = 0.000
-		pose_goal.orientation.w = 0.707
-		
+		pose_goal.position.x = 0.733 - 0.0027 # 3mm offset 
+		pose_goal.position.y = -0.079 + 0.0038 # 5mm offset
+		pose_goal.position.z = 0.309 - 0.5591 + 0.478 # negative is actual z position value 
+
+		pose_goal.orientation.x = 0.00027774
+		pose_goal.orientation.y = 0.707682
+		pose_goal.orientation.z = 0.0003458                                                                                             
+		pose_goal.orientation.w = 0.706530	
+
 		move_group.set_pose_target(pose_goal)
 
-		## Now, we call the planner to compute the plan and execute it.
 		plan = move_group.go(wait=True)
-		# Calling `stop()` ensures that there is no residual movement
 		move_group.stop()
-		# It is always good to clear your targets after planning with poses.
-		# Note: there is no equivalent function for clear_joint_value_targets()
 		move_group.clear_pose_targets()
 
-		## END_SUB_TUTORIAL
-
-		# For testing:
-		# Note that since this section of code will not be included in the tutorials
-		# we use the class variable rather than the copied state variable
-		# # curret_pose = self.move_group.get_curret_pose().pose
-		# pose_goal = geometry_msgs.msg.Pose()
-		# pose_goal.orientation.w = 1.0
-		# pose_goal.position.x = 0.1
-		# pose_goal.position.y = 0.1
-		# pose_goal.position.z = 0.4
-		# self.move_group.set_pose_target(pose_goal)
-
-		# plan = self.move_group.go(wait=True)
-
-		# self.move_group.stop()
-
-		# self.move_group.clear_pos_targets()
-
-		# curret_pose = self.move_group.get_curret_pose().pose
-		# print("curret_pose", curret_pose)
-		# return all_close(pose_goal, curret_pose, 0.01)
 
 	def plan_cartesian_path(self, scale=1):
 		print ("plan cartersian")
@@ -198,6 +168,6 @@ if __name__ == '__main__':
 	
 	# cartesian_plan, fraction = staubli_client.plan_cartesian_path()
 	# staubli_client.execute_plan(cartesian_plan)
-
-	#staubli_client.go_to_joint_state()
+	staubli_client.find_curr_pose()
+	# staubli_client.go_to_joint_state()
 	staubli_client.go_to_pose_goal()

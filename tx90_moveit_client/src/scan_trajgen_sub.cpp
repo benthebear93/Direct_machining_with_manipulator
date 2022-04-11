@@ -166,7 +166,7 @@ void pathCallback(const tx90_moveit_client::scan_path msg)
 // make cartesian point (path) with NO Tolerance on the TCP 
 descartes_core::TrajectoryPtPtr makeCartesianPoint(const Eigen::Isometry3d& pose, double dt); 
 // make cartesian point (path) with free rotation on the TCP
-descartes_core::TrajectoryPtPtr makeTolerancedCartesianPoint(const Eigen::Isometry3d& pose, double dt);
+// descartes_core::TrajectoryPtPtr makeTolerancedCartesianPoint(const Eigen::Isometry3d& pose, double dt);
 
 bool executeTrajectory(const trajectory_msgs::JointTrajectory& trajectory);
 
@@ -234,11 +234,11 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
   const static int num_steps = 20;
   const static double time_between_points = 0.5;
 
-  // float path_x[98] = {0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.685, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.707, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.729, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.751, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.773, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.817, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795, 0.795};
-  // float path_y[98] = {-0.085, -0.074, -0.063, -0.052, -0.041, -0.03, -0.019, -0.008, 0.003, 0.014, 0.025, 0.036, 0.047, 0.047, 0.036, 0.025, 0.014, 0.003, -0.008, -0.019, -0.03, -0.041, -0.052, -0.063, -0.074, -0.085, -0.096, -0.096, -0.085, -0.074, -0.063, -0.052, -0.041, -0.03, -0.019, -0.008, 0.003, 0.014, 0.025, 0.036, 0.047, 0.047, 0.036, 0.025, 0.014, 0.003, -0.008, -0.019, -0.03, -0.041, -0.052, -0.063, -0.074, -0.085, -0.096, -0.096, -0.085, -0.074, -0.063, -0.052, -0.041, -0.03, -0.019, -0.008, 0.003, 0.014, 0.025, 0.036, 0.047, 0.047, 0.036, 0.025, 0.014, 0.003, -0.008, -0.019, -0.03, -0.041, -0.052, -0.063, -0.074, -0.085, -0.096, -0.096, -0.096, -0.085, -0.074, -0.063, -0.052, -0.041, -0.03, -0.019, -0.008, 0.003, 0.014, 0.025, 0.036, 0.047};
-  float path_x[2] = {0.754, 0.756};
-  float path_y[2] = {-0.026, -0.026};
-  float z_value = 0.2; 
+  float path_x[59] = {0.675, 0.675, 0.675, 0.675, 0.675, 0.675, 0.675, 0.675, 0.675, 0.675, 0.675, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.697, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.719, 0.741, 0.741, 0.741, 0.741, 0.741, 0.741, 0.741, 0.741, 0.741, 0.741, 0.741, 0.741, 0.763, 0.763, 0.763, 0.763, 0.763, 0.763, 0.763, 0.763, 0.763, 0.763, 0.763, 0.763};  
+  float path_y[59] = {-0.06, -0.049, -0.038, -0.027, -0.016, -0.005, 0.006, 0.017, 0.028, 0.039, 0.05, 0.05, 0.039, 0.028, 0.017, 0.006, -0.005, -0.016, -0.027, -0.038, -0.049, -0.06, -0.071, -0.071, -0.06, -0.049, -0.038, -0.027, -0.016, -0.005, 0.006, 0.017, 0.028, 0.039, 0.05, 0.05, 0.039, 0.028, 0.017, 0.006, -0.005, -0.016, -0.027, -0.038, -0.049, -0.06, -0.071, -0.071, -0.06, -0.049, -0.038, -0.027, -0.016, -0.005, 0.006, 0.017, 0.028, 0.039, 0.05};
+  // float path_x[2] = {0.754, 0.756};
+  // float path_y[2] = {-0.026, -0.026};
+  float z_value = 0.230; 
   int path_size = (sizeof(path_x)/sizeof(*path_x));
   std::cout << "path_size :" << path_size << std::endl;
   EigenSTL::vector_Isometry3d pattern_poses;
@@ -246,7 +246,7 @@ std::vector<descartes_core::TrajectoryPtPtr> makePath()
   {
     std::cout << "i : " << i << std::endl;
     Eigen::Isometry3d pose = Eigen::Isometry3d::Identity();
-    pose.translation() = Eigen::Vector3d(path_x[i]+0.068, path_y[i]+0.03, z_value);
+    pose.translation() = Eigen::Vector3d(path_x[i]+0.09, path_y[i]+0.015, z_value); //0.068 , 0.03
     pose *=Eigen::AngleAxisd(M_PI/2.0, Eigen::Vector3d::UnitY());
     pattern_poses.push_back(pose);
   }
@@ -289,12 +289,12 @@ descartes_core::TrajectoryPtPtr makeCartesianPoint(const Eigen::Isometry3d& pose
   return TrajectoryPtPtr( new CartTrajectoryPt( TolerancedFrame(pose), TimingConstraint(dt)) );
 }
 
-descartes_core::TrajectoryPtPtr makeTolerancedCartesianPoint(const Eigen::Isometry3d& pose, double dt)
-{
-  using namespace descartes_core;
-  using namespace descartes_trajectory;
-  return TrajectoryPtPtr( new AxialSymmetricPt(pose, M_PI / 12.0, AxialSymmetricPt::Z_AXIS, TimingConstraint(dt)) );
-}
+// descartes_core::TrajectoryPtPtr makeTolerancedCartesianPoint(const Eigen::Isometry3d& pose, double dt)
+// {
+//   using namespace descartes_core;
+//   using namespace descartes_trajectory;
+//   return TrajectoryPtPtr( new AxialSymmetricPt(pose, M_PI / 12.0, AxialSymmetricPt::Z_AXIS, TimingConstraint(dt)) );
+// }
 
 bool executeTrajectory(const trajectory_msgs::JointTrajectory& trajectory)
 {

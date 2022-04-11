@@ -1,6 +1,0 @@
-devel_space: /home/benlee/catkin_ws/src/Direct_machining_with_manipulator/keyence_ros/devel
-install: false
-install_space: /home/benlee/catkin_ws/src/Direct_machining_with_manipulator/keyence_ros/install
-profile: default
-source_space: /home/benlee/catkin_ws/src/Direct_machining_with_manipulator/keyence_ros/src
-workspace: /home/benlee/catkin_ws/src/Direct_machining_with_manipulator/keyence_ros
