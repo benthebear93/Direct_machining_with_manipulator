@@ -32,7 +32,7 @@ Machining on unknown surface often requries, such as repairing made product that
 # Node launch & run 
 ### spawn and control robot
     roslaunch staubli_tx90_gazebo spawn_tx90.launch  
-    roslaunch staubli_tx90_gazebo move_groupd.launch  
+    roslaunch staubli_tx90_gazebo move_group.launch  
     roslaunch staubli_val3_driver motion_streaming.launch  
 ### scan path planning
     rosrun realsense2_camera demo_pointcloud.launch  
